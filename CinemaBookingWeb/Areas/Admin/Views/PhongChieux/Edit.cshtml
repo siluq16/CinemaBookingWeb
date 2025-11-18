@@ -1,0 +1,48 @@
+﻿@model CinemaBookingWeb.Models.PhongChieu
+
+@{
+    ViewData["Title"] = "Chỉnh sửa phòng chiếu";
+}
+
+<div class="container-fluid mt-3">
+    <h4 class="mb-3">Chỉnh sửa phòng chiếu</h4>
+
+    <div class="card border-0 shadow-sm p-3">
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="MaPhong" />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="TenPhong" class="form-label"></label>
+                    <input asp-for="TenPhong" class="form-control" placeholder="Nhập tên phòng" />
+                    <span asp-validation-for="TenPhong" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SoHangGhe" class="form-label"></label>
+                    <input asp-for="SoHangGhe" class="form-control" min="1" placeholder="Nhập số hàng" />
+                    <span asp-validation-for="SoHangGhe" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SoGheMoiHang" class="form-label"></label>
+                    <input asp-for="SoGheMoiHang" class="form-control" min="1" placeholder="Nhập số ghế mỗi hàng" />
+                    <span asp-validation-for="SoGheMoiHang" class="text-danger"></span>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Lưu thay đổi</button>
+                    <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Hủy</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

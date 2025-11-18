@@ -1,0 +1,184 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập / Đăng ký";
+}
+
+<div class="auth-container bg-dark text-white shadow-lg rounded-3">
+
+    <div class="auth-header d-flex border-bottom border-danger">
+        <button id="btnLogin" class="tab-btn active" onclick="showForm('login')">ĐĂNG NHẬP</button>
+        <button id="btnRegister" class="tab-btn" onclick="showForm('register')">ĐĂNG KÝ</button>
+    </div>
+
+    <div class="auth-body p-4">
+
+        <div id="loginForm" class="form-section">
+            <form asp-action="Login" asp-controller="Account" method="post">
+                <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+                <div class="form-group mb-3">
+                    <label class="form-label">Email hoặc số điện thoại</label>
+                    <input type="text" name="tenDangNhap" class="form-control" required />
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label">Mật khẩu</label>
+                    <input type="password" name="matKhau" class="form-control" required />
+                </div>
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.Error</div>
+                }
+                <button type="submit" class="btn btn-danger w-100 mt-3">ĐĂNG NHẬP</button>
+            </form>
+        </div>
+
+        <div id="registerForm" class="form-section" style="display:none;">
+            <form asp-action="Register" method="post">
+                <div class="form-group mb-3">
+                    <label class="form-label">Họ và tên *</label>
+                    <input type="text" name="hoTen" class="form-control" required />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Số điện thoại *</label>
+                    <input type="text" name="soDienThoai" class="form-control" required />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Email *</label>
+                    <input type="email" name="email" class="form-control" required />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Mật khẩu *</label>
+                    <input type="password" name="matKhau" class="form-control" required />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Ngày sinh</label>
+                    <input type="date" name="ngaySinh" class="form-control" />
+                    <small class="form-text text-muted">Không bắt buộc, định dạng: Năm-Tháng-Ngày</small>
+                </div>
+
+                @if (ViewBag.RegError != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.RegError</div>
+                }
+                @if (ViewBag.RegSuccess != null)
+                {
+                    <div class="alert alert-success">@ViewBag.RegSuccess</div>
+                }
+
+                <button type="submit" class="btn btn-danger w-100 mt-3">ĐĂNG KÝ</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Giữ nguyên script
+    function showForm(form) {
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const btnLogin = document.getElementById('btnLogin');
+        const btnRegister = document.getElementById('btnRegister');
+
+        if (form === 'login') {
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+            // Dùng class active
+            btnLogin.classList.add('active');
+            btnRegister.classList.remove('active');
+        } else {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+            btnLogin.classList.remove('active');
+            btnRegister.classList.add('active');
+        }
+    }
+</script>
+<style>
+    :root {
+        --bs-primary: #E50914; /* Dùng màu đỏ làm Primary color (thay cho Danger) */
+        --bs-dark: #111111; /* Nền tối đậm */
+        --bs-secondary: #333333; /* Nền input */
+    }
+
+    /* --- CONTAINER CHÍNH (Tùy chỉnh vị trí và kích thước) --- */
+    .auth-container {
+        max-width: 420px; /* Gọn gàng hơn */
+        margin: 60px auto;
+        /* Các thuộc tính bg-dark, shadow-lg, rounded-3 đã nằm trong HTML */
+    }
+
+    /* --- INPUT FIELDS (Tùy chỉnh Input cho nền tối) --- */
+    .form-control {
+        background-color: var(--bs-secondary) !important; /* Nền input tối */
+        color: white !important; /* Chữ trắng */
+        border: 1px solid #555555 !important;
+        padding: 12px 15px !important;
+    }
+
+        .form-control:focus {
+            border-color: var(--bs-primary) !important; /* Viền đỏ khi focus */
+            box-shadow: 0 0 0 0.25rem rgba(229, 9, 20, 0.25) !important; /* Shadow đỏ nhẹ */
+            background-color: #333333 !important;
+        }
+
+    .form-label {
+        color: white !important; /* Đảm bảo label luôn trắng */
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    /* --- BUTTON DANGER (Tùy chỉnh Button) --- */
+    /* Nút Đăng nhập/Đăng ký của Bootstrap đã là màu đỏ (btn-danger) */
+    .btn-danger {
+        background-color: var(--bs-primary) !important;
+        border-color: var(--bs-primary) !important;
+        font-weight: bold;
+        padding: 12px 20px !important;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-danger:hover {
+            background-color: #bb0c15 !important;
+            border-color: #bb0c15 !important;
+        }
+
+    /* --- TABS (Tùy chỉnh đặc biệt cho Tabs) --- */
+    .auth-header {
+        background-color: #222222;
+    }
+
+    .tab-btn {
+        flex: 1;
+        padding: 15px 0;
+        color: white;
+        background-color: transparent;
+        border: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+    }
+
+        .tab-btn.active {
+            color: var(--bs-primary); /* Chữ màu đỏ */
+            /* Tạo hiệu ứng gạch chân đỏ cho tab active */
+        }
+
+            .tab-btn.active::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 3px;
+                background-color: var(--bs-primary);
+            }
+
+        .tab-btn:hover {
+            background-color: #2a2a2a;
+            color: var(--bs-primary);
+        }
+</style>

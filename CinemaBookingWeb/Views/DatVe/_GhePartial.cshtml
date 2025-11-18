@@ -1,0 +1,43 @@
+﻿@model IEnumerable<CinemaBookingWeb.Models.GheNgoi>
+@{
+    var gheDaDat = ViewBag.GheDaDat as List<string> ?? new List<string>();
+}
+
+<div id="seatSection">
+    <!-- MÀN HÌNH -->
+    <div class="screen-area">
+        <div class="screen">SCREEN</div>
+    </div>
+
+    <!-- GHẾ -->
+    <div class="seat-map text-center">
+        @foreach (var hang in Model.GroupBy(g => g.HangGhe))
+        {
+            <div class="seat-row">
+                <span class="row-label">@hang.Key</span>
+
+                @foreach (var ghe in hang.OrderBy(g => g.CotGhe))
+                {
+                    bool daDat = gheDaDat.Contains(ghe.MaGhe);
+                    string loaiGhe = ghe.LoaiGhe.ToLower().Replace(" ", "");
+
+                    <button class="seat @(daDat ? "booked" : loaiGhe)"
+                            data-maghe="@ghe.MaGhe"
+                            data-loaighe="@ghe.LoaiGhe"
+                            @(daDat ? "disabled" : "")>
+                        @ghe.CotGhe
+                    </button>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- CHÚ THÍCH -->
+    <div class="legend mt-4 d-flex justify-content-center gap-3">
+        <div><span class="seat normal"></span> Normal</div>
+        <div><span class="seat vip"></span> VIP</div>
+        <div><span class="seat couple"></span> Couple</div>
+        <div><span class="seat booked"></span> Đã đặt</div>
+        <div><span class="seat selected"></span> Đang chọn</div>
+    </div>
+</div>

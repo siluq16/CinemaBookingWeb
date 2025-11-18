@@ -1,0 +1,391 @@
+﻿@model IEnumerable<CinemaBookingWeb.Models.LichChieu>
+
+@{
+    ViewData["Title"] = "Danh sách lịch chiếu";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center flex-wrap gap-2">
+
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Quay lại
+            </a>
+
+            <div class="input-group w-auto">
+                <span class="input-group-text bg-light"><i class="bi bi-calendar-event"></i></span>
+                <input type="date" class="form-control" id="filterDate" />
+
+                <select class="form-select ms-2" id="filterRoom">
+                    <option value="">-- Chọn phòng --</option>
+                    @foreach (var phong in ViewBag.PhongList as List<CinemaBookingWeb.Models.PhongChieu>)
+                    {
+                        <option value="@phong.MaPhong">@phong.TenPhong</option>
+                    }
+                </select>
+                <button class="btn btn-outline-primary ms-2" id="filterBtn">Lọc</button>
+            </div>
+        </div>
+
+        <div>
+            <button id="btnCreateShowtime" class="btn btn-primary me-2">
+                <i class="bi bi-plus-circle"></i> Tạo lịch chiếu
+            </button>
+            <button onclick="location.reload();" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-repeat"></i> Làm mới
+            </button>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <table class="table table-hover align-middle" id="showTimeTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Tên phim</th>
+                        <th>Phòng chiếu</th>
+                        <th>Ngày chiếu</th>
+                        <th>Thời gian</th>
+                        <th class="text-center" data-orderable="false">Thao tác</th> @* Tắt sắp xếp *@
+                    </tr>
+                </thead>
+                <tbody id="showTimeTableBody">
+                    @foreach (var item in Model)
+                    {
+                        <tr data-id="@item.MaLich">
+                            <td data-id="@item.MaPhim">@item.MaPhimNavigation.TenPhim</td>
+                            <td data-id="@item.MaPhong">@item.MaPhongNavigation.TenPhong</td>
+                            <td data-sort="@item.NgayChieu.ToString("yyyy-MM-dd")">@item.NgayChieu.ToString("dd/MM/yyyy")</td>
+                            <td>@item.GioBatDau.ToString(@"HH\:mm") - @item.GioKetThuc.ToString(@"HH\:mm")</td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-outline-primary me-1 btn-edit">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger btn-delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Tạo/Sửa lịch chiếu -->
+<div class="modal fade" id="showtimeModal" tabindex="-1" aria-labelledby="showtimeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="showtimeModalLabel">Tạo lịch chiếu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formShowtime">
+                    <input type="hidden" id="editMode" value="create" />
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Phim chiếu</label>
+                        <select class="form-select" id="movieSelect" required>
+                            <option value="">-- Chọn phim --</option>
+                            @foreach (var phim in ViewBag.PhimList as List<CinemaBookingWeb.Models.Phim>)
+                            {
+                                <option value="@phim.MaPhim" data-duration="@phim.ThoiLuong">@phim.TenPhim</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Phòng chiếu</label>
+                        <select class="form-select" id="roomSelect" required>
+                            <option value="">-- Chọn phòng --</option>
+                            @foreach (var phong in ViewBag.PhongList as List<CinemaBookingWeb.Models.PhongChieu>)
+                            {
+                                <option value="@phong.MaPhong">@phong.TenPhong</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Ngày chiếu</label>
+                        <input type="date" class="form-control" id="showDate" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Giờ bắt đầu</label>
+                        <input type="time" class="form-control" id="startTime" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Giờ kết thúc</label>
+                        <input type="time" class="form-control" id="endTime" readonly />
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Khởi tạo biến cho DataTable ngoài phạm vi ready để dễ dàng truy cập
+        let showtimeDataTable;
+
+        $(document).ready(function () {
+            // --- 1. KHỞI TẠO DATATABLES ---
+            showtimeDataTable = $('#showTimeTable').DataTable({
+                "columnDefs": [
+                    { "orderable": false, "targets": 4 } // Cột Thao tác
+                ],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                },
+                "order": [[2, "desc"]], // Sắp xếp mặc định theo Ngày chiếu (cột 2)
+                "pageLength": 15, // Đặt số lượng hàng mặc định
+                "dom": '<"top"lf>rt<"bottom"ip><"clear">' // Tùy chỉnh vị trí các thành phần
+            });
+
+            // --- 2. LOGIC LỌC TÙY CHỈNH (Filter) ---
+            document.getElementById("filterBtn").addEventListener("click", function () {
+                const selectedDate = document.getElementById("filterDate").value; // yyyy-MM-dd
+                const selectedRoom = document.getElementById("filterRoom").value;
+
+                // Xóa tất cả các bộ lọc tùy chỉnh hiện có
+                $.fn.dataTable.ext.search.length = 0;
+
+                // Thêm bộ lọc Ngày chiếu
+                if (selectedDate) {
+                    $.fn.dataTable.ext.search.push(
+                        function (settings, data, dataIndex) {
+                            const rowNode = showtimeDataTable.row(dataIndex).node();
+                            const rowDate = rowNode.querySelector('td:nth-child(3)').dataset.date;
+
+                            return rowDate === selectedDate;
+                        }
+                    );
+                }
+
+                // Thêm bộ lọc Phòng chiếu
+                if (selectedRoom) {
+                    $.fn.dataTable.ext.search.push(
+                        function (settings, data, dataIndex) {
+                            const rowNode = showtimeDataTable.row(dataIndex).node();
+                            const rowRoom = rowNode.querySelector('td:nth-child(2)').dataset.id;
+
+                            return rowRoom === selectedRoom;
+                        }
+                    );
+                }
+
+                // Vẽ lại bảng để áp dụng các bộ lọc mới
+                showtimeDataTable.draw();
+            });
+
+            // --- 3. LOGIC MODAL & AJAX (Giữ nguyên, thay đổi cách gọi modal) ---
+            const modal = new bootstrap.Modal(document.getElementById('showtimeModal'));
+            const form = document.getElementById('formShowtime');
+            const title = document.getElementById('showtimeModalLabel');
+            const modeInput = document.getElementById('editMode');
+
+            // Hàm updateEndTime và các listeners (Giữ nguyên)
+            const movieSelect = document.getElementById('movieSelect');
+            const startTimeInput = document.getElementById('startTime');
+            const endTimeInput = document.getElementById('endTime');
+
+            function updateEndTime() {
+                const selectedOption = movieSelect.options[movieSelect.selectedIndex];
+                const duration = parseInt(selectedOption.dataset.duration); // phút
+                const startTime = startTimeInput.value; // "HH:MM"
+
+                if (!startTime || isNaN(duration)) return;
+
+                const [hours, minutes] = startTime.split(':').map(Number);
+                let endDate = new Date();
+                endDate.setHours(hours);
+                endDate.setMinutes(minutes + duration);
+
+                const endHours = String(endDate.getHours()).padStart(2, '0');
+                const endMinutes = String(endDate.getMinutes()).padStart(2, '0');
+
+                endTimeInput.value = `${endHours}:${endMinutes}`;
+            }
+
+            movieSelect.addEventListener('change', updateEndTime);
+            startTimeInput.addEventListener('input', updateEndTime);
+            // End Hàm updateEndTime
+
+            // Tạo mới
+            document.getElementById('btnCreateShowtime').addEventListener('click', () => {
+                modeInput.value = "create";
+                title.textContent = "Tạo lịch chiếu";
+                form.reset();
+                modal.show();
+            });
+
+            // Sửa
+            $('#showTimeTableBody').on('click', '.btn-edit', function () {
+                const row = this.closest('tr');
+
+                document.querySelectorAll('tr').forEach(r => r.classList.remove('selected'));
+                row.classList.add('selected');
+                modeInput.value = "edit";
+                title.textContent = "Chỉnh sửa lịch chiếu";
+
+                document.getElementById('movieSelect').value = row.querySelector('td:nth-child(1)').dataset.id;
+                document.getElementById('roomSelect').value = row.querySelector('td:nth-child(2)').dataset.id;
+
+                // Lấy giá trị yyyy-MM-dd từ data-date
+                document.getElementById('showDate').value = row.querySelector('td:nth-child(3)').dataset.date;
+
+                document.getElementById('startTime').value = row.querySelector('td:nth-child(4)').innerText.split(" - ")[0];
+                document.getElementById('endTime').value = row.querySelector('td:nth-child(4)').innerText.split(" - ")[1];
+                modal.show();
+            });
+
+            // Xóa
+            $('#showTimeTableBody').on('click', '.btn-delete', function () {
+                const row = $(this).closest('tr');
+                const id = row.data('id');
+                const phim = row.find('td:first-child').text();
+
+                Swal.fire({
+                    title: `Xóa lịch chiếu phim "${phim}"?`,
+                    text: "Bạn sẽ không thể hoàn tác thao tác này!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Xóa",
+                    cancelButtonText: "Hủy",
+                    reverseButtons: true
+                }).then(r => {
+                    if (r.isConfirmed) {
+                        fetch('/Admin/LichChieu/DeleteAjax', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+                            },
+                            body: JSON.stringify(id)
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            Swal.fire({
+                                icon: data.success ? "success" : "error",
+                                title: data.message || "Lỗi xóa lịch chiếu"
+                            }).then(() => {
+                                if (data.success) {
+                                    row.remove();
+                                    display(1);
+                                }
+                            });
+                        })
+                        .catch(() => {
+                            Swal.fire({ icon: "error", title: "Lỗi kết nối khi xóa" });
+                        });
+                    }
+                });
+            });
+
+            // Lưu tạo/sửa (Giữ nguyên)
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const mode = modeInput.value;
+                let maLich = null;
+
+                if(mode === "edit"){
+                    maLich = document.querySelector('tr.selected')?.dataset.id;
+                } else {
+                    const phong = document.getElementById('roomSelect').value;
+                    const ngay = document.getElementById('showDate').value.replace(/-/g, '');
+                    const gio = document.getElementById('startTime').value.replace(':','');
+                    maLich = `LC${phong}${ngay}${gio}`;
+                }
+                const data = {
+                    MaLich: maLich,
+                    MaPhim: document.getElementById('movieSelect').value,
+                    MaPhong: document.getElementById('roomSelect').value,
+                    NgayChieu: document.getElementById('showDate').value,
+                    GioBatDau: document.getElementById('startTime').value,
+                    GioKetThuc: document.getElementById('endTime').value
+                };
+
+                fetch('/Admin/LichChieu/SaveAjax', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(res => res.json())
+                .then(res => {
+                    Swal.fire({
+                        icon: res.success ? "success" : "error",
+                        title: res.message
+                    }).then(() => {
+                        if(res.success){
+                            location.reload(); // Tải lại trang sau khi lưu thành công
+                        }
+                    });
+                })
+                .catch(() => {
+                    Swal.fire({ icon: "error", title: "Lỗi khi lưu.", text: "Không thể kết nối đến máy chủ." });
+                });
+            });
+            // document.getElementById("showtimeModal").addEventListener("shown.bs.modal", function () {
+            //     let today = new Date();
+            //     today.setDate(today.getDate() + 7);
+
+            //     let minDate = today.toISOString().split("T")[0];
+            //     document.getElementById("showDate").setAttribute("min", minDate);
+            // });
+        });
+    </script>
+    <style>
+        .dataTables_wrapper .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .dataTables_wrapper .dataTables_filter input,
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #dee2e6;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem; /* 8px */
+            font-size: 0.9rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            max-width: 150px;
+        }
+
+            .dataTables_wrapper .dataTables_length select
+            {
+                padding-right: 1.8rem !important;
+                background-position: right 0.75rem center; /* Mặc định của Bootstrap */
+                background-size: 16px 12px;
+                /* Tùy chọn: Đảm bảo văn bản không bị tràn */
+                text-overflow: ellipsis;
+            }
+
+            /* 2. HIỆU ỨNG FOCUS: Tương tự Bootstrap */
+            .dataTables_wrapper .dataTables_filter input:focus,
+            .dataTables_wrapper .dataTables_length select:focus {
+                border-color: #80bdff; /* Màu xanh khi focus */
+                box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+                outline: none; /* Bỏ outline mặc định */
+            }
+
+        .dataTables_wrapper .dataTables_filter label {
+            /* Đảm bảo chữ "Tìm kiếm" không bị dính vào input */
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+
+        /* 4. ĐIỀU CHỈNH CHUẨN BOOTSTRAP */
+        /* DataTables thường tạo ra các thẻ label, ta nên định dạng chúng */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin-bottom: 1rem;
+        }
+    </style>    
+}

@@ -1,0 +1,111 @@
+﻿@model CinemaBookingWeb.Areas.Admin.Models.AccountCreateViewModel
+
+@{
+    ViewData["Title"] = "Tạo tài khoản mới";
+}
+
+<div class="card-body">
+    <form  asp-controller="Accounts" asp-action="Create" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <h5 class="mt-3">Thông tin Đăng nhập</h5>
+        <hr />
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="TenDangNhap" class="form-label">Tên đăng nhập</label>
+                <input asp-for="TenDangNhap" class="form-control" required />
+                <span asp-validation-for="TenDangNhap" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="MatKhau" class="form-label">Mật khẩu</label>
+                <input asp-for="MatKhau" type="password" class="form-control" required />
+                <span asp-validation-for="MatKhau" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="VaiTro" class="form-label">Vai trò</label>
+            <select asp-for="VaiTro" class="form-select" id="roleSelect" required>
+                @foreach (var role in ViewBag.VaiTroList)
+                {
+                    <option value="@role">@role</option>
+                }
+            </select>
+            <span asp-validation-for="VaiTro" class="text-danger"></span>
+        </div>
+
+        <div id="customerInfoSection">
+            <h5 class="mt-4">Thông tin Khách hàng</h5>
+            <hr />
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="HoTen" class="form-label">Họ tên</label>
+                    <input asp-for="HoTen" class="form-control" />
+                    <span asp-validation-for="HoTen" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="SoDienThoai" class="form-label">Số điện thoại</label>
+                    <input asp-for="SoDienThoai" class="form-control" />
+                    <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="NgaySinh" class="form-label">Ngày sinh</label>
+                    <input asp-for="NgaySinh" type="date" class="form-control" />
+                    <span asp-validation-for="NgaySinh" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div class="mb-3">
+                <label asp-for="AvatarFile" class="form-label">Avatar</label>
+                <input asp-for="AvatarFile" type="file" class="form-control" accept="image/*" />
+            </div>
+        </div>
+
+        <div class="text-end mt-4">
+            <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Tạo tài khoản</button>
+            <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Hủy</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleSelect = document.getElementById('roleSelect');
+            const customerInfoSection = document.getElementById('customerInfoSection');
+            const requiredCustomerFields = [
+                document.getElementById('HoTen'),
+                document.getElementById('Email'),// Ví dụ: bạn muốn SĐT bắt buộc
+            ];
+            function toggleCustomerInfo() {
+                const isCustomer = roleSelect.value === 'KhachHang';
+
+                customerInfoSection.style.display = isCustomer ? 'block' : 'none';
+
+                requiredCustomerFields.forEach(el => {
+                    if (el) { // Kiểm tra element có tồn tại không
+                        el.required = isCustomer;
+                    }
+                });
+                document.getElementById('NgaySinh').required = false;
+            }
+
+            roleSelect.addEventListener('change', toggleCustomerInfo);
+            toggleCustomerInfo();
+        });
+    </script>
+}

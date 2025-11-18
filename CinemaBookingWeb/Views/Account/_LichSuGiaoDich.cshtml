@@ -1,0 +1,54 @@
+﻿@model CinemaBookingWeb.Models.KhachHang
+@using System.Globalization
+
+<div class="card main-content-card bg-dark text-white rounded-3 shadow">
+    <div class="card-header bg-danger text-white p-3">
+        <h4 class="mb-0 fw-bold text-uppercase"><i class="fas fa-history me-2"></i> LỊCH SỬ GIAO DỊCH</h4>
+    </div>
+    <div class="card-body p-4 p-md-5">
+
+        <h5 class="fw-bold mb-3 text-danger">DANH SÁCH CÁC GIAO DỊCH ĐÃ HOÀN TẤT</h5>
+
+        @if (Model.HoaDons == null || !Model.HoaDons.Any())
+        {
+            <div class="alert alert-info text-center">
+                Bạn chưa thực hiện giao dịch nào.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-dark table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Mã Hóa Đơn</th>
+                            <th>Ngày Giao Dịch</th>
+                            <th>Tổng Tiền</th>
+                            <th>Trạng Thái</th>
+                            <th>Chi Tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var hoaDon in Model.HoaDons.OrderByDescending(h => h.NgayLap))
+                        {
+                            <tr>
+                                <td>@hoaDon.MaHd</td>
+                                <td>@hoaDon.NgayLap.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@(hoaDon.TongTien.ToString("N0", new CultureInfo("vi-VN"))) đ</td>
+                                <td>
+                                    <span class="badge @(hoaDon.TrangThai == "Hoàn tất" ? "bg-success" : "bg-warning text-dark")">
+                                        @hoaDon.TrangThai
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-info">Xem</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+    </div>
+</div>

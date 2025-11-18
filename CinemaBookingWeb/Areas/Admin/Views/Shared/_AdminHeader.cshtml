@@ -1,0 +1,54 @@
+﻿@{
+    // Lấy tên controller & action từ ViewData nếu có, ngược lại lấy từ RouteData
+    var controller = ViewData["ControllerName"]?.ToString() ?? ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewData["ActionName"]?.ToString() ?? ViewContext.RouteData.Values["action"]?.ToString();
+
+    // Chuyển sang tên hiển thị
+    string controllerName = controller switch
+    {
+        "DashBoard" => "Dashboard",
+        "PhongChieux" => "Quản lý phòng chiếu",
+        "Phims" => "Quản lý phim",
+        "LichChieux" => "Quản lý lịch chiếu",
+        "HoaDons" => "Quản lý đơn hàng",
+        "GiaVes" => "Quản lý giá vé",
+        "KhuyenMais" => "Quản lý khuyến mãi",
+        "Accounts" => "Quản lý user",
+        "DoAns" => "Quản lý combo - nước",
+        _ => controller
+    };
+
+    string actionName = action switch
+    {
+        "Index" => "Danh sách",
+        "Create" => "Tạo mới",
+        "Edit" => "Chỉnh sửa",
+        "Details" => "Chi tiết",
+        "RevenueByMovie" => "Doanh thu theo phim",
+        _ => action
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4 border-bottom px-4 py-3" style="background-color:#f8f9fa;">
+    <div id="admin-breadcrumbs">
+        <ol class="breadcrumb mb-0 align-items-center">
+            <li class="breadcrumb-item">
+                <a asp-area="Admin" asp-controller="DashBoard" asp-action="Index" class="text-decoration-none">Dashboard</a>
+            </li>
+
+            @if (controllerName != "Dashboard")
+            {
+                <li class="breadcrumb-item">@controllerName</li>
+                <li class="breadcrumb-item active text-primary">@actionName</li>
+            }
+            else if (actionName != "Danh sách")
+            {
+                <li class="breadcrumb-item active text-primary">@actionName</li>
+            }
+        </ol>
+    </div>
+
+    <div class="admin-avatar">
+        <img src="~/images/admin-avatar.jpg" alt="Admin" class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
+    </div>
+</div>

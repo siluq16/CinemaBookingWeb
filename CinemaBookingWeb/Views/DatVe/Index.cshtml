@@ -1,0 +1,500 @@
+﻿@model IEnumerable<CinemaBookingWeb.Models.GheNgoi>
+@{
+    ViewData["Title"] = "Đặt vé";
+    var lichChieu = ViewBag.LichChieu;
+    var gheDaDat = ViewBag.GheDaDat as List<string>;
+}
+
+<div class="booking-container">
+    <!-- HEADER -->
+    <div class="booking-header">
+        <h4>BOOKING ONLINE</h4>
+    </div>
+
+    <!-- THÔNG TIN RẠP & SUẤT CHIẾU -->
+    <div class="booking-info">
+        <div class="cinema-info">
+            Cinema: @lichChieu.MaPhongNavigation.TenPhong |
+            Số ghế: @(Model.Count() - gheDaDat.Count) / @Model.Count()
+        </div>
+        <div class="time-info">
+            @lichChieu.NgayChieu.ToString("dd/MM/yyyy") ~ @lichChieu.GioBatDau.ToString("HH:mm")
+        </div>
+    </div>
+    <div id="contentContainer">
+        @await Html.PartialAsync("_GhePartial", Model)
+    </div>
+
+    
+    <!-- THÔNG TIN DƯỚI -->
+    <div class="footer-info mt-5">
+        <div class="summary mt-3 text-center">
+            <button id="btnQuayLaiGhe" class="btn btn-secondary px-4 py-2 me-2" style="display: none;">← Quay lại</button>
+        </div>
+        <div class="movie-info">
+            <img src="~/images/poster/@lichChieu.MaPhimNavigation.Poster" alt="@lichChieu.MaPhimNavigation.TenPhim" class="poster" />
+        </div>
+        <div class="details">
+            <h5>@lichChieu.MaPhimNavigation.TenPhim</h5>
+            <p>Phòng: @lichChieu.MaPhongNavigation.TenPhong</p>
+            <p>Suất chiếu: @lichChieu.GioBatDau.ToString("HH:mm"), @lichChieu.NgayChieu.ToString("dd/MM/yyyy")</p>
+            <h6 id="selectedInfo" class="text-light fw-bold">Chưa chọn ghế</h6>
+        </div>
+        <!-- 🧾 THÔNG TIN TIỀN -->
+        <div class="price-info mt-3">
+            <p>Tiền ghế: <span id="seatPrice">0</span> VNĐ</p>
+            <p>Combo: <span id="comboPrice">0</span> VNĐ</p>
+            <p class="mt-2">Tổng tiền: <span id="totalPrice" class="fw-bold text-success">0</span> VNĐ</p>
+        </div>
+
+        <!-- ✅ Tách selectedInfo riêng, nhưng vẫn trong footer -->
+        
+
+        <!-- Nút Tiếp tục riêng -->
+        <div class="summary mt-3 text-center">
+            <button id="btnDatVe" class="btn-next btn btn-warning px-4 py-2" disabled>Tiếp tục →</button>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        const maLich = "@lichChieu.MaLich";
+        window.currentUser = {
+            maKH: "@User.FindFirst("MaKh")?.Value"
+        };
+        let selectedSeats = [];
+
+        $(document).on("click", ".seat.normal, .seat.vip, .seat.couple", function () {
+            const seat = $(this);
+            const maGhe = seat.data("maghe");
+            const loaiGhe = seat.data("loaighe");
+            const maGheShort = maGhe.includes("_") ? maGhe.split("_")[1] : maGhe;
+            console.log(`Ghế được chọn: MaGhe=${maGhe}, LoaiGhe=${loaiGhe}`);
+            if (seat.hasClass("selected")) {
+                seat.removeClass("selected");
+                selectedSeats = selectedSeats.filter(s => s.maGhe !== maGhe);
+            } else {
+                seat.addClass("selected")[0].offsetHeight;
+                selectedSeats.push({ maGhe, loaiGhe, maGheShort });
+            }
+
+            $("#btnDatVe").prop("disabled", selectedSeats.length === 0);
+
+            if (selectedSeats.length > 0) {
+                let info = selectedSeats.map(s => s.maGheShort).join(", ");
+                $("#selectedInfo").text("Đã chọn: " + info);
+            } else {
+                $("#selectedInfo").text("Chưa chọn ghế");
+            }
+                const loaiGheList = selectedSeats.map(s => s.loaiGhe);
+
+            if (loaiGheList.length > 0) {
+                $.ajax({
+                    url: '/DatVe/TinhGiaVe',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify ({
+                        maLichChieu: maLich,        
+                        danhSachLoaiGhe: loaiGheList
+                    }),
+                    success: function (res) {
+                        const seatPrice = res.tongGia.toLocaleString('vi-VN');
+                        $("#seatPrice").text(seatPrice);
+                        capNhatTongTien(); // Dùng hàm tổng tiền đã có
+                    }
+                });
+            } else {
+                $("#seatPrice").text("0");
+                $("#totalPrice").text("0");
+            }
+        });
+
+        $(document).on("click", "#btnDatVe", function () {
+            const btn = $(this);
+            const maLich = "@lichChieu.MaLich";
+            if ($("#seatSection").length > 0) {
+                if (selectedSeats.length === 0) {
+                    alert("Vui lòng chọn ít nhất 1 ghế trước khi tiếp tục.");
+                    return;
+                }
+                const seatList = selectedSeats.map(s => s.maGhe);
+                localStorage.setItem("selectedSeats", JSON.stringify(seatList));
+                $.ajax({
+                    url: "/DatVe/ChonCombo",
+                    type: "POST",
+                    data: { maLichChieu: maLich, maGhe: seatList },
+                    success: function (result) {
+                        if (typeof result === 'object' && result.success === false) {
+                        alert("❌ Lỗi đặt ghế: " + result.message);
+                        return;
+                     }
+                        $("#contentContainer").html(result);
+                        $("#btnQuayLaiGhe").show();
+                        btn.text("Tiếp tục thanh toán →");
+                    },
+                    error: function () {
+                        alert("Không thể tải danh sách combo. Vui lòng thử lại.");
+                    }
+                });
+            }
+
+            else if ($("#comboSection").length > 0) {
+                
+                    const combos = [];
+                $(".soLuongCombo").each(function () {
+                    const soLuong = parseInt($(this).val()) || 0;
+                    const donGia = parseInt($(this).data("dongia"));
+                    const ten = $(this).data("ten");
+                    const maDoAn = $(this).data("madoan") || ten; 
+                    if (soLuong > 0) {
+                        combos.push({ maDoAn, ten, soLuong, donGia });
+                    }
+                });
+                localStorage.setItem("selectedCombos", JSON.stringify(combos));
+                const total = $("#totalPrice").text().replace(/\D/g, "") || "0";
+                localStorage.setItem("totalPrice", total);
+                $.ajax({
+                    url: "/DatVe/ThanhToan",
+                    type: "GET",
+                    success: function (result) {
+                        $("#contentContainer").html(result);
+                        btn.text("Hoàn tất đặt vé");
+                        if (typeof initPaymentSection === "function") initPaymentSection();
+
+                    },
+                    error: function () {
+                        alert("Không thể tải trang thanh toán.");
+                    }
+                });
+            }
+
+            else if ($("#paymentSection").length > 0) {
+                const selectedMethod = $('input[name="paymentMethod"]:checked').val();
+                const appliedPromoCode = localStorage.getItem("appliedPromoCode") || null;
+                const seats = JSON.parse(localStorage.getItem("selectedSeats") || "[]");
+                const combos = JSON.parse(localStorage.getItem("selectedCombos") || "[]");
+                const total = localStorage.getItem("totalPrice") || "0";
+                const maLichChieu = "@(ViewBag.LichChieu?.MaLich ?? "")";
+                const maKH = window.currentUser?.maKH;
+
+                const data = {
+                    MaLichChieu: maLichChieu,
+                    DanhSachGhe: seats,
+                    ComboList: combos.map(c => ({
+                        MaDoAn: c.maDoAn,
+                        SoLuong: c.soLuong,
+                        ThanhTien: c.soLuong * c.donGia
+                    })),
+                    TongTien: parseFloat(total),
+                    MaKH: maKH,
+                    MaKM: appliedPromoCode,
+                    PhuongThucThanhToan: selectedMethod
+                };
+                    console.log("Dữ liệu gửi lên:", data);
+
+                $.ajax({
+                    url: "/DatVe/ThanhToan",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function (res) {
+                        if (res.success) {
+                           Swal.fire({
+                                title: "🎉 Thành Công!",
+                                html: `Đặt vé thành công! Mã hóa đơn: <strong>${res.maHD}</strong>.`,
+                                icon: "success",
+                                showConfirmButton: false,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                timer: 1500 
+                            }).then(() => {
+                                $("#btnQuayLaiGhe").hide();
+                                localStorage.clear();
+                                const btn = $("#btnDatVe");
+                                btn.text("Trang Chủ").removeClass('btn-warning').addClass('btn-success');
+
+                                btn.off('click');
+                                btn.prop('disabled', false); // Kích hoạt lại nút
+
+                                btn.on('click', function() {
+                                    window.location.href = "/Home/Index";
+                                });
+
+                                Swal.fire({
+                                     title: "Hoàn tất!",
+                                     text: "Hóa đơn của bạn đã được xác nhận. Vui lòng nhấn nút 'Trang Chủ'.",
+                                     icon: "info",
+                                     confirmButtonText: "OK",
+                                });
+                            });
+
+                        } else {
+                            Swal.fire({
+                                title: "❌ Thất Bại",
+                                text: res.message || "Đã xảy ra lỗi trong quá trình thanh toán. Vui lòng thử lại.",
+                                icon: "error"
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        console.error("Lỗi server:", xhr.responseText);
+                        alert("Có lỗi xảy ra khi thanh toán!");
+                    }
+                });
+            }
+        });
+
+        $(document).on("click", "#btnQuayLaiGhe", function () {
+            const maLich = "@lichChieu.MaLich";
+            selectedSeats = [];
+            $("#seatPrice").text("0");
+            $("#comboPrice").text("0");
+            $("#totalPrice").text("0");
+            $("#selectedInfo").text("Chưa chọn ghế");
+            $(".soLuongCombo").val(0);
+            $.ajax({
+                url: "/DatVe/HuyHold", // <-- Cần tạo Action này trong Controller
+                type: "POST",
+                data: { maLichChieu: maLich },
+                success: function () {
+                    localStorage.clear();
+                    $.ajax({
+                        url: "/DatVe/LoadGhePartial",
+                        type: "GET",
+                        data: { maLichChieu: maLich },
+                        success: function (result) {
+                            $("#contentContainer").html(result);
+                            $("#btnQuayLaiGhe").hide();
+                            $("#btnDatVe").text("Tiếp tục →").prop("disabled", true);
+                        }
+                    });
+                },
+                error: function(xhr) {
+                     console.error("Lỗi khi hủy hold giao dịch tạm thời:", xhr.responseText);
+                     $.ajax({
+                        url: "/DatVe/LoadGhePartial",
+                        type: "GET",
+                        data: { maLichChieu: maLich },
+                        success: function (result) {
+                            $("#contentContainer").html(result);
+                            $("#btnQuayLaiGhe").hide();
+                            $("#btnDatVe").text("Tiếp tục →").prop("disabled", true);
+                        }
+                     });
+                }
+            });
+        });
+            function capNhatTienCombo() {
+            let tongCombo = 0;
+
+            $(".soLuongCombo").each(function () {
+                const soLuong = parseInt($(this).val()) || 0;
+                const donGia = parseInt($(this).data("dongia"));
+                tongCombo += soLuong * donGia;
+            });
+
+            $("#comboPrice").text(tongCombo.toLocaleString("vi-VN"));
+            capNhatTongTien();
+        }
+
+        function capNhatTongTien() {
+            const tienGhe = parseInt($("#seatPrice").text().replace(/\D/g, "")) || 0;
+            const tienCombo = parseInt($("#comboPrice").text().replace(/\D/g, "")) || 0;
+            const tong = tienGhe + tienCombo;
+            $("#totalPrice").text(tong.toLocaleString("vi-VN"));
+        }
+
+        $(document).on("input", ".soLuongCombo", function () {
+            capNhatTienCombo();
+        });
+    </script>
+    <style>
+       
+
+        .booking-container {
+            background-color: #f8f6e9;
+            font-family: Arial, sans-serif;
+            width: 80%;
+            margin: 30px auto;
+            background-color: #fffbea;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .booking-header {
+            background-color: #222;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .booking-info {
+            background-color: #eee;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .screen-area {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .screen {
+            width: 50%;
+            margin: 0 auto 10px;
+            padding: 8px;
+            background: #ddd;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .seat-map {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .seat-row {
+            display: flex;
+            align-items: center;
+            margin: 6px 0;
+        }
+
+        .row-label {
+            width: 25px;
+            text-align: right;
+            margin-right: 10px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .seat {
+            width: 35px;
+            height: 35px;
+            margin: 3px;
+            border-radius: 5px;
+            border: 1px solid #999;
+            color: #000;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+            .seat.normal {
+                background-color: #a6e3a1;
+            }
+
+            .seat.vip {
+                background-color: #d9534f;
+            }
+
+            .seat.couple {
+                background-color: #ff80b3;
+            }
+
+            .seat.selected {
+                outline: 3px solid #000 !important;
+            }
+
+            .seat.booked {
+                background-color: #bfbfbf;
+                color: #fff;
+                border-color: #777;
+            }
+
+            .seat:hover:not(.booked):not(.selected) {
+                filter: brightness(1.2);
+                cursor: pointer;
+                outline: none;
+            }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+            .legend div {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 15px;
+                color: #222;
+                font-weight: 500;
+            }
+
+            .legend .seat {
+                width: 24px;
+                height: 24px;
+                border-radius: 6px;
+                border: 1px solid #555;
+                box-shadow: 0 0 3px rgba(0,0,0,0.2);
+            }
+
+                .legend .seat.normal {
+                    background-color: #a6e3a1 
+                }
+
+                .legend .seat.vip {
+                    background-color: #d9534f; 
+                }
+
+                .legend .seat.couple {
+                    background-color: #ff80b3;
+                }
+
+                .legend .seat.booked {
+                    background-color: #bfbfbf; 
+                }
+
+                .legend .seat.selected {
+                    outline: 3px solid #000 !important; 
+                }
+
+
+        .footer-info {
+            background: #000;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-top: 2px dashed #888;
+        }
+
+        .movie-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .poster {
+            width: 60px;
+            height: 80px;
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+
+        .btn-next {
+            background-color: #f90;
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            .btn-next:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+    </style>
+}

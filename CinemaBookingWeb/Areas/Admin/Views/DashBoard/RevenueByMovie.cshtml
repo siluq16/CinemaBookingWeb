@@ -1,0 +1,119 @@
+﻿@using Newtonsoft.Json
+@model CinemaBookingWeb.Areas.Admin.Models.DashBoardViewModel;
+@{
+    ViewData["Title"] = "Doanh thu theo phim";
+}
+
+<div class="container-fluid ps-0 pe-2">
+    <div class="ms-3 mt-3">
+        <h4 class="fw-semibold mb-3">Doanh thu theo phim</h4>
+
+        <div class="d-flex align-items-center gap-2">
+            <input type="date" class="form-control form-control-sm" id="startDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" style="width: 180px;" />
+            <span>-</span>
+            <input type="date" class="form-control form-control-sm" id="endDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" style="width: 180px;" />
+
+            <button class="btn btn-sm btn-primary" id="btnLoad">
+                <i class="bi bi-arrow-repeat"></i> Load dữ liệu
+            </button>
+            <button class="btn btn-sm btn-success" id="btnExport">
+                <i class="bi bi-file-earmark-excel"></i> Xuất báo cáo
+            </button>
+        </div>
+    </div>
+
+    <!-- Biểu đồ -->
+    <div class="col-12 d-flex flex-row justify-content-center align-items-start flex-wrap gap-3 mt-4">
+        <div class="bg-white shadow-sm rounded-3 p-3" style="height: 350px; width: 48%; min-width: 400px;">
+            <canvas id="chartTickets"></canvas>
+        </div>
+        <div class="bg-white shadow-sm rounded-3 p-3" style="height: 350px; width: 48%; min-width: 400px;">
+            <canvas id="chartRevenue"></canvas>
+        </div>
+    </div>
+
+    <!-- Bảng dữ liệu -->
+    <div class="bg-white shadow-sm rounded-3 p-3 mt-4">
+        <table class="table table-striped mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Tên phim</th>
+                    <th class="text-center">Tổng vé bán ra</th>
+                    <th class="text-end">Tổng doanh thu (VNĐ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.DoanhThuChiTietPhim)
+                {
+                    <tr>
+                        <td>@item.TenPhim</td>
+                        <td class="text-center">@item.TongVeBanRa</td>
+                        <td class="text-end">@String.Format("{0:N0}", item.TongDoanhThu)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = @Html.Raw(JsonConvert.SerializeObject(Model.DoanhThuChiTietPhim.Select(x => x.TenPhim)))
+        const tickets = @Html.Raw(JsonConvert.SerializeObject(Model.DoanhThuChiTietPhim.Select(x => x.TongVeBanRa)))
+        const revenues = @Html.Raw(JsonConvert.SerializeObject(Model.DoanhThuChiTietPhim.Select(x => x.TongDoanhThu)))
+
+        new Chart(document.getElementById('chartTickets'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Số vé bán ra',
+                    data: tickets,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } },
+                plugins: { legend: { position: 'top' } }
+            }
+        });
+
+        new Chart(document.getElementById('chartRevenue'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Doanh thu (VNĐ)',
+                    data: revenues,
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } },
+                plugins: { legend: { position: 'top' } }
+            }
+        });
+
+        document.getElementById('btnLoad').addEventListener('click', async () => {
+            const start = document.getElementById('startDate').value;
+            const end = document.getElementById('endDate').value;
+
+            const url = `/Admin/DashBoard/DoanhThuTheoPhim?startDate=${start}&endDate=${end}`;
+            window.location.href = url; 
+        });
+
+
+        document.getElementById('btnExport').addEventListener('click', () => {
+            alert('Chức năng Xuất báo cáo đang được phát triển...');
+        });
+    </script>
+}

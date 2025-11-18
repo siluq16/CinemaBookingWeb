@@ -1,0 +1,113 @@
+﻿@model CinemaBookingWeb.Models.KhachHang
+@{
+    // Thiết lập ViewData["Title"] nếu cần
+}
+
+<div class="card main-content-card bg-dark text-white rounded-3 shadow">
+    <div class="card-header bg-danger text-white p-3">
+        <h4 class="mb-0 fw-bold text-uppercase"><i class="fas fa-user-edit me-2"></i> CHI TIẾT TÀI KHOẢN</h4>
+    </div>
+    <div class="card-body p-4 p-md-5">
+
+        <form id="editProfileForm" asp-action="EditProfile" method="post">
+            <input type="hidden" asp-for="MaKh" />
+            <input type="hidden" asp-for="NgayTao" />
+            <input type="hidden" asp-for="Avatar" />
+
+            <div class="mb-5 text-center pb-4 border-bottom border-secondary">
+                <img src="/images/user/@(Model.Avatar ?? "no-image.jpg")"
+                     alt="Avatar" class="profile-avatar-lg d-block mx-auto mb-3">
+                <h5 class="fw-bold mb-1">Cập Nhật Ảnh Đại Diện</h5>
+                <p class="text-muted small">Ảnh nên có kích thước vuông để hiển thị tốt nhất.</p>
+                <input type="file" id="AvatarFile" name="AvatarFile" class="form-control bg-dark-light text-white w-75 mx-auto" accept="image/*" />
+            </div>
+
+            <h5 class="fw-bold mb-3 text-danger">THÔNG TIN CÁ NHÂN</h5>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row info-details">
+                <div class="col-12 col-md-6 mb-4">
+                    <label asp-for="HoTen" class="form-label fw-bold">Họ Tên</label>
+                    <input asp-for="HoTen" class="form-control" required />
+                    <span asp-validation-for="HoTen" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6 mb-4">
+                    <label asp-for="Email" class="form-label fw-bold">Email</label>
+                    <input asp-for="Email" class="form-control" readonly />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6 mb-4">
+                    <label asp-for="SoDienThoai" class="form-label fw-bold">Điện thoại</label>
+                    <input asp-for="SoDienThoai" class="form-control" required />
+                    <span asp-validation-for="SoDienThoai" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6 mb-4">
+                    <label asp-for="NgaySinh" class="form-label fw-bold">Ngày sinh</label>
+                    <input type="date" asp-for="NgaySinh" class="form-control" />
+                    <span asp-validation-for="NgaySinh" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-danger px-4 fw-bold">LƯU THAY ĐỔI</button>
+                <a href="#" onclick="loadPartialView('Dashboard', $('.menu-link[data-target=Dashboard]')[0])" class="btn btn-outline-secondary ms-2 px-4">Hủy</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<partial name="_ValidationScriptsPartial" />
+
+<script>
+    $(document).ready(function () {
+        // 1. Gắn lại Unobtrusive Validation cho nội dung mới tải
+        $.validator.unobtrusive.parse("#editProfileForm");
+
+        // 2. Chặn submit form mặc định và dùng AJAX
+        $('#editProfileForm').submit(function (e) {
+            e.preventDefault(); // Ngăn chặn submit thông thường
+
+            // Chỉ submit nếu form hợp lệ (đã qua client-side validation)
+            if ($(this).valid()) {
+
+                // Hiển thị trạng thái loading
+                $('#mainContentArea').html('<div class="text-center py-5 text-white"><i class="fas fa-spinner fa-spin fa-2x text-danger"></i><p class="mt-2">Đang lưu thông tin...</p></div>');
+
+                var formData = new FormData(this); // Lấy dữ liệu form, quan trọng cho file upload
+
+                $.ajax({
+                    url: this.action, // Lấy URL từ asp-action/asp-controller
+                    type: this.method,
+                    data: formData,
+                    processData: false, // Bắt buộc cho FormData
+                    contentType: false, // Bắt buộc cho FormData
+                    success: function (data) {
+                        $('#mainContentArea').html(data);
+                        // Kích hoạt lại menu Dashboard nếu update thành công
+                        $('.menu-link').removeClass('active');
+                        $('.menu-link[data-target="Dashboard"]').addClass('active');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Lỗi khi cập nhật:", error);
+                        $('#mainContentArea').html('<div class="alert alert-danger">Lỗi khi lưu thông tin: ' + xhr.responseText + '</div>');
+                    }
+                });
+            }
+        });
+        document.getElementById('AvatarFile').onchange = function (evt) {
+            var files = evt.target.files;
+            if (FileReader && files && files.length) {
+                var fr = new FileReader();
+                fr.onload = function () {
+                    document.querySelector('.profile-avatar-lg').src = fr.result;
+                }
+                fr.readAsDataURL(files[0]);
+            }
+        }
+    });
+</script>

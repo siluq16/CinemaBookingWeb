@@ -1,0 +1,487 @@
+﻿/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'); */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+i {
+    cursor: pointer;
+}
+
+li {
+    list-style-type: none;
+}
+
+img {
+    cursor: pointer;
+}
+
+:root {
+    --pink: #DE5D83;
+    --black: #101116;
+    --gray: #bebebe;
+    --light-gray: #d9d9d9;
+    --comment-box: #171B27;
+    --comment: #555D68;
+    --comment-date: #8A8A8A;
+    --warning: #E50914;
+    --yellow: #EEE62F;
+}
+
+/* dark */
+body {
+    background-color: #0B1118;
+    box-sizing: border-box;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container-header {
+    width: 100%;
+    height: 55px;
+    z-index: 55;
+}
+
+    .container-header .header {
+        width: 100%;
+        height: 70px;
+        padding: 2rem 10%;
+        padding-top: 3rem;
+        z-index: 55;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+    }
+
+.header .logo h1 {
+    color: var(--warning);
+    font-size: 2.4rem;
+    cursor: pointer;
+    font-family: 'Lemon',cursive;
+}
+
+.navBar .nav-items {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 4rem;
+}
+
+.nav-items a.active {
+    border-bottom: 2px solid var(--warning);
+}
+
+.navBar ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+    .navBar ul li a {
+        color: #fff;
+        font-size: 1.15rem;
+        font-weight: 600;
+        transition: color 0.25s ease-in-out;
+        -webkit-transition: color 0.25s ease-in-out;
+        -moz-transition: color 0.25s ease-in-out;
+        -ms-transition: color 0.25s ease-in-out;
+        -o-transition: color 0.25s ease-in-out;
+    }
+
+        .navBar ul li a:hover {
+            color: var(--warning);
+        }
+
+.nav-items a.active {
+    border-bottom: 2px solid var(--warning);
+}
+
+.nav-items li {
+    position: relative;
+    margin: 0 1.5rem;
+}
+
+/* --- PHẦN CHUNG CHO USER LIST --- */
+.navBar ul.user {
+    /* Đảm bảo danh sách user căn giữa và nằm bên phải cùng */
+    gap: 0; /* Xóa khoảng cách mặc định để dễ quản lý dropdown */
+    position: relative;
+}
+
+    .navBar ul.user li {
+        margin: 0;
+        padding-bottom: 10px;
+        margin-bottom: -10px;
+        position: relative; /* Quan trọng để định vị dropdown */
+    }
+
+/* --- TRẠNG THÁI ĐÃ ĐĂNG NHẬP: AVATAR VÀ DROPDOWN --- */
+
+/* 1. Avatar */
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    border: 2px solid transparent; /* Viền trong suốt */
+    transition: border 0.3s ease;
+}
+
+.user li a.user-avatar-link:hover .user-avatar {
+    border: 2px solid var(--warning);
+}
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    top: 45px; 
+    right: -20px;
+    z-index: 60; 
+    background-color: var(--black); 
+    border: 1px solid #1a2333; 
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Đổ bóng chuyên nghiệp */
+    padding: 10px 0;
+    min-width: 180px;
+    opacity: 0; /* Dùng opacity và transform cho hiệu ứng mượt mà */
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.user li:hover .user-dropdown {
+    display: block; 
+    opacity: 1;
+    transform: translateY(0); 
+}
+.user-dropdown a {
+    display: block;
+    padding: 8px 15px;
+    font-size: 1rem !important; 
+    font-weight: 400 !important;
+    color: #fff;
+    transition: background-color 0.2s;
+    white-space: nowrap; 
+}
+
+    .user-dropdown a:first-child {
+        font-weight: 600 !important; 
+        color: var(--warning);
+        border-bottom: 1px solid #1a2333;
+        margin-bottom: 5px;
+        cursor: default;
+    }
+
+    .user-dropdown a:hover {
+        background-color: #1a2333;
+        color: var(--warning);
+    }
+
+.login-text-link {
+    white-space: nowrap;
+    padding: 8px 15px;
+    border: 1px solid var(--warning);
+    border-radius: 5px;
+    color: var(--warning) !important;
+    background-color: transparent;
+    transition: all 0.3s ease;
+    font-weight: 700 !important;
+}
+
+    .login-text-link:hover {
+        color: var(--black) !important;
+        background-color: var(--warning);
+        box-shadow: 0 0 10px rgba(229, 9, 20, 0.6);
+    }
+
+    .login-text-link i {
+        margin-left: 5px;
+    }
+
+.navBar .close-btn i {
+    font-size: 2.4rem;
+    color: #fff;
+    position: absolute;
+    top: 2rem;
+    right: 3rem;
+    display: none;
+}
+
+.header .navBar .open-btn {
+    position: absolute;
+    right: 4rem;
+    top: 1.5rem;
+    color: #fff;
+    font-size: 2rem;
+    display: none;
+}
+/* --------------- */
+
+.footer {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 3% 5% 3% 5%;
+    /* background-color: #171B27; */
+    color: #fff;
+    border-top: 5px solid #171B27;
+    margin-top: 3%;
+}
+
+    .footer .footer-advise {
+        display: flex;
+        flex-direction: column;
+        width: 40%;
+    }
+
+        .footer .footer-advise ul {
+            display: flex;
+            margin-left: -5%;
+        }
+
+.footer-advise ul li {
+    display: inline-block;
+    margin: 0 10px 10px 0px;
+}
+
+    .footer-advise ul li a {
+        padding: 0 10px 5px 0;
+        font-weight: bold;
+        color: #fff;
+        transition: color 0.25s ease-in-out;
+        -webkit-transition: color 0.25s ease-in-out;
+        -moz-transition: color 0.25s ease-in-out;
+        -ms-transition: color 0.25s ease-in-out;
+        -o-transition: color 0.25s ease-in-out;
+    }
+
+    .footer-advise ul li:hover a {
+        color: var(--warning);
+    }
+
+.footer-advise .advise-text {
+    margin-top: 10px;
+}
+
+    .footer-advise .advise-text p {
+        margin-top: 5px;
+        text-align: justify;
+    }
+
+.footer .footer-social {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.footer-social i {
+    width: 35px;
+    height: 35px;
+    margin: 0 5px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    background-color: var(--warning);
+    color: var(--black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+}
+
+    .footer-social i:hover {
+        background-color: var(--black);
+        color: var(--warning);
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        -o-transform: scale(1.1);
+    }
+
+.footer h4 {
+    margin-bottom: 20px;
+}
+
+.footer .moblie-app {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+    .footer .moblie-app img {
+        width: 40%;
+    }
+
+
+/* for Phone: width < 740px */
+@media only screen and (max-width: 739px) {
+    .status-container {
+        padding: 0.5rem 1rem;
+    }
+
+
+    .nav-link {
+        padding: 0.4rem 0.4rem;
+        font-size: 0.8rem;
+    }
+
+    .btn-buy {
+        font-size: 0.7rem;
+        font-weight: bold;
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+    }
+
+    .movie_genre {
+        font-size: 0.9rem;
+    }
+}
+
+/* for Tablet: >= 740 & < 1024 */
+@media only screen and (min-width: 740px) and (max-width: 1023px) {
+}
+
+/* for PC: >= 1024 */
+@media only screen and (min-width: 1024px) {
+}
+
+@media(max-width:1200px) {
+    .container .header {
+        justify-content: space-evenly;
+    }
+
+    .header .logo {
+        position: relative;
+        left: -32%;
+    }
+
+    .header .navBar .nav-items {
+        display: none;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        background-color: rgba(20, 20, 20, 0.5);
+        backdrop-filter: blur(10px);
+        transition: top 1s ease;
+        -webkit-transition: top 1s ease;
+        -moz-transition: top 1s ease;
+        -ms-transition: top 1s ease;
+        -o-transition: top 1s ease;
+    }
+
+    .header .navBar .list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        top: -15%;
+    }
+
+        .header .navBar .list a {
+            font-size: 1.35rem;
+        }
+
+    .navBar .list a:hover {
+        color: var(--comment-box);
+    }
+
+    .header .navBar .close-btn i {
+        display: block !important;
+    }
+
+    .header .navBar .open-btn {
+        display: block;
+    }
+
+    .navBar .user {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 55;
+        top: -38%;
+    }
+
+    .navBar .user li i {
+        font-size: 1.5rem;
+    }
+
+        .navBar .user li i:hover {
+            color: var(--comment-box);
+        }
+
+
+    .footer {
+        text-align: center;
+        gap: 2rem;
+    }
+}
+
+@media(max-width: 480px) {
+    .header .logo {
+        position: relative;
+        left: -5%;
+    }
+
+        .header .logo h1 {
+            font-size: 1.8rem;
+        }
+
+    .header .navBar .open-btn {
+        display: block;
+        top: 17%;
+        right: 10%;
+    }
+
+        .header .navBar .open-btn i {
+            font-size: 1.5rem;
+        }
+
+    .header .navBar .list a {
+        font-size: 1.0rem;
+    }
+
+    .navBar .user li i {
+        font-size: 1.0rem;
+    }
+
+    .footer {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        font-size: 11px;
+    }
+
+        .footer .footer-advise {
+            width: 100%;
+            margin-top: 5%;
+            justify-content: center;
+            align-items: center;
+        }
+}
+

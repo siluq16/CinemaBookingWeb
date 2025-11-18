@@ -1,0 +1,215 @@
+﻿@model CinemaBookingWeb.Models.KhachHang
+@{
+    ViewData["Title"] = "Quản lý Tài Khoản";
+}
+
+<style>
+    /* Định nghĩa biến màu sắc tương tự các trang trước */
+    :root {
+        --bs-primary: #E50914; /* Màu đỏ đặc trưng */
+        --bs-dark: #222222; /* Nền card chính */
+        --bs-dark-light: #333333; /* Nền input & sidebar menu item */
+        --bs-text-light: #F5F5F5; /* Chữ sáng */
+        --bs-border-color: #444444; /* Viền input & phân cách */
+    }
+
+    /* Thiết lập nền body tối */
+    body {
+        background-color: #0b1118;
+    }
+
+    /* --- SIDEBAR MENU --- */
+    .sidebar-menu {
+        background-color: #1a1a1a !important;
+        border: none !important;
+    }
+
+    .menu-header {
+        background-color: var(--bs-primary) !important;
+        color: white !important;
+    }
+
+    .menu-item {
+        color: var(--bs-text-light) !important;
+        padding: 12px 15px;
+        background-color: transparent !important;
+        border-color: #2a2a2a !important; /* Viền nhẹ */
+        transition: all 0.2s ease;
+    }
+
+        .menu-item:hover {
+            background-color: #2a2a2a !important;
+            color: var(--bs-primary) !important;
+        }
+
+        .menu-item.active {
+            background-color: var(--bs-primary) !important;
+            color: white !important;
+            border-left: 5px solid white !important; /* Gạch chân nổi bật */
+            font-weight: bold;
+        }
+
+        .menu-item.disabled {
+            color: #777777 !important;
+            cursor: not-allowed;
+        }
+
+    .separator {
+        height: 1px;
+        background-color: var(--bs-border-color) !important;
+        padding: 0 !important;
+        margin: 5px 0;
+    }
+
+    /* --- MAIN CONTENT --- */
+    .main-content-card {
+        border: 1px solid var(--bs-border-color) !important;
+    }
+
+    .card-header {
+        background-color: var(--bs-primary) !important;
+        border-bottom: none !important;
+    }
+
+    /* Avatar lớn */
+    .profile-avatar-lg {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--bs-primary);
+    }
+
+    .member-barcode {
+        width: 100%;
+        max-width: 150px;
+        height: auto;
+    }
+
+    /* Overview Stats */
+    .overview-stats .stat-title {
+        color: #b0b0b0;
+        font-size: 0.85rem;
+        margin-bottom: 0;
+    }
+
+    .overview-stats .stat-value {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--bs-text-light);
+        display: block;
+    }
+
+    /* Input fields trong phần chi tiết */
+    .info-details .form-control {
+        background-color: var(--bs-dark-light) !important;
+        color: var(--bs-text-light) !important;
+        border: 1px solid var(--bs-border-color) !important;
+        border-radius: 6px !important;
+        padding: 10px 15px !important;
+    }
+
+        .info-details .form-control:focus {
+            border-color: var(--bs-primary) !important;
+            box-shadow: 0 0 0 0.25rem rgba(229, 9, 20, 0.15) !important;
+        }
+</style>
+
+<div class="container my-5">
+    <div class="row account-dashboard">
+
+        <div class="col-lg-3 mb-4 mb-lg-0">
+            <div class="list-group sidebar-menu rounded-3 shadow">
+                <div class="list-group-item menu-header text-uppercase text-center p-3">
+                    <h5 class="mb-0 fw-bold">Tài Khoản Khách Hàng</h5>
+                </div>
+
+                <a href="#" data-target="Dashboard" class="list-group-item list-group-item-action menu-item menu-link active">
+                    <i class="fas fa-info-circle me-2"></i> THÔNG TIN CHUNG
+                </a>
+                <a href="#" data-target="EditProfile" class="list-group-item list-group-item-action menu-item menu-link">
+                    <i class="fas fa-user-edit me-2"></i> CHI TIẾT TÀI KHOẢN
+                </a>
+                <a href="#" data-target="ChangePassword" class="list-group-item list-group-item-action menu-item menu-link">
+                    <i class="fas fa-lock me-2"></i> CÀI MẬT MÃ THANH TOÁN
+                </a>
+
+                <div class="list-group-item separator"></div> <a href="#" class="list-group-item list-group-item-action menu-item disabled">
+                    <i class="fas fa-id-card me-2"></i> THẺ THÀNH VIÊN
+                </a>
+                <a href="#" class="list-group-item list-group-item-action menu-item disabled">
+                    <i class="fas fa-trophy me-2"></i> ĐIỂM THƯỞNG
+                </a>
+                <a href="#" class="list-group-item list-group-item-action menu-item disabled">
+                    <i class="fas fa-gift me-2"></i> THẺ QUÀ TẶNG
+                </a>
+                <a href="#" class="list-group-item list-group-item-action menu-item disabled">
+                    <i class="fas fa-ticket-alt me-2"></i> VOUCHER & COUPON
+                </a>
+
+                <div class="list-group-item separator"></div>
+
+                <a href="#" data-target="OrderHistory" class="list-group-item list-group-item-action menu-item menu-link">
+                    <i class="fas fa-history me-2"></i> LỊCH SỬ GIAO DỊCH
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <div id="mainContentArea">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/your_fontawesome_kit.js" crossorigin="anonymous"></script>
+    <script>
+        // KHAI BÁO HÀM TRÊN ĐỐI TƯỢNG WINDOW ĐỂ CÓ PHẠM VI TOÀN CỤC
+        window.loadPartialView = function(actionName, element) {
+            $('#mainContentArea').html('<div class="text-center py-5 text-white"><i class="fas fa-spinner fa-spin fa-2x text-danger"></i><p class="mt-2">Đang tải nội dung...</p></div>');
+
+            $.ajax({
+                url: '@Url.Action("LoadPartial", "Account")',
+                type: 'GET',
+                data: { actionName: actionName },
+                success: function (data) {
+                    $('#mainContentArea').html(data);
+
+                    // Cập nhật trạng thái active cho menu
+                    $('.menu-link').removeClass('active');
+                    $(element).addClass('active');
+
+                    // Gọi lại validation cho form nếu cần
+                    if (actionName === "EditProfile" || actionName === "ChangePassword") {
+                        $.validator.unobtrusive.parse("#mainContentArea");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Lỗi khi tải Partial View:", status, error);
+                    $('#mainContentArea').html('<div class="alert alert-danger">Đã xảy ra lỗi khi tải nội dung. Vui lòng kiểm tra console.</div>');
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // Xử lý sự kiện click trên menu-link
+            $('.menu-link').click(function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('disabled')) {
+                    return;
+                }
+                var action = $(this).data('target');
+                if (action) {
+                    window.loadPartialView(action, this); // GỌI HÀM TOÀN CỤC
+                }
+            });
+
+            // Tải Partial View mặc định khi trang load
+            var defaultAction = $('.menu-link.active').data('target');
+            if (defaultAction) {
+                window.loadPartialView(defaultAction, $('.menu-link.active')); // GỌI HÀM TOÀN CỤC
+            }
+        });
+    </script>
+}

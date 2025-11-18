@@ -1,0 +1,121 @@
+﻿@model CinemaBookingWeb.Models.Phim
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container-fluid mt-3">
+    <h4 class="mb-3">Chỉnh sửa phim</h4>
+
+    <div class="card border-0 shadow-sm p-4">
+        <form asp-action="Edit" asp-route-id="@Model.MaPhim" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="MaPhim" />
+
+            <div class="row g-3">
+                <!-- Cột trái -->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="TenPhim" class="form-label fw-semibold"></label>
+                        <input asp-for="TenPhim" class="form-control" />
+                        <span asp-validation-for="TenPhim" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="TheLoai" class="form-label fw-semibold"></label>
+                        <input asp-for="TheLoai" class="form-control" />
+                        <span asp-validation-for="TheLoai" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DienVien" class="form-label fw-semibold"></label>
+                        <input asp-for="DienVien" class="form-control" />
+                        <span asp-validation-for="DienVien" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ThoiLuong" class="form-label fw-semibold"></label>
+                        <input asp-for="ThoiLuong" type="number" class="form-control" />
+                        <span asp-validation-for="ThoiLuong" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NgayKhoiChieu" class="form-label fw-semibold"></label>
+                        <input asp-for="NgayKhoiChieu" type="date" class="form-control" />
+                        <span asp-validation-for="NgayKhoiChieu" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NgayKetThuc" class="form-label fw-semibold"></label>
+                        <input asp-for="NgayKetThuc" type="date" class="form-control" />
+                        <span asp-validation-for="NgayKetThuc" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Cột phải -->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="DaoDien" class="form-label fw-semibold"></label>
+                        <input asp-for="DaoDien" class="form-control" />
+                        <span asp-validation-for="DaoDien" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Trailer" class="form-label fw-semibold"></label>
+                        <input asp-for="Trailer" class="form-control" />
+                        <span asp-validation-for="Trailer" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Poster hiện tại:</label><br />
+                        @if (!string.IsNullOrEmpty(Model.Poster))
+                        {
+                            <img src="/images/poster/@Model.Poster" alt="Poster" width="150" class="rounded border mb-2" />
+                        }
+                        <input id="PosterFile" type="file" name="NewPoster" accept="image/*" class="form-control mt-1" data-val="false" data-val-required="" />
+                        <img id="posterPreview" src="#" alt="Poster Preview" width="150" class="rounded border mt-2" style="display:none;" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="MoTa" class="form-label fw-semibold"></label>
+                        <textarea asp-for="MoTa" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="MoTa" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DoTuoi" class="form-label fw-semibold"></label>
+                        <input asp-for="DoTuoi" type="number" class="form-control" />
+                        <span asp-validation-for="DoTuoi" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end mt-3">
+                <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Lưu thay đổi</button>
+                <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        const fileInput = document.getElementById("PosterFile");
+        const previewImg = document.getElementById("posterPreview");
+
+        fileInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

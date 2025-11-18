@@ -1,0 +1,217 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = CinemaBookingWeb
+build_property.RootNamespace = CinemaBookingWeb
+build_property.ProjectDir = D:\nam3\ki1\BTLWEB\CinemaBookingWeb\CinemaBookingWeb\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\nam3\ki1\BTLWEB\CinemaBookingWeb\CinemaBookingWeb
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/Accounts/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/Accounts/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudHNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/Accounts/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/Accounts/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/DashBoard/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRGFzaEJvYXJkXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/DashBoard/RevenueByMovie.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRGFzaEJvYXJkXFJldmVudWVCeU1vdmllLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/DoAns/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRG9BbnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/GiaVes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcR2lhVmVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/HoaDons/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9hRG9uc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/HoaDons/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9hRG9uc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/KhuyenMais/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcS2h1eWVuTWFpc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/LichChieux/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTGljaENoaWV1eFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/Phims/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUGhpbXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/Phims/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUGhpbXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/Phims/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUGhpbXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/Phims/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUGhpbXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/PhongChieux/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUGhvbmdDaGlldXhcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/PhongChieux/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUGhvbmdDaGlldXhcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/PhongChieux/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUGhvbmdDaGlldXhcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/PhongChieux/_SeatLayoutPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUGhvbmdDaGlldXhcX1NlYXRMYXlvdXRQYXJ0aWFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/Shared/_AdminHeader.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9BZG1pbkhlYWRlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/Shared/_AdminSidebar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9BZG1pblNpZGViYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9MYXlvdXRBZG1pbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Areas/Admin/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Account/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Account/_ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxfQ2hhbmdlUGFzc3dvcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Account/_ChiTietTaiKhoan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxfQ2hpVGlldFRhaUtob2FuLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Account/_LichSuGiaoDich.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxfTGljaFN1R2lhb0RpY2guY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Account/_ThongTinChung.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxfVGhvbmdUaW5DaHVuZy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Contact/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFjdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/DatVe/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGF0VmVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/DatVe/_ComboPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGF0VmVcX0NvbWJvUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/DatVe/_GhePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGF0VmVcX0doZVBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/DatVe/_ThanhToanPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGF0VmVcX1RoYW5oVG9hblBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Film/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlsbVxEZXRhaWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Film/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlsbVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Home/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/LichChieux/_LichTheoNgayPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGljaENoaWV1eFxfTGljaFRoZW9OZ2F5UGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/LichChieux/_PopupLichChieu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGljaENoaWV1eFxfUG9wdXBMaWNoQ2hpZXUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/nam3/ki1/BTLWEB/CinemaBookingWeb/CinemaBookingWeb/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-jozwp9e1ko

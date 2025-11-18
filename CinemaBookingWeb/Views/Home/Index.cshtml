@@ -1,0 +1,186 @@
+﻿ @{
+    ViewData["Title"] = "Trang chủ";
+    var featured = ViewBag.FeaturedMovies as List<CinemaBookingWeb.Models.Phim>;
+    var movies = ViewBag.AllMovies as List<CinemaBookingWeb.Models.Phim>;
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+<link href="~/css/home.css" asp-append-version="true" rel="stylesheet" />
+
+<div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+        @foreach (var film in featured)
+        {
+            <div class="swiper-slide" style="background-image: url('@Url.Content("~/images/poster/" + film.Poster)');">
+                <div class="swiper-container">
+                    <div class="type">
+                        @foreach (var genre in (film.TheLoai ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <p>@genre.Trim()</p>
+                            <div class="line"></div>
+                        }
+                    </div>
+                    <div class="movie-title">
+                        <h2>@film.TenPhim</h2>
+                        <p>@film.MoTa</p>
+                    </div>
+                    <div class="movie-rating">
+                        <div><p>@film.ThoiLuong phút</p></div>
+                        <div class="rect" data-age="@(film.DoTuoi.HasValue ? $"{film.DoTuoi}+" : "P")"><p>@(film.DoTuoi.HasValue ? $"{film.DoTuoi}+" : "P")</p></div>
+                    </div>
+                    <div class="movie-btn">
+                        <a href="@Url.Action("Detail", "Film", new { id = film.MaPhim })" class="btn-1">Xem ngay</a>
+                        <a class="btn-2" data-phim="@film.MaPhim">Đặt vé</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+<!-- Movie Selection -->
+<div class="slider-container">
+    <div class="slider-content">
+        <h1>Movie Selection</h1>
+    </div>
+    <div class="owl-container">
+        <div class="owl-carousel owl-theme" id="movieCarousel">
+            @foreach (var film in movies)
+            {
+                <div class="cards">
+                    <div class="card-img">
+                        <a href="@Url.Action("Detail", "Film", new { id = film.MaPhim })">
+                            <img src="~/images/poster/@film.Poster" alt="@film.TenPhim" />
+                        </a>
+                        <div class="img-title">
+                            <h4>@(film.DoTuoi.HasValue ? $"{film.DoTuoi}+" : "P")</h4>
+                            <p>@film.TheLoai</p>
+                        </div>
+                    </div>
+                    <div class="card-title">
+                        <a href="@Url.Action("Detail", "Film", new { id = film.MaPhim })">
+                            <h3>@film.TenPhim</h3>
+                        </a>
+                        <p>@film.TheLoai</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Event section giữ nguyên -->
+<div class="slider-event">
+    <div class="slider-content"><h1>Event</h1></div>
+    <div class="owl-container">
+        <div class="owl-carousel owl-theme">
+            <div class="cards"><div class="card-img"><a href="../html/uudai.html"><img src="~/images/event/1.png" alt=""></a></div></div>
+            <div class="cards"><div class="card-img"><a href="../html/uudai.html"><img src="../images/event/2.png" alt=""></a></div></div>
+            <div class="cards"><div class="card-img"><a href="../html/uudai.html"><img src="../images/event/3.jpg" alt=""></a></div></div>
+            <div class="cards"><div class="card-img"><a href="../html/uudai.html"><img src="../images/event/4.png" alt=""></a></div></div>
+            <div class="cards"><div class="card-img"><a href="../html/uudai.html"><img src="../images/event/5.jpg" alt=""></a></div></div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            loop: true,
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            }
+        });
+
+        $('#movieCarousel').owlCarousel({
+            loop: true,
+            margin: 10,
+            nav: true,
+            dots: false,
+            responsive:{
+                0:{ items:1 },
+                600:{ items:3 },
+                800: { item:4 },
+                1000:{ items:5 }
+            }
+        });
+        $('.slider-event .owl-carousel').owlCarousel({
+            loop: true,                // chạy vòng lặp
+            margin: 15,                // khoảng cách giữa các item
+            nav: true,                 // có nút next/prev
+            dots: true,                // có chấm tròn phía dưới
+            autoplay: true,            // tự động chạy
+            autoplayTimeout: 3500,     // thời gian giữa các slide
+            autoplayHoverPause: true,  // dừng khi hover chuột
+            navText: ["<", ">"],       // ký hiệu nút điều hướng
+            responsive: {
+                0: { items: 1 },
+                576: { items: 2 },
+                768: { items: 3 },
+                992: { items: 4 },
+                1200: { items: 5 }
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(document).on("click", ".btn-2", function (e) {
+                e.preventDefault();
+                var maPhim = $(this).data("phim");
+
+                $.get("/LichChieux/XemLichChieu", { maPhim: maPhim }, function (data) {
+                    $("#lichChieuPopup").remove();
+                    $("body").append(data);
+                    swiper.autoplay.stop(); // Dừng slider khi mở popup
+
+                    $("#lichChieuPopup").hide().fadeIn(200);
+
+                    $(document).on("click", ".close-popup", function () {
+                        swiper.autoplay.start(); // Bật lại slider khi đóng popup
+                        $("#lichChieuPopup").fadeOut(200, function () { $(this).remove(); });
+                    });
+                }).fail(function () {
+                    alert("Không thể tải lịch chiếu.");
+                });
+            });
+            $(document).on("click", ".btn-giochieu", function (e) {
+                e.preventDefault();
+                var maLichChieu = $(this).data("lichchieu");
+                var ngayChieu = $(this).data("ngaychieu");
+                var gioChieu = $(this).data("giochieu");
+                if (ngayChieu && gioChieu) {
+                    var thoiGianChieu = new Date(ngayChieu + " " + gioChieu);
+                    var thoiGianHienTai = new Date();
+
+                    var thoiGianCutoff = new Date(thoiGianChieu.getTime() - (5 * 60 * 1000));
+
+                    if (thoiGianHienTai > thoiGianCutoff) {
+                        alert("Giờ chiếu này đã kết thúc hoặc đã bắt đầu (chỉ được mua vé trước 5 phút). Vui lòng chọn giờ chiếu khác.");
+                        return;
+                    }
+                } else {
+                    console.warn("Thiếu data-ngaychieu hoặc data-giochieu. Không thể kiểm tra thời gian.");
+                }
+
+                $.get("/Account/CheckLoginStatus", function (isLoggedIn) {
+                    if (!isLoggedIn) {
+                        window.location.href = "/Account/Login?returnUrl=/DatVe/ChonGhe?maLichChieu=" + maLichChieu;
+                    } else {
+                        window.location.href = "/DatVe/Index?maLichChieu=" + maLichChieu;
+                    }
+                });
+            });
+        });
+    </script>
+}

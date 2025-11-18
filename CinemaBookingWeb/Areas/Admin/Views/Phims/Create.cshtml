@@ -1,0 +1,123 @@
+﻿@model CinemaBookingWeb.Models.Phim
+
+@{
+    ViewData["Title"] = "Tạo phim";
+}
+
+<div class="container-fluid mt-3">
+    <h4 class="mb-3 ml-3">Tạo phim mới</h4>
+
+    <div class="card border-0 shadow-sm p-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row g-3">
+                <!-- Cột trái -->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="MaPhim" class="form-label fw-semibold"></label>
+                        <input asp-for="MaPhim" class="form-control" placeholder="Nhập mã phim" />
+                        <span asp-validation-for="MaPhim" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="TenPhim" class="form-label fw-semibold"></label>
+                        <input asp-for="TenPhim" class="form-control" placeholder="Nhập tên phim" />
+                        <span asp-validation-for="TenPhim" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="TheLoai" class="form-label fw-semibold"></label>
+                        <input asp-for="TheLoai" class="form-control" placeholder="Thể loại" />
+                        <span asp-validation-for="TheLoai" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DienVien" class="form-label fw-semibold"></label>
+                        <input asp-for="DienVien" class="form-control" placeholder="Diễn viên" />
+                        <span asp-validation-for="DienVien" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ThoiLuong" class="form-label fw-semibold"></label>
+                        <input asp-for="ThoiLuong" type="number" class="form-control" placeholder="Thời lượng (phút)" />
+                        <span asp-validation-for="ThoiLuong" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NgayKhoiChieu" class="form-label fw-semibold"></label>
+                        <input asp-for="NgayKhoiChieu" type="date" class="form-control" />
+                        <span asp-validation-for="NgayKhoiChieu" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NgayKetThuc" class="form-label fw-semibold"></label>
+                        <input asp-for="NgayKetThuc" type="date" class="form-control" />
+                        <span asp-validation-for="NgayKetThuc" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Cột phải -->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="DaoDien" class="form-label fw-semibold"></label>
+                        <input asp-for="DaoDien" class="form-control" placeholder="Đạo diễn" />
+                        <span asp-validation-for="DaoDien" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Trailer" class="form-label fw-semibold"></label>
+                        <input asp-for="Trailer" class="form-control" placeholder="Trailer" />
+                        <span asp-validation-for="Trailer" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Poster" class="form-label fw-semibold"></label>
+                        <input id="PosterFile" type="file" name="PosterFile" accept="image/*" class="form-control" />
+                        <img id="posterPreview" src="#" alt="Poster Preview" width="150" class="rounded border mt-2" style="display:none;" />
+                        <span asp-validation-for="Poster" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="MoTa" class="form-label fw-semibold"></label>
+                        <textarea asp-for="MoTa" class="form-control" rows="4" placeholder="Mô tả phim"></textarea>
+                        <span asp-validation-for="MoTa" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DoTuoi" class="form-label fw-semibold"></label>
+                        <input asp-for="DoTuoi" type="number" class="form-control" placeholder="Độ tuổi xem phim" />
+                        <span asp-validation-for="DoTuoi" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end mt-3">
+                <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Tạo phim</button>
+                <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        const fileInput = document.getElementById("PosterFile");
+        const previewImg = document.getElementById("posterPreview");
+
+        fileInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

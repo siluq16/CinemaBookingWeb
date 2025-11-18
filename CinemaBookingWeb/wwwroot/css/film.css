@@ -1,0 +1,169 @@
+﻿
+.status-container {
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    margin-bottom: 2rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4rem;
+    position: relative;
+}
+
+.status-nav {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 0;
+}
+
+.status-item {
+    margin: 0 1rem;
+}
+
+.nav-link {
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    border: 2px solid #ffffff;
+    border-radius: 50px;
+    color: #ffffff;
+}
+
+    .nav-link:hover {
+        color: #ffffff !important; /* Giữ màu trắng cho chữ */
+        border: 2px solid #e50914;
+        background-color: #e50914;
+    }
+
+    .nav-link.active {
+        border: 2px solid #e50914;
+        border-radius: 50px;
+        color: #e50914;
+    }
+
+
+
+
+
+.movie-age {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.7rem;
+    z-index: 1; /* Đặt lên trên các phần tử khác */
+}
+
+    /* Các quy tắc khác cho movie-age nếu cần */
+
+
+    .movie-age[data-age="p"] {
+        background-color: #579b41;
+        text-transform: uppercase;
+        padding: 2.5px 10px;
+    }
+
+    .movie-age[data-age="k"] {
+        background-color: #006ee6;
+        text-transform: uppercase;
+        padding: 2.5px 10px;
+    }
+
+    .movie-age[data-age="13+"] {
+        background-color: #ddbc3f;
+    }
+
+    .movie-age[data-age="16+"] {
+        background-color: #e88021;
+    }
+
+    .movie-age[data-age="18+"] {
+        background-color: #9b2020;
+    }
+
+.card-movie {
+    border: none;
+    border-radius: 12px; 
+    overflow: hidden; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+}
+
+    .card-movie:hover {
+        transform: translateY(-5px); /* Nâng card lên một chút */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Bóng đổ mạnh hơn */
+    }
+
+.movie-list-item-img {
+    border-radius: 12px 12px 0 0;
+    height: auto; 
+    object-fit: cover; 
+    aspect-ratio: 2 / 3; 
+    width: 100%;
+}
+.movie-age {
+    position: absolute;
+    top: 10px;
+    left: 10px; 
+    padding: 4px 8px; /* Tăng padding để dễ nhìn hơn */
+    border-radius: 6px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.8rem; /* Tăng kích thước chữ */
+    z-index: 10; /* Đảm bảo nó luôn nằm trên hình ảnh */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Thêm bóng đổ nhỏ */
+}
+.card-body {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa; /* Màu xám rất nhạt */
+}
+
+.card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #333; /* Màu tối hơn cho tiêu đề */
+    white-space: nowrap; /* Ngăn tiêu đề xuống dòng */
+    overflow: hidden; /* Cắt bớt nếu quá dài */
+    text-overflow: ellipsis; /* Thêm dấu "..." nếu bị cắt */
+    margin-bottom: 0.25rem !important;
+}
+
+.movie_genre {
+    color: #777; /* Màu xám nhạt hơn cho thể loại */
+    font-size: 0.9rem;
+    display: block; /* Đảm bảo nó chiếm một dòng riêng */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.btn-buy {
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    background-color: #e50914 !important; /* Màu đỏ nổi bật (ví dụ: màu Netflix) */
+    border-color: #e50914 !important;
+    transition: background-color 0.2s;
+    flex-shrink: 0; /* Ngăn nút bị co lại */
+}
+
+.btn-buy:hover {
+    background-color: #ff3344 !important;
+    transform: scale(1.05); /* Hiệu ứng nhấn */
+}

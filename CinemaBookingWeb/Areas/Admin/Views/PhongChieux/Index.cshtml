@@ -1,0 +1,188 @@
+﻿@model IEnumerable<CinemaBookingWeb.Models.PhongChieu>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    /* Chấm màu trong menu */
+    .seat-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+    .seat-normal-dot {
+        background: #6d4cd6;
+    }
+
+    .seat-vip-dot {
+        background: #e63946;
+    }
+
+    .seat-couple-dot {
+        background: #d63384;
+    }
+
+    /* Nút chọn trong menu */
+    .seat-option {
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: 0.2s;
+        text-align: left;
+    }
+
+        .seat-option:hover {
+            background: #ececec;
+            transform: translateX(4px);
+        }
+
+        .seat-option.active {
+            background: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
+
+    /* Highlight hàng đang chỉnh sửa */
+    .row-highlight {
+        outline: 3px solid #0d6efd;
+        border-radius: 6px;
+        padding: 3px;
+    }
+</style>
+
+<div class="container-fluid mt-2">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Danh sách phòng chiếu</h2>
+        <a asp-controller="PhongChieux" asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Tạo phòng chiếu
+        </a>
+
+    </div>
+    <table class="table table-bordered text-center align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Tên phòng</th>
+                <th>Số hàng</th>
+                <th>Số cột</th>
+                <th>Số ghế</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var phong in Model)
+            {
+                <tr>
+                    <td>@phong.TenPhong</td>
+                    <td>@phong.SoHangGhe</td>
+                    <td>@phong.SoGheMoiHang</td>
+                    <td>@phong.SoLuongGhe</td>
+                    <td>
+                        <button class="btn btn-outline-secondary btn-sm open-seat-modal" data-room-id="@phong.MaPhong"><i class="bi bi-table me-1"></i></button>
+                        <a asp-action="Edit" asp-route-id="@phong.MaPhong" class="btn btn-outline-primary btn-sm me-1"><i class="bi bi-pencil"></i></a>
+                        <form asp-action="Delete" asp-route-id="@phong.MaPhong" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa phòng này?');">
+                            <button type="submit" class="btn btn-outline-danger btn-sm me-1"><i class="bi bi-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="updateSeatsModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-light">
+                <h5 class="modal-title">Sơ đồ ghế</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="seat-container"><div class="spinner-border text-primary"></div></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button id="saveSeatsBtn" class="btn btn-primary">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+        const seatModal = new bootstrap.Modal(document.getElementById('updateSeatsModal'));
+        document.querySelectorAll('.open-seat-modal').forEach(btn=>{
+        btn.addEventListener('click', function(){
+        let roomId = this.dataset.roomId;
+        seatModal.show();
+        document.getElementById('seat-container').innerHTML=`<div class="py-5 text-center"><div class="spinner-border text-primary"></div>Đang tải...</div>`;
+        fetch(`/Admin/PhongChieu/GetSeatLayout/${roomId}`).then(r=>r.text()).then(html=>document.getElementById('seat-container').innerHTML=html);
+        });
+        });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const seatContainer = document.getElementById('seat-container');
+            // Khi chọn loại ghế trong dropdown
+                seatContainer.addEventListener('click', function(e) {
+                const btn = e.target.closest('.change-row-type');
+                if(!btn) return;
+
+                const row = btn.dataset.row;
+                const type = btn.dataset.type;
+
+                seatContainer.querySelectorAll(`.seat-row[data-row='${row}'] .seat`).forEach(seat => {
+                    seat.dataset.type = type;
+                    seat.classList.remove('seat-normal', 'seat-vip', 'seat-couple');
+
+                    if (type === 'VIP') seat.classList.add('seat-vip');
+                    else if (type === 'COUPLE') seat.classList.add('seat-couple');
+                    else seat.classList.add('seat-normal');
+                });
+            });
+            const saveBtn = document.getElementById("saveSeatsBtn");
+
+            saveBtn.addEventListener("click", function () {
+
+                const seats = [];
+                document.querySelectorAll("#seat-container .seat").forEach(seat => {
+                    seats.push({
+                        MaGhe: seat.dataset.id,
+                        LoaiGhe: seat.dataset.type
+                    });
+                });
+
+                // Gửi lên server
+                fetch('/Admin/PhongChieu/UpdateSeatRow', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    body: JSON.stringify({ Seats: seats })
+                })
+                .then(r => r.json())
+                .then(res => {
+                    Swal.fire({
+                        icon: res.success ? 'success' : 'error',
+                        title: res.success ? 'Cập nhật thành công!' : 'Lỗi',
+                        text: res.message || (res.success ? '' : 'Có lỗi khi cập nhật ghế.')
+                    });
+
+                    if(res.success){
+                        // bootstrap.Modal.getInstance(document.getElementById('updateSeatsModal')).hide();
+                        // Optionally: update số ghế trong bảng chính
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    Swal.fire({ icon: 'error', title: 'Lỗi kết nối', text: 'Không thể cập nhật ghế.' });
+                });
+            });
+        });
+    </script>
+}

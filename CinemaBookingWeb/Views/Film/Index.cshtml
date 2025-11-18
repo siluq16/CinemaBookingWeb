@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Phim";
+}
+<link href="~/css/film.css" rel="stylesheet" asp-append-version="true" />
+<div class="container status-container">
+    <ul class="row status-nav">
+        <li class="col status-item">
+            <a class="nav-link active" href="#" id="now-showing">Phim Đang Chiếu</a>
+        </li>
+        <li class="col status-item">
+            <a class="nav-link" href="#" id="upcoming-movies">Phim Sắp Chiếu</a>
+        </li>
+    </ul>
+</div>
+
+<div class="container">
+    <div id="content">
+        <div id="now-showing-content" class="movie-list row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+            @foreach (var film in Model)
+            {
+                <div class="col mb-4">
+                    <div class="card card-movie">
+                        <a href="@Url.Action("Detail", "Film", new { id = film.MaPhim })" class="card card-movie">
+                            @{
+                                var ageRating = film.DoTuoi > 0 ? $"{film.DoTuoi}+" : "P";
+                            }
+                            <div class="movie-age" data-age="@ageRating.ToLower()">
+                                @ageRating
+                            </div>
+                            <img src="~/images/poster/@film.Poster" alt="@film.TenPhim" class="card-img-top movie-list-item-img" />
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="border-0">
+                                        <h5 class="card-title mb-0">@film.TenPhim</h5>
+                                        <span class="movie_genre">@film.TheLoai</span>
+                                    </div>
+                                    <a class="btn btn-danger btn-buy btnMuaVe" data-phim="@film.MaPhim">Mua vé</a>
+                                </div>
+                            </div>
+
+                        </a>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div id="upcoming-content" class="movie-list row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 d-none">
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/film1.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on("click", ".btnMuaVe", function (e) {
+                e.preventDefault();
+                var maPhim = $(this).data("phim");
+
+                $.get("/LichChieux/XemLichChieu", { maPhim: maPhim }, function (data) {
+                    $("#lichChieuPopup").remove();
+                    $("body").append(data);
+
+                    $("#lichChieuPopup").hide().fadeIn(200);
+
+                    $(document).on("click", ".close-popup", function () {
+                        $("#lichChieuPopup").fadeOut(200, function () { $(this).remove(); });
+                    });
+                }).fail(function () {
+                    alert("Không thể tải lịch chiếu.");
+                });
+            });
+            $(document).on("click", ".btn-giochieu", function (e) {
+                e.preventDefault();
+                var maLichChieu = $(this).data("lichchieu");
+                var ngayChieu = $(this).data("ngaychieu");
+                var gioChieu = $(this).data("giochieu");
+                if (ngayChieu && gioChieu) {
+                    var thoiGianChieu = new Date(ngayChieu + " " + gioChieu);
+                    var thoiGianHienTai = new Date();
+
+                    var thoiGianCutoff = new Date(thoiGianChieu.getTime() - (5 * 60 * 1000));
+
+                    if (thoiGianHienTai > thoiGianCutoff) {
+                        alert("Giờ chiếu này đã kết thúc hoặc đã bắt đầu (chỉ được mua vé trước 5 phút). Vui lòng chọn giờ chiếu khác.");
+                        return;
+                    }
+                } else {
+                    console.warn("Thiếu data-ngaychieu hoặc data-giochieu. Không thể kiểm tra thời gian.");
+                }
+
+                $.get("/Account/CheckLoginStatus", function (isLoggedIn) {
+                    if (!isLoggedIn) {
+                        window.location.href = "/Account/Login?returnUrl=/DatVe/ChonGhe?maLichChieu=" + maLichChieu;
+                    } else {
+                        window.location.href = "/DatVe/Index?maLichChieu=" + maLichChieu;
+                    }
+                });
+            });
+        });
+    </script>
+}

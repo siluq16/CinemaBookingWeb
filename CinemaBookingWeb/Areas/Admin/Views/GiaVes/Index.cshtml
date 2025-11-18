@@ -1,0 +1,303 @@
+﻿@model IEnumerable<CinemaBookingWeb.Models.GiaVe>
+
+@{
+    ViewData["Title"] = "Danh sách giá vé";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Quay lại
+        </a>
+        <button id="btnCreatePrice" class="btn btn-primary me-2">
+            <i class="bi bi-plus-circle"></i> Tạo giá vé mới
+        </button>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <table class="table table-hover align-middle" id="priceTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Mã giá</th>
+                        <th>Loại ghế</th>
+                        <th>Loại ngày</th>
+                        <th>Giá (VNĐ)</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="priceTableBody">
+                    @foreach (var item in Model)
+                    {
+                        <tr data-id="@item.MaGia" data-loaighe="@item.LoaiGhe" data-loaingay="@item.LoaiNgay">
+                            <td>@item.MaGia</td>
+                            <td>@item.LoaiGhe</td>
+                            <td>@item.LoaiNgay</td>
+                            <td>@item.Gia.ToString("N0")</td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-outline-primary me-1 btn-edit">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger btn-delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <nav aria-label="Page navigation" class="mt-3">
+                <ul class="pagination justify-content-end mb-0" id="pagination"></ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="priceModal" tabindex="-1" aria-labelledby="priceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="priceModalLabel">Tạo giá vé mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formPrice">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="__RequestVerificationToken" value="@Html.AntiForgeryToken()" />
+                    <input type="hidden" id="editMode" value="create" />
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Loại ghế</label>
+                        <select class="form-select" id="seatTypeSelect" required>
+                            <option value="">-- Chọn loại ghế --</option>
+                            <option value="Normal">Normal</option>
+                            <option value="VIP">VIP</option>
+                            <option value="COUPLE">Couple</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Loại ngày</label>
+                        <select class="form-select" id="dayTypeSelect" required>
+                            <option value="">-- Chọn loại ngày --</option>
+                            <option value="Thuong">Ngày thường</option>
+                            <option value="CuoiTuan">Cuối tuần</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Giá (VNĐ)</label>
+                        <input type="number" class="form-control" id="priceInput" min="0" required />
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const rowsPerPage = 15;
+        const table = document.getElementById("priceTable");
+        const tbody = document.getElementById("priceTableBody");
+        const pagination = document.getElementById("pagination");
+
+        function getRows() {
+            return Array.from(tbody.querySelectorAll("tr"));
+        }
+
+        let currentPage = 1;
+
+        function displayPage(page) {
+            const rows = getRows().filter(r => r.style.display !== "none");
+            rows.forEach((row, i) => {
+                row.style.display = (i >= (page - 1) * rowsPerPage && i < page * rowsPerPage) ? "" : "none";
+            });
+            currentPage = page;
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const rows = getRows().filter(r => r.style.display !== "none");
+            const totalPages = Math.ceil(rows.length / rowsPerPage);
+            pagination.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            for(let i = 1; i <= totalPages; i++) {
+                const li = document.createElement("li");
+                li.className = "page-item" + (i === currentPage ? " active" : "");
+                const a = document.createElement("a");
+                a.className = "page-link";
+                a.href = "#";
+                a.innerText = i;
+                a.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    displayPage(i);
+                });
+                li.appendChild(a);
+                pagination.appendChild(li);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Hiển thị trang đầu
+            displayPage(1);
+
+            const modal = new bootstrap.Modal(document.getElementById('priceModal'));
+            const form = document.getElementById('formPrice');
+            const title = document.getElementById('priceModalLabel');
+            const modeInput = document.getElementById('editMode');
+            const seatTypeSelect = document.getElementById('seatTypeSelect');
+            const dayTypeSelect = document.getElementById('dayTypeSelect');
+            const priceInput = document.getElementById('priceInput');
+
+
+            // 1. Tạo mới
+            document.getElementById('btnCreatePrice').addEventListener('click', () => {
+                modeInput.value = "create";
+                title.textContent = "Tạo giá vé mới";
+                form.reset();
+                seatTypeSelect.disabled = false; // Cho phép chọn khi tạo mới
+                dayTypeSelect.disabled = false; // Cho phép chọn khi tạo mới
+                modal.show();
+            });
+
+            // 2. Sửa
+            document.querySelectorAll('.btn-edit').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('tr').forEach(r => r.classList.remove('selected'));
+                    const row = this.closest('tr');
+                    row.classList.add('selected');
+                    modeInput.value = "edit";
+                    title.textContent = "Chỉnh sửa giá vé";
+
+                    const currentSeatType = row.dataset.loaighe;
+                    const currentDayType = row.dataset.loaingay;
+
+                    seatTypeSelect.value = currentSeatType;
+                    dayTypeSelect.value = currentDayType;
+                    priceInput.value = row.querySelector('td:nth-child(4)').innerText.replace(/\D/g, ''); // Lấy giá trị số
+
+                    // KHÔNG cho phép chỉnh sửa loại ghế/loại ngày khi sửa (vì MaGia phụ thuộc vào chúng)
+                    seatTypeSelect.disabled = true;
+                    dayTypeSelect.disabled = true;
+
+                    modal.show();
+                });
+            });
+
+            // 3. Xóa
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const row = this.closest('tr');
+                    const id = row.getAttribute('data-id');
+                    const info = `${row.dataset.loaighe} - ${row.dataset.loaingay}`;
+
+                    Swal.fire({
+                        title: `Xóa giá vé "${info}"?`,
+                        text: "Bạn sẽ không thể hoàn tác thao tác này!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Xóa",
+                        cancelButtonText: "Hủy"
+                    }).then(r => {
+                        if (r.isConfirmed) {
+                            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+                            fetch('/Admin/GiaVe/DeleteAjax', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'RequestVerificationToken': token
+                                },
+                                body: JSON.stringify(id)
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                Swal.fire({
+                                    icon: data.success ? "success" : "error",
+                                    title: data.message || "Không thể xóa giá vé này."
+                                }).then(() => {
+                                    if (data.success) {
+                                        row.remove();
+                                        displayPage(1);
+                                    }
+                                });
+                            })
+                            .catch(() => {
+                                Swal.fire({ icon: "error", title: "Lỗi kết nối khi xóa" });
+                            });
+                        }
+                    });
+                });
+            });
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+            // 4. Lưu tạo/sửa
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const mode = modeInput.value;
+
+                const seatType = seatTypeSelect.value;
+                const dayType = dayTypeSelect.value;
+                let maGia = null;
+
+                if(mode === "edit"){
+                    maGia = document.querySelector('tr.selected')?.dataset.id;
+                } else {
+                    // Tạo mã theo định dạng LoạiGhế_LoạiNgày (ví dụ: Thuong_Thuong, Vip_CuoiTuan)
+                    maGia = `${seatType}_${dayType}`;
+                }
+
+                const data = {
+                    MaGia: maGia,
+                    LoaiGhe: seatType,
+                    LoaiNgay: dayType,
+                    Gia: parseFloat(priceInput.value) || 0
+                };
+                console.log(data);
+
+                // Kiểm tra xem đã có giá vé cho loại ghế/ngày này chưa khi tạo mới
+                if (mode === "create" && getRows().some(r => r.dataset.loaighe === seatType && r.dataset.loaingay === dayType)) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Giá vé đã tồn tại',
+                        text: 'Đã tồn tại giá vé cho sự kết hợp Loại ghế và Loại ngày này. Vui lòng chọn chế độ Sửa.',
+                        confirmButtonText: 'Đóng'
+                    });
+                    return;
+                }
+
+                fetch('/Admin/GiaVe/SaveAjax', { // Cần thay đổi Controller/Action nếu khác
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(res => res.json())
+                .then(res => {
+                    Swal.fire({
+                        icon: res.success ? "success" : "error",
+                        title: res.message
+                    }).then(() => {
+                        // Tải lại trang chỉ khi thành công
+                        if (res.success) {
+                            location.reload();
+                        }
+                    });
+                })
+                .catch(() => {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi kết nối server",
+                        text: "Không thể kết nối đến máy chủ để lưu dữ liệu."
+                    });
+                });
+            });
+
+        });
+    </script>
+}

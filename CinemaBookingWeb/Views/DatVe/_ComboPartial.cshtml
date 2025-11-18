@@ -1,0 +1,168 @@
+﻿@model IEnumerable<CinemaBookingWeb.Models.DoAn>
+
+<div id="comboSection" class="combo-section container py-3">
+    <div class="alert alert-warning text-center fw-bold mx-auto mb-4" style="max-width: 600px;">
+        Thời gian giữ ghế còn lại: <span id="countdownTimer" class="text-danger fs-5">5:00</span>
+    </div>
+    <h4 class="text-center mb-4 fw-bold text-danger">🍿 Bắp Nước</h4>
+
+    <div class="row g-4">
+        @foreach (var combo in Model)
+        {
+            <div class="col-md-6 col-lg-6">
+                <div class="card h-150 combo-card">
+                    <div class="row g-0 align-items-center">
+                        <!-- Ảnh (bên trái) -->
+                        <div class="col-md-4 text-center d-flex align-items-center justify-content-center p-2">
+                            <img src="~/images/combo/@combo.Anh"
+                                 class="img-fluid combo-img"
+                                 alt="@combo.TenDoAn" />
+                        </div>
+
+                        <!-- Mô tả (bên phải) -->
+                        <div class="col-md-8 d-flex flex-column justify-content-between p-3">
+                            <div>
+                                <h5 class="fw-bold text-uppercase text-danger">@combo.TenDoAn</h5>
+                                <p class="fw-bold text-dark mb-1">
+                                    Giá:
+                                    <span class="text-danger">@combo.DonGia.ToString("N0") ₫</span>
+                                </p>
+                            </div>
+
+                            <div class="quantity-control mt-2 d-flex align-items-center">
+                                <button type="button" class="btn btn-outline-danger btn-sm px-3 minus-btn">−</button>
+                                <input type="number"
+                                       min="0"
+                                       value="0"
+                                       class="soLuongCombo form-control text-center mx-2"
+                                       style="width:70px"
+                                       data-dongia="@combo.DonGia"
+                                       data-ten="@combo.TenDoAn"
+                                       data-madoan="@combo.MaDoAn" />
+                                <button type="button" class="btn btn-outline-danger btn-sm px-3 plus-btn">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+<style>
+    .combo-card {
+        border-radius: 8px;
+    }
+
+
+    .combo-img {
+        max-height: 200px;
+        object-fit: contain;
+    }
+
+    .quantity-control button {
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .quantity-control input {
+        border: 1px solid #ccc;
+        font-weight: 600;
+        color: #d9534f;
+    }
+
+    .combo-section h4 {
+        border-bottom: 2px solid #d9534f;
+        padding-bottom: 5px;
+        align-content: center;
+    }
+</style>
+
+<script>
+    // Nút tăng giảm số lượng combo
+    $(document).on("click", ".plus-btn", function () {
+        const input = $(this).siblings(".soLuongCombo");
+        input.val(parseInt(input.val() || 0) + 1).trigger("input");
+    });
+
+    $(document).on("click", ".minus-btn", function () {
+        const input = $(this).siblings(".soLuongCombo");
+        const current = parseInt(input.val() || 0);
+        if (current > 0) input.val(current - 1).trigger("input");
+    });
+</script>
+<script>
+    // Khai báo biến global cho timer (đảm bảo nó không bị chạy lại)
+    let countdownInterval;
+
+    // --- KHỐI ĐẾM NGƯỢC ---
+    function startCountdown(durationMinutes) {
+        // Lấy thời gian bắt đầu từ server (Giả định server đã tính và gửi về)
+        // Vì action ChonCombo của bạn không trả về thời gian hết hạn, ta dùng thời gian khởi tạo client (10 phút)
+
+        let timeRemaining = durationMinutes * 60; // 10 phút * 60 giây
+
+        // Dọn dẹp interval cũ nếu có
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+        }
+
+        const timerDisplay = document.getElementById('countdownTimer');
+        const maLichChieu = "@(ViewBag.MaLich ?? "")";
+
+        if (!timerDisplay) return;
+
+        countdownInterval = setInterval(() => {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            if (timeRemaining <= 0) {
+                clearInterval(countdownInterval);
+                timerDisplay.textContent = "Hết thời gian!";
+
+                // ✅ GỌI HÀNH ĐỘNG HỦY HOLD KHI HẾT GIỜ
+                autoHuyHold(maLichChieu);
+
+                // ✅ Chuyển hướng về trang ghế để cập nhật
+                Swal.fire({
+                    title: 'Hết thời gian!',
+                    text: 'Thời gian giữ ghế đã hết. Vui lòng chọn lại ghế.',
+                    icon: 'warning',
+                    confirmButtonText: 'Chọn lại ghế'
+                }).then(() => {
+                    window.location.reload(); // Tải lại trang để về bước chọn ghế
+                });
+
+            } else if (timeRemaining <= 60) {
+                 timerDisplay.classList.add('text-danger'); // Báo đỏ khi còn dưới 1 phút
+            }
+
+            timeRemaining--;
+        }, 1000);
+    }
+
+    // Hàm gọi AJAX HuyHold tự động
+    function autoHuyHold(maLich) {
+        $.ajax({
+            url: "/DatVe/HuyHold",
+            type: "POST",
+            data: { maLichChieu: maLich },
+            success: function(res) {
+                 console.log("Hủy giữ chỗ tự động thành công.");
+                 localStorage.clear(); // Xóa dữ liệu cũ
+            },
+            error: function() {
+                 console.error("Lỗi khi hủy giữ chỗ tự động.");
+            }
+        });
+    }
+    $(document).ready(function() {
+        // Bắt đầu đếm ngược 10 phút.
+        // LƯU Ý: Lý tưởng là lấy thời gian hết hạn (ThoiGianHetHan) từ server
+        // Nếu không, 10 phút là giá trị khởi tạo.
+        startCountdown(5);
+    });
+    </script>

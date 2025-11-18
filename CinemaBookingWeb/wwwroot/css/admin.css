@@ -1,0 +1,147 @@
+﻿/* ===== Toàn layout ===== */
+.admin-layout {
+    background-color: #f5f6fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== Container chính ===== */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ===== Sidebar ===== */
+.admin-sidebar {
+    width: 250px;
+    background-color: #1f2d5a;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding-top: 20px;
+    overflow-y: auto;
+}
+
+/* Header */
+.sidebar-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== Menu chính ===== */
+.menu-group {
+    margin-top: 5px;
+}
+
+    /* Link cấp 1 */
+    .menu-group > a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        color: #e6ebf5;
+        text-decoration: none;
+        font-size: 15px;
+        border-radius: 6px;
+        transition: background 0.3s, color 0.3s;
+    }
+
+        /* Chỉ đổi màu link cha khi hover hoặc active */
+        .menu-group > a:hover,
+        .menu-group > a.active {
+            background-color: #4b68ff;
+            color: #fff;
+            font-weight: 600;
+        }
+
+/* Icon dropdown */
+.fa-chevron-down {
+    transition: transform 0.3s ease;
+}
+
+    .fa-chevron-down.rotate {
+        transform: rotate(-180deg);
+    }
+
+/* ===== Submenu ===== */
+.submenu {
+    list-style: none;
+    padding: 0; /* bỏ padding để lấp đầy toàn chiều ngang */
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    background-color: #111a33;
+    transition: max-height 0.4s ease;
+}
+
+    /* Khi submenu mở */
+    .submenu.open {
+        max-height: 400px;
+    }
+
+    /* Link trong submenu */
+    .submenu li a {
+        display: block;
+        width: 100%;
+        padding: 10px 20px;
+        font-size: 14px;
+        color: #cfd6e6;
+        text-decoration: none;
+        transition: background 0.3s, color 0.3s;
+    }
+
+        /* Hover submenu item */
+        .submenu li a:hover {
+            background-color: #5b76ff; /* sáng rõ hơn, dễ nhìn */
+            color: #fff;
+        }
+
+        /* Active submenu item (khi đang chọn) */
+        .submenu li a.active {
+            background-color: #4b68ff;
+            color: #fff;
+            font-weight: 600;
+        }
+
+    .submenu a.active {
+        background-color: #0d6efd;
+        color: #fff !important;
+        border-radius: 6px;
+    }
+
+
+/* ===== Nội dung chính ===== */
+.admin-content {
+    flex-grow: 1;
+    margin-left: 250px;
+    background-color: #fff;
+    min-height: 100vh;
+    color: #212529;
+}
+
+h4 {
+    font-weight: 600;
+    color: #333;
+}
+
+.table {
+    background-color: #fff;
+}
+
+    .table th {
+        font-weight: 600;
+    }
+
+input[type="date"] {
+    min-width: 150px;
+}
+
+main {
+    padding-left: 0 !important;
+}
+
+.container-fluid {
+    max-width: 100%;
+}

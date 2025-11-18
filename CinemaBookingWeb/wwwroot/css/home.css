@@ -1,0 +1,751 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --pink: #DE5D83;
+    --black: #101116;
+    --gray: #bebebe;
+    --light-gray: #d9d9d9;
+    --comment-box: #171B27;
+    --comment: #555D68;
+    --comment-date: #8A8A8A;
+    --warning: #E50914;
+    --yellow: #EEE62F;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--comment-box);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--comment);
+}
+
+
+a {
+    text-decoration: none;
+}
+
+i {
+    cursor: pointer;
+}
+
+li {
+    list-style-type: none;
+}
+
+img {
+    cursor: pointer;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container-header {
+    width: 100%;
+    z-index: 55;
+    height: 55px;
+    position: absolute;
+}
+
+
+/* ----------------------------------- */
+.swiper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.swiper-button-next, .swiper-button-prev {
+    color: #fff;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 12px;
+}
+
+    .swiper-button-next:hover, .swiper-button-prev:hover {
+        color: var(--warning); /* Nền vàng khi hover */
+    }
+
+.swiper-slide {
+    background-image: url(../img/bg/ted-bg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.swiper-slide {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+    .swiper-slide .swiper-container {
+        width: 80%;
+    }
+
+.swiper-container .type {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+}
+
+    .swiper-container .type .line {
+        height: 30px;
+        width: 1px;
+        background-color: var(--gray);
+    }
+
+    .swiper-container .type p {
+        color: var(--gray);
+        font-size: 1.2rem;
+    }
+
+.swiper-container .movie-title {
+    width: 80%;
+    margin-top: 1rem;
+}
+
+    .swiper-container .movie-title h2 {
+        font-family: 'Libre Baskerville',sans-serif;
+        color: #fff;
+        font-size: 3.5rem;
+        line-height: 1.2;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); /* Thêm bóng chữ */
+    }
+
+    .swiper-container .movie-title p {
+        color: #ddd;
+        font-weight: 400;
+        margin-top: 1rem;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        width: 80%;
+        overflow: hidden;
+    }
+
+.swiper-container .movie-rating {
+    margin-top: 2rem;
+    width: auto; /* Tự động điều chỉnh chiều rộng */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2rem; /* Giảm khoảng cách giữa các mục */
+}
+
+    .swiper-container .movie-rating p {
+        color: #fff;
+        font-size: 1.1rem; /* Kích thước vừa phải */
+        font-weight: 500;
+        margin: 0;
+    }
+
+    /* Thiết kế lại khung độ tuổi (Rating Rect) */
+    .swiper-container .movie-rating .rect {
+        border-radius: 5px; /* Góc bo tròn nhẹ */
+        min-width: 45px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+/* Áp dụng màu nền cho từng độ tuổi */
+.rect[data-age="3+"],
+.rect[data-age="7+"],
+.rect[data-age="13+"],
+.rect[data-age="16+"],
+.rect[data-age="18+"],
+.rect[data-age="P"] {
+    text-transform: uppercase;
+    padding: 5px 10px; /* Padding đồng nhất */
+    font-weight: 700;
+    color: #fff; /* Chữ trắng trên nền màu */
+    font-size: 0.9rem;
+}
+
+.rect[data-age="3+"] {
+    background-color: #579b41;
+}
+
+.rect[data-age="7+"] {
+    background-color: #006ee6;
+}
+
+.rect[data-age="13+"] {
+    background-color: #ddbc3f;
+}
+
+.rect[data-age="16+"] {
+    background-color: #e88021;
+}
+
+.rect[data-age="18+"] {
+    background-color: #9b2020;
+}
+
+.rect[data-age="P"] {
+    background-color: #579b41;
+}
+/* Xử lý trường hợp "P" */
+.swiper-container .movie-btn {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.movie-btn .btn-1 {
+    width: 175px;
+    height: 45px;
+    background-color: #fff;
+    color: var(--warning);
+    text-align: center;
+    align-content:center;
+    border-radius: 25px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    -ms-border-radius: 25px;
+    -o-border-radius: 25px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Montserrat',sans-serif;
+    letter-spacing: 1.1px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    -webkit-transition: all 0.25s ease-in-out;
+    -moz-transition: all 0.25s ease-in-out;
+    -ms-transition: all 0.25s ease-in-out;
+    -o-transition: all 0.25s ease-in-out;
+}
+
+    .movie-btn .btn-1:hover {
+        background-color: var(--warning);
+        color: #fff;
+    }
+
+.movie-btn .btn-2 {
+    width: 175px;
+    height: 45px;
+    background-color: var(--warning);
+    color: #fff;
+    text-align: center;
+    align-content: center;
+    border-radius: 25px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    -ms-border-radius: 25px;
+    -o-border-radius: 25px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Montserrat',sans-serif;
+    letter-spacing: 1.1px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    -webkit-transition: all 0.25s ease-in-out;
+    -moz-transition: all 0.25s ease-in-out;
+    -ms-transition: all 0.25s ease-in-out;
+    -o-transition: all 0.25s ease-in-out;
+}
+
+    .movie-btn .btn-2:hover {
+        color: var(--warning);
+        background-color: #fff;
+    }
+
+
+
+
+/* ----------------- */
+.slider-container {
+    width: 100%;
+    margin: 5% auto 4rem; 
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+    .slider-container .owl-container {
+        width: 90%;
+        margin: 2rem auto; /* Tăng margin cho đẹp hơn */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .slider-container .slider-content {
+        margin: 0 5%;
+    }
+
+.slider-content h1 {
+    color: var(--yellow); /* Sử dụng màu vàng nổi bật */
+    font-weight: 700;
+    font-size: 2.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    text-shadow: 0 0 5px rgba(255, 255, 0, 0.5), 0 0 10px rgba(255, 255, 0, 0.3); 
+    font-family: 'Lemon', cursive;
+    margin-bottom: 2rem; /* Thêm khoảng cách dưới tiêu đề */
+}
+
+/* --- OWL CAROUSEL CƠ BẢN --- */
+.owl-theme {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- THẺ PHIM (CARDS) --- */
+.cards {
+    /* Tối ưu hóa kích thước cho thiết kế cinema, tăng chiều cao */
+    width: 250px; /* Tăng chiều rộng từ 220px lên 250px */
+    height: 440px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Bắt đầu từ trên xuống */
+    border-radius: 10px; /* Bo tròn góc nhiều hơn */
+    background-color: #2a2a2a; /* Nền tối nhẹ cho thẻ phim */
+    /* Box shadow tinh tế hơn */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    cursor: pointer;
+}
+
+    .cards:hover {
+        /* Hiệu ứng 3D nhẹ khi hover */
+        transform: translateY(-5px) scale(1.03); 
+        box-shadow: 0 15px 30px rgba(255, 255, 0, 0.4); /* Shadow màu vàng khi hover */
+    }
+
+    .cards .card-img {
+        width: 100%;
+        /* Thay đổi chiều cao để ảnh poster chiếm phần lớn */
+        height: 350px; 
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px 10px 0 0;
+    }
+
+        .cards .card-img a {
+            display: block;
+        }
+
+        .cards .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        /* Hiệu ứng zoom nhẹ cho ảnh khi hover thẻ */
+        .cards:hover .card-img img {
+            transform: scale(1.05); 
+        }
+
+        .cards .card-img .img-title {
+            position: absolute;
+            right: 15px; /* Cách lề phải 10px */
+            top: 15px; /* Cách lề trên 10px */
+            width: 60px; /* Kích thước lớn hơn */
+            height: 60px;
+            background-color: var(--yellow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border-radius: 50%; /* Hình tròn đẹp mắt */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            z-index: 10;
+        }
+
+.img-title h4 {
+    font-size: 1rem;
+    margin: 0;
+    color: #000;
+    font-weight: 700;
+}
+
+.img-title p {
+    display: none; /* Ẩn thể loại ở đây để tránh trùng lặp */
+}
+
+/* --- THÔNG TIN PHIM --- */
+.cards .card-title {
+    text-align: center;
+    padding: 0.8rem 0.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-title a {
+    text-decoration: none;
+}
+
+.card-title h3 {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    /* Giới hạn tên phim 2 dòng */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
+.card-title h3:hover {
+    color: var(--yellow); /* Đổi màu vàng khi hover */
+}
+
+.card-title p {
+    color: #b0b0b0; /* Màu xám nhạt dễ đọc */
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin-top: 0;
+}
+
+/* --- THANH ĐIỀU HƯỚNG OWL NAV --- */
+.owl-nav {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    /* Tăng khoảng cách ra lề */
+    padding: 0 5px; 
+}
+
+.owl-nav .owl-prev, .owl-nav .owl-next {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.6); /* Nền tối mờ */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s, color 0.3s;
+    outline: none; /* Xóa viền focus mặc định */
+}
+
+.owl-prev::before, .owl-next::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: #fff; /* Mũi tên màu trắng */
+}
+
+.owl-prev::before {
+    content: '\f104'; 
+}
+
+.owl-next::before {
+    content: '\f105'; 
+}
+
+.owl-nav .owl-prev:hover, .owl-nav .owl-next:hover {
+    background-color: var(--yellow); /* Màu vàng nổi bật khi hover */
+    color: #000; 
+}
+
+.owl-nav .owl-prev:hover::before, .owl-nav .owl-next:hover::before {
+    color: #000; 
+}
+
+/* DOTS - Vẫn giữ ẩn */
+.owl-dot {
+    display: none;
+}
+/* --- TIÊU ĐỀ (Đồng bộ với Movie Selection) --- */
+.slider-content h1 {
+    color: var(--yellow); /* Sử dụng màu vàng nổi bật */
+    font-weight: 700;
+    font-size: 2.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    /* Hiệu ứng phát sáng nhẹ */
+    text-shadow: 0 0 5px rgba(255, 255, 0, 0.5), 0 0 10px rgba(255, 255, 0, 0.3);
+    font-family: 'Lemon', cursive;
+    margin-bottom: 2rem;
+}
+
+
+/* ----------- SLIDER EVENT CONTAINER ----------- */
+.slider-event {
+    width: 100%;
+    /* Giảm margin trên và dưới để không quá xa các phần khác */
+    margin: 5% auto 5%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+    .slider-event .owl-container {
+        width: 90%;
+        margin: 2rem auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .slider-event .slider-content {
+        margin: 0 5%;
+    }
+
+    /* --- THẺ SỰ KIỆN (CARDS) --- */
+    .slider-event .cards {
+        /* Kích thước banner sự kiện hợp lý hơn */
+        width: 100%; /* Đảm bảo nó chiếm đủ không gian item */
+        max-width: 320px; /* Giới hạn kích thước tối đa */
+        height: 200px; /* Chiều cao hình chữ nhật nằm ngang */
+        margin-top: 0; /* Xóa margin-top không cần thiết */
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px; /* Bo tròn góc */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Thêm bóng */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+        .slider-event .cards:hover {
+            /* Hiệu ứng phóng to nhẹ khi hover */
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(255, 255, 255, 0.3);
+        }
+
+        .slider-event .cards .card-img {
+            width: 100%;
+            height: 100%; /* Đảm bảo ảnh chiếm hết thẻ */
+            position: relative;
+        }
+
+            .slider-event .cards .card-img a {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            .slider-event .cards .card-img img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; /* Đảm bảo ảnh được căn chỉnh và che phủ thẻ */
+                transition: transform 0.5s ease;
+            }
+
+        /* Hiệu ứng zoom ảnh nhẹ khi hover */
+        .slider-event .cards:hover .card-img img {
+            transform: scale(1.1);
+        }
+
+    /* --- ĐIỀU CHỈNH CHUNG OWL CAROUSEL CHO EVENT (DOTS) --- */
+    /* Vì phần JS đã bật dots: true cho event carousel */
+    .slider-event .owl-theme .owl-dots {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+        .slider-event .owl-theme .owl-dots .owl-dot span {
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background: #555; /* Màu chấm tròn không hoạt động */
+            display: block;
+            -webkit-backface-visibility: visible;
+            transition: opacity 200ms ease;
+            border-radius: 30px;
+        }
+
+        .slider-event .owl-theme .owl-dots .owl-dot.active span,
+        .slider-event .owl-theme .owl-dots .owl-dot:hover span {
+            background: var(--yellow); /* Màu vàng khi hoạt động/hover */
+        }
+
+    /* --- ĐIỀU CHỈNH CHUNG OWL CAROUSEL CHO EVENT (NAV) --- */
+    .slider-event .owl-nav {
+        top: 40%; /* Căn giữa theo chiều dọc của slider */
+    }
+
+        .slider-event .owl-nav .owl-prev, .slider-event .owl-nav .owl-next {
+            width: 35px;
+            height: 35px;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+            .slider-event .owl-nav .owl-prev:hover, .slider-event .owl-nav .owl-next:hover {
+                background-color: var(--yellow);
+            }
+
+    .slider-event .owl-prev::before, .slider-event .owl-next::before {
+        font-size: 1rem;
+        color: #fff;
+    }
+
+    .slider-event .owl-nav .owl-prev:hover::before, .slider-event .owl-nav .owl-next:hover::before {
+        color: #000;
+    }
+@media(max-width:1200px) {
+
+    .swiper-container {
+        width: 50%;
+    }
+
+        .swiper-container .type p {
+            font-size: 0.9rem;
+        }
+
+        .swiper-container .type .line {
+            height: 15px;
+        }
+
+        .swiper-container .movie-title {
+            width: 95%;
+        }
+
+            .swiper-container .movie-title h2 {
+                font-size: 1.4rem;
+            }
+
+            .swiper-container .movie-title p {
+                font-size: 0.75rem;
+            }
+
+        .swiper-container .movie-rating {
+            width: 85%;
+        }
+
+            .swiper-container .movie-rating p {
+                font-size: 0.8rem;
+            }
+
+    .swiper-button-next, .swiper-button-prev {
+        display: none;
+    }
+
+    .owl-nav {
+        display: none;
+    }
+
+    .movie-btn .btn-1,
+    .movie-btn .btn-2 {
+        width: 125px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+}
+
+
+@media(max-width:768px) {
+    /* .footer .moblie-app .link-title{
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        width: 200px;
+    } */
+}
+
+@media(max-width: 480px) {
+    .swiper-container {
+        width: 20%;
+    }
+
+        .swiper-container .type p {
+            font-size: 0.6rem;
+        }
+
+        .swiper-container .type .line {
+            height: 10px;
+        }
+
+        .swiper-container .movie-title {
+            width: 95%;
+        }
+
+            .swiper-container .movie-title h2 {
+                font-size: 0.8rem;
+            }
+
+            .swiper-container .movie-title p {
+                font-size: 0.55rem;
+            }
+
+        .swiper-container .movie-rating {
+            width: 85%;
+            margin-top: 10px;
+            gap: 1rem;
+        }
+
+            .swiper-container .movie-rating p {
+                font-size: 0.6rem;
+            }
+
+    .movie-btn {
+        margin-top: 10px !important;
+        gap: 0.5rem !important;
+    }
+
+        .movie-btn .btn-1,
+        .movie-btn .btn-2 {
+            width: 85px;
+            height: 20px;
+            font-size: 0.6rem;
+        }
+
+    .slider-container .owl-container {
+        width: 100%;
+    }
+
+    .owl-item {
+        width: 350px !important;
+    }
+
+    .slider-content h1 {
+        color: #fff;
+        font-weight: 600;
+        font-size: 25px;
+    }
+
+    .cards {
+        width: 300px;
+        height: 500px;
+    }
+
+        .cards .card-img {
+            width: 300px;
+            height: 400px;
+            position: relative;
+        }
+}

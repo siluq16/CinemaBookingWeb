@@ -1,0 +1,112 @@
+﻿@model CinemaBookingWeb.Areas.Admin.Models.HoaDonChiTietVM
+
+@{
+    ViewData["Title"] = "Chi tiết Hóa đơn";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex align-items-center mb-3">
+        @* Giả sử Action Index của Hóa đơn là HoaDons/Index *@
+        <a asp-controller="HoaDons" asp-action="Index" class="btn btn-outline-secondary me-3">
+            <i class="bi bi-arrow-left"></i> Quay lại
+        </a>
+        <h4 class="fw-bold mb-0">Hóa đơn #@Model.MaHD</h4>
+    </div>
+
+    <div class="row g-4 align-items-start">
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-light fw-bold">Thông tin suất chiếu</div>
+                <div class="card-body">
+                    <p><strong>Mã HĐ:</strong> @Model.MaHD</p>
+                    <p><strong>Phim:</strong> <span class="text-primary fw-semibold">@Model.TenPhim</span></p>
+                    <p><strong>Giờ chiếu:</strong> <span class="text-danger fw-semibold">@Model.GioBatDau - @Model.GioKetThuc</span></p>
+                    <p><strong>Ngày chiếu:</strong> @Model.NgayChieu.ToString("dd/MM/yyyy")</p>
+                    <p><strong>Phòng chiếu:</strong> @Model.PhongChieu</p>
+                    <p><strong>Ngày đặt:</strong> @Model.NgayLap.ToString("dd/MM/yyyy HH:mm")</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-light fw-bold">Thanh toán & Khách hàng</div>
+                <div class="card-body">
+                    <p><strong>Khách hàng:</strong> @Model.TenKhachHang</p>
+                    <p><strong>Điện thoại:</strong> @Model.SoDienThoai</p>
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>Phương thức:</strong> <span class="fw-semibold text-success">@Model.PhuongThucThanhToan</span></p>
+                    <p>
+                        <strong>Trạng thái:</strong>
+                        @{
+                            string badgeClass = Model.TrangThai switch
+                            {
+                                "Đã thanh toán" => "bg-success",
+                                "Đã hủy" => "bg-danger",
+                                _ => "bg-warning text-dark"
+                            };
+                        }
+                        <span class="badge @badgeClass">@Model.TrangThai</span>
+                    </p>
+                    <hr />
+                    <p><strong>Thành tiền (trước giảm):</strong> @String.Format("{0:N0}", Model.ThanhTienTruocGiam) VNĐ</p>
+                    <p><strong>Giảm giá (@(Model.TenKhuyenMai ?? "N/A")):</strong> <span class="text-danger">@String.Format("{0:N0}", Model.GiamGia) VNĐ</span></p>
+                    <p class="fw-bold text-primary h5 mt-2">
+                        Tổng tiền: @String.Format("{0:N0}", Model.TongTien) VNĐ
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 h-auto">
+                <div class="card-header bg-light fw-bold">Ghế & Dịch vụ</div>
+                <div class="card-body" style="max-height: 700px; overflow-y: auto;">
+                    <h6 class="fw-bold mb-2">Ghế đã chọn (@Model.DanhSachGhe.Count)</h6>
+                    <table class="table table-sm table-bordered align-middle text-center mb-4">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Ghế</th>
+                                <th>Loại</th>
+                                <th>Giá</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ghe in Model.DanhSachGhe)
+                            {
+                                <tr>
+                                    <td>@ghe.TenGhe</td>
+                                    <td>@ghe.LoaiGhe</td>
+                                    <td>@String.Format("{0:N0}", ghe.GiaTien)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <h6 class="fw-bold mb-2">Dịch vụ kèm theo (@Model.DanhSachDichVu.Count)</h6>
+                    <table class="table table-sm table-bordered align-middle text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Tên DV</th>
+                                <th>SL</th>
+                                <th>Đơn giá</th>
+                                <th>Tổng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var dv in Model.DanhSachDichVu)
+                            {
+                                <tr>
+                                    <td class="text-primary fw-semibold">@dv.TenDichVu</td>
+                                    <td>@dv.SoLuong</td>
+                                    <td>@String.Format("{0:N0}", dv.DonGia)</td>
+                                    <td>@String.Format("{0:N0}", dv.TongTien)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

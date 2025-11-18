@@ -1,0 +1,215 @@
+﻿@* File: Views/DatVe/_ThanhToanPartial.cshtml (Mã Đã Sửa Đổi) *@
+
+@{
+    ViewData["Title"] = "Thanh toán";
+    DateTime? thoiGianHetHan = ViewBag.ThoiGianHetHan;
+}
+
+<div id="paymentSection" class="thanh-toan text-center mt-4">
+    <h4 class="fw-bold mb-4">XÁC NHẬN & THANH TOÁN</h4>
+    @if (thoiGianHetHan.HasValue)
+    {
+        <div class="alert alert-warning text-center fw-bold mx-auto mb-4" style="max-width: 600px;">
+            Thời gian giữ ghế còn lại: <span id="paymentCountdownTimer" class="text-danger fs-5">00:00</span>
+        </div>
+    }
+    <div class="alert alert-info w-75 mx-auto mb-4">
+        <p><strong>Vui lòng kiểm tra lại thông tin đặt vé:</strong></p>
+        <ul class="list-unstyled text-start mx-auto" style="max-width: 400px;">
+            <li>🎟️ Ghế đã chọn: <span id="seatList"></span></li>
+            <li>🍿 Combo đã chọn: <span id="comboList"></span></li>
+
+            <li class="mt-2 text-danger fw-bold">🎁 Giảm giá: <span id="discountAmount">0</span> VNĐ</li>
+
+            <li class="mt-2">💰 **Tổng tiền cần thanh toán:** <span id="finalTotal" class="fw-bold text-success fs-5">0</span> VNĐ</li>
+        </ul>
+    </div>
+
+    <div class="promo-code w-75 mx-auto text-start mb-4" style="max-width: 450px;">
+        <h5 class="mb-3">Mã Khuyến Mãi (Nếu có)</h5>
+        <div class="input-group">
+            <input type="text" id="promoCodeInput" class="form-control" placeholder="Nhập mã KM...">
+            <button class="btn btn-primary" type="button" id="btnApplyPromo">Áp dụng</button>
+        </div>
+        <small id="promoMessage" class="form-text mt-2"></small>
+    </div>
+
+    <div class="payment-methods w-75 mx-auto text-start" style="max-width: 450px;">
+        <h5 class="mb-3">Chọn Phương Thức Thanh Toán</h5>
+        <div class="form-check border p-3 mb-2 rounded payment-option" data-method="Card">
+            <input class="form-check-input" type="radio" name="paymentMethod" id="paymentCard" value="Card">
+            <label class="form-check-label fw-bold" for="paymentCard">
+                Thanh toán qua Thẻ Quốc Tế (Visa/Master)
+            </label>
+        </div>
+        <div class="form-check border p-3 mb-2 rounded payment-option" data-method="EWallet">
+            <input class="form-check-input" type="radio" name="paymentMethod" id="paymentEWallet" value="EWallet">
+            <label class="form-check-label fw-bold" for="paymentEWallet">
+                Thanh toán qua Ví điện tử / QR Code
+            </label>
+        </div>
+    </div>
+
+    <p class="text-danger" id="paymentError" style="display: none;">Vui lòng chọn một phương thức thanh toán để tiếp tục.</p>
+</div>
+
+<script>
+    let initialTotal = 0; // Tổng tiền ban đầu (vé + combo)
+    let currentDiscount = 0; // Số tiền giảm giá hiện tại
+    let appliedPromoCode = ""; // Mã KM đã áp dụng thành công
+    let paymentCountdownInterval;
+
+    function capNhatTongTienCuoi(discount) {
+        currentDiscount = discount;
+        const finalTotal = initialTotal - currentDiscount;
+
+        $("#discountAmount").text(currentDiscount.toLocaleString("vi-VN"));
+        $("#finalTotal").text(finalTotal.toLocaleString("vi-VN"));
+
+        localStorage.setItem("totalPrice", finalTotal);
+    }
+
+    function initPaymentSection() {
+        console.log("initPaymentSection chạy");
+        const maLichChieu = "@(ViewBag.MaLich ?? "")"; // Giả định MaLich được truyền hoặc lấy từ Index.cshtml scope
+        const seats = JSON.parse(localStorage.getItem("selectedSeats") || "[]");
+        const combos = JSON.parse(localStorage.getItem("selectedCombos") || "[]");
+        const totalString = localStorage.getItem("totalPrice") || "0";
+
+        initialTotal = parseInt(totalString) || 0;
+
+        const seatListEl = document.getElementById("seatList");
+        const comboListEl = document.getElementById("comboList");
+
+        const seatNames = seats.map(maGheDayDu => {
+            return maGheDayDu.split('_').pop();
+        });
+
+        seatListEl.textContent = seatNames.length ? seatNames.join(", ") : "Chưa chọn ghế nào";
+        if (combos.length > 0) {
+            const comboText = combos.map(c => `${c.ten} (x${c.soLuong})`).join(", ");
+            comboListEl.textContent = comboText;
+        } else {
+            comboListEl.textContent = "Không chọn combo";
+        }
+
+        capNhatTongTienCuoi(0);
+
+        // --- Xử lý Mã Khuyến Mãi ---
+        $("#btnApplyPromo").off('click').on('click', function() {
+            const promoCode = $("#promoCodeInput").val().trim();
+            $("#promoMessage").removeClass("text-success text-danger").text("");
+
+            if (promoCode === "") {
+                $("#promoMessage").addClass("text-danger").text("Vui lòng nhập mã khuyến mãi.");
+                return;
+            }
+
+            $.ajax({
+                url: '/DatVe/ApDungKhuyenMai',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    MaKhuyenMai: promoCode,
+                    TongTienBanDau: initialTotal,
+                    MaLichChieu: "@(ViewBag.MaLich ?? "")"
+                }),
+                success: function(res) {
+                    if (res.success) {
+                        appliedPromoCode = promoCode;
+                        capNhatTongTienCuoi(res.giamGia);
+                        $("#promoMessage").addClass("text-success").text(`Áp dụng mã thành công! Giảm: ${res.giamGia.toLocaleString("vi-VN")} VNĐ.`);
+                    } else {
+                        appliedPromoCode = "";
+                        capNhatTongTienCuoi(0); 
+                        $("#promoMessage").addClass("text-danger").text(res.message || "Mã khuyến mãi không hợp lệ.");
+                    }
+                },
+                error: function() {
+                    $("#promoMessage").addClass("text-danger").text("Lỗi kết nối khi áp dụng mã.");
+                }
+            });
+        });
+
+        const btnDatVe = document.getElementById("btnDatVe");
+
+        $(btnDatVe).off('click.payment').on('click.payment', function(e) {
+            const selectedMethod = $('input[name="paymentMethod"]:checked').val();
+
+            if (!selectedMethod) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                $("#paymentError").show();
+                alert("Vui lòng chọn một phương thức thanh toán.");
+                return false;
+            }
+            $("#paymentError").hide();
+
+            localStorage.setItem("appliedPromoCode", appliedPromoCode);
+        });
+        const thoiGianHetHanStr = "@(thoiGianHetHan.HasValue? thoiGianHetHan.Value.ToString("yyyy/MM/dd HH:mm:ss") : "")";
+
+        if (thoiGianHetHanStr) {
+            startPaymentCountdown(thoiGianHetHanStr, maLichChieu);
+        }
+        function autoHuyHold(maLich) {
+            $.ajax({
+                url: "/DatVe/HuyHold",
+                type: "POST",
+                data: { maLichChieu: maLich },
+                success: function(res) {
+                     console.log("Hủy giữ chỗ tự động (Thanh Toán) thành công.");
+                     localStorage.clear();
+                },
+                error: function() {
+                     console.error("Lỗi khi hủy giữ chỗ tự động (Thanh Toán).");
+                }
+            });
+        }
+        function startPaymentCountdown(expiryTimeStr, maLich) {
+            const expiryTime = new Date(expiryTimeStr).getTime();
+            const timerDisplay = document.getElementById('paymentCountdownTimer');
+
+            if (!timerDisplay) return;
+
+            if (paymentCountdownInterval) {
+                clearInterval(paymentCountdownInterval);
+            }
+
+            paymentCountdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = expiryTime - now;
+
+                if (distance < 0) {
+                    clearInterval(paymentCountdownInterval);
+                    timerDisplay.textContent = "Hết thời gian!";
+
+                    autoHuyHold(maLich);
+
+                    $("#btnDatVe").prop('disabled', true).text('Hết giờ');
+
+                    Swal.fire({
+                        title: 'Hết thời gian!',
+                        text: 'Thời gian giữ ghế đã hết. Vui lòng chọn lại ghế.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                    return;
+                }
+
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (minutes < 1) {
+                     timerDisplay.classList.add('text-danger');
+                }
+
+            }, 1000);
+        }
+    }
+
+</script>

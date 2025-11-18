@@ -1,0 +1,20 @@
+﻿@model IEnumerable<CinemaBookingWeb.ViewModels.LichChieuItem>
+
+@if (Model.Any())
+{
+    <div class="lich-item mb-2 pb-2">
+        <div class="d-flex flex-wrap gap-2">
+            @foreach (var item in Model)
+            {
+                <button class="btn btn-sm btn-outline-warning btn-giochieu" data-lichchieu="@item.MaLich" data-giochieu="@item.GioBatDau.ToString("HH:mm:ss")"
+                        data-ngaychieu="@item.NgayChieu.ToString("yyyy/MM/dd")">
+                    @item.GioBatDau.ToString("HH:mm")
+                </button>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <p class="text-center text-secondary mt-3">Không có lịch chiếu trong ngày này.</p>
+}

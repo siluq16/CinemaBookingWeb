@@ -1,0 +1,100 @@
+﻿<div class="card main-content-card bg-dark text-white rounded-3 shadow">
+    <div class="card-header bg-danger text-white p-3">
+        <h4 class="mb-0 fw-bold text-uppercase">THÔNG TIN CHUNG</h4>
+    </div>
+    <div class="card-body p-4 p-md-5">
+        @if (ViewBag.UpdateSuccess != null)
+        {
+            <div class="alert alert-success">@ViewBag.UpdateSuccess</div>
+        }
+        <div class="row align-items-center mb-5 border-bottom border-secondary pb-4">
+            <div class="col-12 col-md-8 d-flex align-items-center">
+                <img src="/images/user/@(Model.Avatar ?? "no-image.jpg")"
+                     alt="Avatar" class="profile-avatar-lg me-4">
+                <div>
+                    <h5 class="fw-bold mb-1">Xin chào, @Model.HoTen</h5>
+                    <p class="text-muted mb-2">Quản lý tất cả thông tin tài khoản của bạn tại đây.</p>
+                    <a href="#" 
+                    onclick="loadPartialView('EditProfile', $('.menu-link[data-target=EditProfile]')[0]);"
+                    class="btn btn-sm btn-outline-danger">Thay đổi Avatar</a>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 text-center mt-3 mt-md-0">
+                <span class="text-muted d-block mb-1">Thẻ thành viên</span>
+                <img src="/images/barcode-placeholder.png" alt="Barcode" class="member-barcode">
+            </div>
+        </div>
+
+        <h5 class="fw-bold mb-3 text-danger">TỔNG QUAN TÀI KHOẢN</h5>
+        <div class="row text-center overview-stats mb-5">
+            <div class="col-6 col-md-4 col-lg-2 mb-3">
+                <p class="stat-title">Cấp Độ Thẻ</p>
+                <span class="stat-value text-warning fw-bold">MEMBER</span>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 mb-3">
+                <p class="stat-title">Tổng Chi Tiêu</p>
+                <span class="stat-value">0 đ</span>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 mb-3">
+                <p class="stat-title">Điểm CGV</p>
+                <span class="stat-value text-info">0 P</span>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 mb-3">
+                <p class="stat-title">Thẻ quà tặng</p>
+                <span class="stat-value">0</span>
+                <a href="#" class="btn btn-sm btn-danger mt-1 w-100">Xem</a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 mb-3">
+                <p class="stat-title">Voucher</p>
+                <span class="stat-value">0</span>
+                <a href="#" class="btn btn-sm btn-danger mt-1 w-100">Xem</a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 mb-3">
+                <p class="stat-title">Coupon</p>
+                <span class="stat-value">0</span>
+                <a href="#" class="btn btn-sm btn-danger mt-1 w-100">Xem</a>
+            </div>
+        </div>
+
+        <h5 class="fw-bold mb-3 text-danger">THÔNG TIN LIÊN HỆ CƠ BẢN</h5>
+        <div class="info-details row">
+            <div class="col-12 col-md-6 mb-3">
+                <label class="form-label fw-bold">Tên Khách Hàng</label>
+                <input type="text" class="form-control" value="@Model.HoTen" readonly>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                <label class="form-label fw-bold">Email</label>
+                <input type="text" class="form-control" value="@Model.Email" readonly>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                <label class="form-label fw-bold">Điện thoại</label>
+                <input type="text" class="form-control" value="@Model.SoDienThoai" readonly>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                <label class="form-label fw-bold">Ngày sinh</label>
+                <input type="text" class="form-control" value="@(Model.NgaySinh?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")" readonly>
+            </div>
+        </div>
+        <div class="text-end mt-4">
+            <a href="#"
+               onclick="loadPartialView('EditProfile', $('.menu-link[data-target=EditProfile]')[0]);"
+            class="btn btn-danger px-4">Thay đổi thông tin</a>
+        </div>
+
+    </div>
+</div>
+<script>
+    // Hàm này đảm bảo rằng nếu View chính chưa load jQuery thì nó vẫn đợi
+    // Tuy nhiên, việc này nên được đảm bảo trong View cha.
+    // Giả định hàm loadPartialView đã được khai báo ở phạm vi toàn cục (window)
+
+    // Nếu bạn muốn tránh onclick:
+    /*
+    $(document).ready(function() {
+        $('.edit-profile-trigger').click(function(e) {
+            e.preventDefault();
+            loadPartialView('EditProfile', $('.menu-link[data-target=EditProfile]')[0]);
+        });
+    });
+    */
+</script>

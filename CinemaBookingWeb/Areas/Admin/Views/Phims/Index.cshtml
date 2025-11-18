@@ -1,0 +1,152 @@
+﻿@model IEnumerable<CinemaBookingWeb.Models.Phim>
+
+@{
+    ViewData["Title"] = "Danh sách phim";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card shadow-sm border-0 rounded-3 p-3">
+        <!-- Header: nút tạo + refresh + tìm kiếm -->
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+            <div class="mb-2">
+                <a asp-action="Create" class="btn btn-primary me-2"><i class="bi bi-plus-circle"></i> Tạo phim</a>
+                <button type="button" class="btn btn-outline-secondary" onclick="location.reload();"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+            </div>
+        </div>
+
+        <!-- Bảng danh sách phim -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle text-center" id="movieDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Poster</th>
+                        <th class="text-start">Tên phim</th>
+                        <th>Thể loại</th>
+                        <th>Thời lượng (phút)</th> @* Đổi tiêu đề cho rõ ràng *@
+                        <th>Khởi chiếu</th>
+                        <th>Kết thúc</th>
+                        <th data-orderable="false">Mô tả</th> @* Tắt sắp xếp cho cột Mô tả *@
+                        <th>Độ tuổi</th>
+                        <th data-orderable="false">Thao tác</th> @* Tắt sắp xếp cho cột Thao tác *@
+                    </tr>
+                </thead>
+                <tbody id="movieTableBody">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="/images/poster/@item.Poster" width="80" class="rounded border" onerror="this.src='/images/no-image.jpg';" />
+                            </td>
+                            <td class="text-start">
+                                @item.TenPhim
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.TheLoai))
+                                {
+                                    var genres = item.TheLoai.Split(',');
+                                    @foreach (var genre in genres)
+                                    {
+                                        <span class="badge bg-light text-dark border me-1">@genre</span>
+                                    }
+                                }
+                            </td>
+                            <td>@item.ThoiLuong</td>
+                            <td data-sort="@item.NgayKhoiChieu.ToString("yyyy-MM-dd")">@item.NgayKhoiChieu.ToString("dd-MM-yyyy")</td>
+                            <td data-sort="@item.NgayKetThuc?.ToString("yyyy-MM-dd")">@item.NgayKetThuc?.ToString("dd-MM-yyyy")</td>
+                            <td class="text-start truncate-text">@item.MoTa</td>
+                            <td>@item.DoTuoi</td>
+                            <td class="text-center">
+                                <a asp-action="Edit" asp-route-id="@item.MaPhim" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+                                <a asp-action="Details" asp-route-id="@item.MaPhim" class="btn btn-sm btn-outline-info me-1"><i class="bi bi-info-circle"></i></a>
+                                <form asp-action="Delete" asp-route-id="@item.MaPhim" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xóa phim này?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger me-1">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Khởi tạo DataTables trên bảng có ID là movieDataTable
+            $('#movieDataTable').DataTable({
+                // Tùy chỉnh các cột không cần sắp xếp
+                "columnDefs": [
+                    { "orderable": false, "targets": [0, 6, 8] } // Cột Poster, Mô tả, Thao tác
+                ],
+                // Ngôn ngữ tiếng Việt
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                },
+                // Sắp xếp mặc định theo cột Khởi chiếu (cột 4) giảm dần
+                "order": [[ 4, "desc" ]],
+                "pageLength": 10 // Mặc định hiển thị 10 hàng
+            });
+
+            // Xóa logic search thủ công
+            // Xóa logic pagination thủ công
+        });
+    </script>
+    <style>
+        .truncate-text {
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .dataTables_wrapper .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .dataTables_wrapper .dataTables_filter input,
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #dee2e6;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem; /* 8px */
+            font-size: 0.9rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            max-width: 150px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            padding-right: 1.8rem !important;
+            background-position: right 0.75rem center; /* Mặc định của Bootstrap */
+            background-size: 16px 12px;
+            /* Tùy chọn: Đảm bảo văn bản không bị tràn */
+            text-overflow: ellipsis;
+        }
+
+            /* 2. HIỆU ỨNG FOCUS: Tương tự Bootstrap */
+            .dataTables_wrapper .dataTables_filter input:focus,
+            .dataTables_wrapper .dataTables_length select:focus {
+                border-color: #80bdff; /* Màu xanh khi focus */
+                box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+                outline: none; /* Bỏ outline mặc định */
+            }
+
+        .dataTables_wrapper .dataTables_filter label {
+            /* Đảm bảo chữ "Tìm kiếm" không bị dính vào input */
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+
+        /* 4. ĐIỀU CHỈNH CHUẨN BOOTSTRAP */
+        /* DataTables thường tạo ra các thẻ label, ta nên định dạng chúng */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin-bottom: 1rem;
+        }
+    </style>
+}

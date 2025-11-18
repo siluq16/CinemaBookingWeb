@@ -1,0 +1,175 @@
+﻿@model IEnumerable<CinemaBookingWeb.Areas.Admin.Models.AccountViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý Tài khoản Người dùng & Admin";
+}
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Quay lại
+        </a>
+        <a asp-action="Create" class="btn btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Tạo mới
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0 p-3">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle text-center" id="accountTable">
+                <thead class="table-light">
+                    <tr>
+                        <th data-orderable="false">Avatar</th>
+                        <th>Tên đăng nhập</th> 
+                        <th>Vai trò</th>
+                        <th>Ngày tạo</th>
+                        <th data-orderable="false">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="accountTableBody">
+                    @foreach (var item in Model)
+                    {
+                        <tr data-id="@item.TenDangNhap">
+                            <td>
+                                <img src="/images/avatar/@item.Avatar" width="50" class="rounded-circle border"
+                                                        onerror="this.src='/images/no-image.jpg';" />
+                            </td>
+
+                            <td class="fw-bold">@item.TenDangNhap</td>
+
+                            <td>
+                                @if (item.VaiTro == "Admin")
+                                {
+                                    <span class="badge bg-danger">@item.VaiTro</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary">@item.VaiTro</span>
+                                }
+                            </td>
+
+                            <td>@item.NgayTao?.ToString("dd/MM/yyyy HH:mm")</td>
+
+                            <td>
+                                @if (item.TenDangNhap != ViewBag.CurrentUsername)
+                                {
+                                    @if (item.TrangThai == "Active")
+                                    {
+                                        <button class="btn btn-sm btn-outline-danger btn-manage-status"
+                                                                        data-username="@item.TenDangNhap"
+                                                                        data-action="Lock">
+                                            <i class="bi bi-lock"></i> Khóa
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-sm btn-outline-success btn-manage-status"
+                                                                        data-username="@item.TenDangNhap"
+                                                                        data-action="Unlock">
+                                            <i class="bi bi-unlock"></i> Mở khóa
+                                        </button>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Đang đăng nhập</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Khởi tạo DataTables
+            $('#accountTable').DataTable({
+                "columnDefs": [
+                    // Cột Thao tác (chỉ có 4 cột dữ liệu + 1 cột Avatar)
+                    { "orderable": false, "targets": [0, 4] }
+                ],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                },
+                // Cột Ngày tạo hiện là cột thứ 4 (index 3)
+                "order": [[3, "desc"]]
+            });
+
+            $('#accountTable').on('click', '.btn-manage-status', function () {
+                const btn = $(this);
+                const username = btn.data('username');
+                const action = btn.data('action'); // "Lock" hoặc "Unlock"
+
+                const confirmTitle = action === 'Lock'
+                    ? `Bạn có chắc muốn KHÓA tài khoản "${username}"?`
+                    : `Bạn có chắc muốn MỞ KHÓA tài khoản "${username}"?`;
+
+                Swal.fire({
+                    title: confirmTitle,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Đồng ý',
+                    cancelButtonText: 'Hủy',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const token = $('input[name="__RequestVerificationToken"]').val();
+
+                        $.ajax({
+                            type: "POST",
+                            url: `/Admin/User/${action}User/${username}`,
+                            headers: { "RequestVerificationToken": token },
+                            success: function (response) {
+                                Swal.fire({
+                                    icon: response.success ? 'success' : 'error',
+                                    title: response.success ? 'Thành công!' : 'Thất bại!',
+                                    text: response.message
+                                }).then(() => {
+                                    if (response.success) {
+                                        const row = btn.closest('tr');
+                                        const statusCell = row.find('td').eq(3); // cột Ngày tạo là index 3, thêm cột trạng thái nếu có thể
+                                        const badgeCell = row.find('td').eq(2); // cột Vai trò
+                                        if (action === 'Lock') {
+                                            btn.data('action', 'Unlock');
+                                            btn.removeClass('btn-outline-danger').addClass('btn-outline-success');
+                                            btn.html('<i class="bi bi-unlock"></i> Mở khóa');
+                                            row.find('td').eq(2).text('Locked'); 
+                                        } else {
+                                            btn.data('action', 'Lock');
+                                            btn.removeClass('btn-outline-success').addClass('btn-outline-danger');
+                                            btn.html('<i class="bi bi-lock"></i> Khóa');
+                                            row.find('td').eq(2).text('Active'); 
+                                        }
+                                    }
+                                });
+                            },
+                            error: function(xhr) {
+                                console.error("Lỗi AJAX:", xhr.status, xhr.responseText);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Lỗi kết nối server',
+                                    text: `Không thể thực hiện yêu cầu. (HTTP ${xhr.status})`
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+            $('#accountTable').on('click', 'tbody tr', function (e) {
+                if ($(e.target).closest('.btn-manage-status').length > 0) {
+                    return;
+                }
+                const username = $(this).data('id'); // ID = TenDangNhap
+                if (username) {
+                    window.location.href = `/Admin/User/ChinhSua/${username}`;  
+                }
+            });
+        });
+    </script>
+
+}

@@ -1,0 +1,146 @@
+﻿@using System.Text.Encodings.Web 
+@model CinemaBookingWeb.Areas.Admin.Models.AccountCreateViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Tài khoản: " + Model.TenDangNhap;
+    string maKh = ViewData["MaKH"]?.ToString() ?? "";
+    string currentAvatar = ViewData["CurrentAvatar"]?.ToString() ?? "/images/no-image.jpg";
+    string encodedUsername = UrlEncoder.Default.Encode(Model.TenDangNhap);
+    bool isCustomer = Model.VaiTro == "KhachHang" && !string.IsNullOrEmpty(maKh);
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold">@ViewData["Title"]</h3>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Quay lại danh sách
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <form asp-action="Edit" asp-route-id="@encodedUsername" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" name="MaKH" value="@maKh" />
+                <input type="hidden" name="CurrentAvatar" value="@currentAvatar" />
+                <input type="hidden" asp-for="TenDangNhap" />
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="row">
+
+                    <div class="col-md-6 border-end" id="customerInfoSection" style="display: @(isCustomer ? "block" : "none");">
+                        <h5 class="mb-3 text-primary">Thông tin Khách hàng</h5>
+
+                        @* Hiển thị Avatar và Username *@
+                        <div class="text-center mb-3">
+                            <img src="@currentAvatar" width="100" class="rounded-circle border mb-2" onerror="this.src='/images/no-image.jpg';" />
+                            <h6 class="fw-semibold">@Model.TenDangNhap (@Model.VaiTro)</h6>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="HoTen" class="form-label fw-semibold"></label>
+                            <input asp-for="HoTen" class="form-control" />
+                            <span asp-validation-for="HoTen" class="text-danger"></span>
+                        </div>
+                        @* ... (Email, SoDienThoai, NgaySinh, AvatarFile giữ nguyên) ... *@
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label fw-semibold"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SoDienThoai" class="form-label fw-semibold"></label>
+                            <input asp-for="SoDienThoai" class="form-control" />
+                            <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="NgaySinh" class="form-label fw-semibold"></label>
+                            <input asp-for="NgaySinh" class="form-control" type="date"
+                                                     value="@(Model.NgaySinh.HasValue? Model.NgaySinh.Value.ToString("yyyy-MM-dd") : "")" />
+                            <span asp-validation-for="NgaySinh" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AvatarFile" class="form-label fw-semibold">Thay đổi Avatar</label>
+                            <input asp-for="AvatarFile" class="form-control" type="file" accept="image/*" />
+                            <span asp-validation-for="AvatarFile" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="mb-3 text-danger">Quản lý Tài khoản</h5>
+
+                        @if (!isCustomer)
+                        {
+                            <p class="text-muted">Đây là tài khoản **Admin**. Chỉ có thể đặt lại mật khẩu.</p>
+                        }
+
+                        <div class="mb-3 d-flex justify-content-between align-items-center">
+                            <label class="form-label fw-semibold">Đặt lại Mật khẩu</label>
+                            <button type="button"
+                                                      id="btnResetPassword"
+                                                      data-username="@Model.TenDangNhap"
+                                                      class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-arrow-counterclockwise"></i> Reset về 123456
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-save"></i> Lưu Thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('#btnResetPassword').click(function () {
+                const username = $(this).data('username');
+
+                Swal.fire({
+                    title: `Xác nhận ĐẶT LẠI mật khẩu?`,
+                    text: `Mật khẩu của tài khoản "${username}" sẽ được đặt lại về "123456".`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Xác nhận Reset',
+                    cancelButtonText: 'Hủy bỏ'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.post(`/Admin/User/ResetPassword/${username}`, { 
+                            '__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                        }, function (response) {
+                            Swal.fire({
+                                icon: response.success ? 'success' : 'error',
+                                title: response.success ? 'Thành công!' : 'Thất bại!',
+                                text: response.message
+                            }).then(() => {
+                                if(response.success) {
+                                    btn.text('Mật khẩu đã reset!');
+                                    btn.prop('disabled', true); // khóa nút sau khi reset
+                                    btn.removeClass('btn-outline-danger').addClass('btn-success');
+                                }
+                            });
+                        }).fail(function () {
+                            Swal.fire({ icon: 'error', title: 'Lỗi kết nối server', text: 'Không thể thực hiện yêu cầu reset mật khẩu.' });
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

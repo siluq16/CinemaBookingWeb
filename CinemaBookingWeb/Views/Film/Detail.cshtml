@@ -1,0 +1,107 @@
+﻿@model CinemaBookingWeb.Models.Phim
+@{
+    ViewData["Title"] = "Chi tiết phim";
+    int daysBeforeSale = 2;
+    bool isComingSoon = Model.NgayKhoiChieu <= DateOnly.FromDateTime(DateTime.Now.AddDays(daysBeforeSale));
+}
+<link href="~/css/film-detail.css" rel="stylesheet" />
+<div class="film-detail-page container mt-5 text-light">
+    <h2 class="section-title text-danger border-bottom pb-2 mb-4">NỘI DUNG PHIM</h2>
+
+    <div class="row">
+        <!-- Poster phim -->
+        <div class="col-md-4 text-center mb-4 mb-md-0">
+            <img src="~/images/poster/@Model.Poster" alt="@Model.TenPhim" class="img-fluid film-poster shadow-lg rounded">
+        </div>
+
+        <!-- Thông tin phim -->
+        <div class="col-md-8">
+            <h3 class="film-title text-uppercase fw-bold text-warning">@Model.TenPhim</h3>
+
+            <ul class="list-unstyled film-info mt-3">
+                <li><strong>Đạo diễn:</strong> @Model.DaoDien</li>
+                <li><strong>Diễn viên:</strong> @Model.DienVien</li>
+                <li><strong>Thể loại:</strong> @Model.TheLoai</li>
+                <li><strong>Thời lượng:</strong> @Model.ThoiLuong phút</li>
+                <li><strong>Ngày khởi chiếu</strong> @Model.NgayKhoiChieu</li>
+                <li>
+                    <strong>Giới hạn độ tuổi:</strong>
+                    <span class="badge bg-warning text-dark fw-bold">
+                        @(Model.DoTuoi.HasValue ? $"{Model.DoTuoi}+" : "P")
+                    </span>
+                </li>
+            </ul>
+
+            @if (isComingSoon)
+            {
+                <button id="btnMuaVe" class="btn btn-danger btn-lg mt-3" data-phim="@Model.MaPhim">
+                    🎟 MUA VÉ
+                </button>
+            }
+
+        </div>
+    </div>
+
+    <!-- Nội dung phim -->
+    <div class="film-plot mt-5">
+        <h4 class="text-danger border-bottom pb-2">TÓM TẮT NỘI DUNG</h4>
+        <p class="lead mt-3">@Model.MoTa</p>
+    </div>
+
+    <!-- Trailer -->
+    @if (!string.IsNullOrEmpty(Model.Trailer))
+    {
+        <div class="film-trailer mt-5">
+            <h4 class="text-danger border-bottom pb-2">TRAILER</h4>
+            <div class="ratio ratio-16x9 mt-3">
+                <iframe src="@Model.Trailer" title="@Model.TenPhim" allowfullscreen></iframe>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#btnMuaVe").click(function () {
+                var maPhim = $(this).data("phim");
+
+                $.get("/LichChieux/XemLichChieu", { maPhim: maPhim }, function (data) {
+                    $("body").append(data);
+                    $("#lichChieuPopup").hide().fadeIn(200);
+                }).fail(function () {
+                    alert("Không thể tải lịch chiếu.");
+                });
+            });
+            $(document).on("click", ".btn-giochieu", function (e) {
+                e.preventDefault();
+                var maLichChieu = $(this).data("lichchieu");
+                var ngayChieu = $(this).data("ngaychieu");
+                var gioChieu = $(this).data("giochieu");    
+                if (ngayChieu && gioChieu) {
+                    var thoiGianChieu = new Date(ngayChieu + " " + gioChieu);
+                    var thoiGianHienTai = new Date();
+
+                    var thoiGianCutoff = new Date(thoiGianChieu.getTime() - (5 * 60 * 1000));
+
+                    if (thoiGianHienTai > thoiGianCutoff) {
+                        alert("Giờ chiếu này đã kết thúc hoặc đã bắt đầu (chỉ được mua vé trước 5 phút). Vui lòng chọn giờ chiếu khác.");
+                        return; 
+                    }
+                } else {
+                    console.warn("Thiếu data-ngaychieu hoặc data-giochieu. Không thể kiểm tra thời gian.");
+                }
+
+                $.get("/Account/CheckLoginStatus", function (isLoggedIn) {
+                    if (!isLoggedIn) {
+                        window.location.href = "/Account/Login?returnUrl=/DatVe/ChonGhe?maLichChieu=" + maLichChieu;
+                    } else {
+                        window.location.href = "/DatVe/Index?maLichChieu=" + maLichChieu;
+                    }
+                });
+            });
+        });
+
+    </script>
+}
+

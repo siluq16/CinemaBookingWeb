@@ -1,0 +1,85 @@
+﻿<nav class="admin-sidebar">
+    <div class="sidebar-header text-center py-3">
+        <h5 class="m-0 text-uppercase fw-bold text-light">Admin</h5>
+    </div>
+
+    <!-- Dashboard (có submenu) -->
+    <div class="menu-group">
+        <a href="#" class="menu-toggle">
+            <span><i class="fa-solid fa-gauge me-2"></i> Dashboard</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </a>
+        <ul class="submenu">
+            <li><a asp-controller="DashBoard" asp-action="Index">Tổng quan</a></li>
+            <li><a asp-controller="DashBoard" asp-action="RevenueByMovie">Doanh thu theo phim</a></li>
+        </ul>
+    </div>
+
+    <!-- Phòng chiếu (có submenu) -->
+    <div class="menu-group">
+        <a href="#" class="menu-toggle">
+            <span><i class="fa-solid fa-building me-2"></i> Quản lý phòng chiếu</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </a>
+        <ul class="submenu">
+            <li><a asp-controller="PhongChieux" asp-action="Index">Danh sách phòng</a></li>
+            <li><a asp-controller="PhongChieux" asp-action="Create">Thêm phòng</a></li>
+        </ul>
+    </div>
+
+    <!-- Phim (có submenu) -->
+    <div class="menu-group">
+        <a href="#" class="menu-toggle">
+            <span><i class="fa-solid fa-film me-2"></i> Quản lý phim</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </a>
+        <ul class="submenu">
+            <li><a asp-controller="Phims" asp-action="Index">Danh sách phim</a></li>
+            <li><a asp-controller="Phims" asp-action="Create">Tạo phim</a></li>
+        </ul>
+    </div>
+
+    <!-- Các mục khác (KHÔNG submenu) -->
+    <div class="menu-group">
+        <a asp-controller="LichChieux" asp-action="Index">
+            <span><i class="fa-solid fa-calendar-days me-2"></i> Quản lý lịch chiếu</span>
+        </a>
+    </div>
+
+    <div class="menu-group">
+        <a asp-controller="HoaDons" asp-action="Index">
+            <span><i class="fa-solid fa-receipt me-2"></i> Quản lý đơn hàng</span>
+        </a>
+    </div>
+
+    <div class="menu-group">
+        <a asp-controller="GiaVes" asp-action="Index">
+            <span><i class="fa-solid fa-ticket me-2"></i> Quản lý giá vé</span>
+        </a>
+    </div>
+
+    <div class="menu-group">
+        <a asp-controller="KhuyenMais" asp-action="Index">
+            <span><i class="fa-solid fa-gift me-2"></i> Quản lý khuyến mãi</span>
+        </a>
+    </div>
+
+    <!-- User (có submenu) -->
+    <div class="menu-group">
+        <a href="#" class="menu-toggle">
+            <span><i class="fa-solid fa-users me-2"></i> Quản lý user</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </a>
+        <ul class="submenu">
+            <li><a asp-controller="Accounts" asp-action="Index">Danh sách user</a></li>
+            <li><a href="#">Thêm user</a></li>
+        </ul>
+    </div>
+
+    <!-- Combo nước (KHÔNG submenu) -->
+    <div class="menu-group">
+        <a asp-controller="DoAns" asp-action="Index">
+            <span><i class="fa-solid fa-mug-hot me-2"></i> Quản lý combo - nước</span>
+        </a>
+    </div>
+</nav>

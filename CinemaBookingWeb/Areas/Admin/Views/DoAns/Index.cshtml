@@ -1,0 +1,267 @@
+﻿@model IEnumerable<CinemaBookingWeb.Models.DoAn>
+@* Sử dụng trực tiếp Model DoAn đã có trong schema của bạn *@
+
+@{
+    ViewData["Title"] = "Quản lý Đồ Ăn, Nước Uống";
+    Layout = "_LayoutAdmin";
+}
+
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Quay lại
+        </a>
+        <button class="btn btn-primary" id="btnAddDoAn">
+            <i class="bi bi-plus-circle"></i> Thêm món ăn
+        </button>
+    </div>
+
+    <div class="table-responsive table-container">
+        <table id="tableDoAn" class="table table-hover table-bordered align-middle text-center w-100">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã</th>
+                    <th>Ảnh</th>
+                    <th>Tên món ăn</th>
+                    <th>Mô tả</th>
+                    <th>Đơn giá (VNĐ)</th>
+                    <th width="140px">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr data-id="@d.MaDoAn">
+                        <td class="fw-semibold">@d.MaDoAn</td>
+                        <td>
+                            <img src="~/images/combo/@d.Anh" class="food-img"
+                                 onerror="this.src='/images/no-image.jpg';" alt="@d.TenDoAn" />
+                        </td>
+                        <td class="fw-bold">@d.TenDoAn</td>
+                        <td>@d.MoTa</td>
+                        <td class="fw-bold text-danger">@d.DonGia.ToString("N0") đ</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-outline-primary me-1 btn-edit">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger btn-delete">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalDoAn" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formDoAn" enctype="multipart/form-data">
+                @* Thêm Anti-forgery Token *@
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalDoAnLabel">Thêm Đồ ăn/Nước uống</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="isEditMode" value="create" />
+                    <div class="mb-2">
+                        <label class="form-label">Mã Đồ ăn (5 ký tự)</label>
+                        <input type="text" class="form-control" name="MaDoAn" id="MaDoAn" required maxlength="5" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Tên Đồ ăn</label>
+                        <input type="text" class="form-control" name="TenDoAn" id="TenDoAn" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Mô tả</label>
+                        <textarea class="form-control" name="MoTa" id="MoTa"></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Đơn giá (VND)</label>
+                        <input type="number" class="form-control" name="DonGia" id="DonGia" required min="0" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Ảnh</label>
+                        <input type="file" class="form-control" name="ImageFile" id="ImageFile" accept="image/*" />
+                        <small class="form-text text-muted" id="fileInstruction">Chỉ chọn khi muốn thay đổi ảnh.</small>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Khởi tạo DataTables
+            $('#tableDoAn').DataTable({
+                language: { url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json" },
+                order: [[0, 'asc']]
+            });
+
+            // 1. Thêm mới
+            $("#btnAddDoAn").click(function () {
+                $("#formDoAn")[0].reset();
+                $("#isEditMode").val("create");
+                $("#MaDoAn").prop('disabled', false).val(''); // Cho phép nhập Mã khi tạo mới
+                $("#modalDoAnLabel").text("Thêm Đồ ăn/Nước uống");
+                $("#fileInstruction").text("Vui lòng chọn ảnh cho món ăn.");
+                $("#modalDoAn").modal("show");
+            });
+
+            // 2. Edit
+            $("#tableDoAn").on("click", ".btn-edit", function () {
+                const id = $(this).closest("tr").data("id");
+
+                // Giả định API GetDoAnById trả về JSON model DoAn
+                $.get("/Admin/ComBo/GetDoAnById/" + id, function (d) {
+                    $("#isEditMode").val("edit");
+                    $("#modalDoAnLabel").text("Chỉnh sửa Đồ ăn/Nước uống");
+
+                    $("#MaDoAn").val(d.maDoAn).prop('disabled', true); // KHÔNG cho phép sửa Mã khi edit
+                    $("#TenDoAn").val(d.tenDoAn);
+                    $("#MoTa").val(d.moTa);
+                    $("#DonGia").val(d.donGia);
+
+                    $("#ImageFile").val(''); // Reset file input
+                    $("#fileInstruction").text("Chỉ chọn khi muốn thay đổi ảnh.");
+
+                    $("#modalDoAn").modal("show");
+                });
+            });
+
+            // 3. Save (Add/Update)
+            $("#formDoAn").submit(function (e) {
+                e.preventDefault();
+                const mode = $("#isEditMode").val();
+                let url = mode === "create" ? "/Admin/ComBo/Create" : "/Admin/ComBo/Update";
+                let formData = new FormData(this);
+                if (mode === "edit") {
+                    formData.set("MaDoAn", $("#MaDoAn").val());
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    headers: {
+                        "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: res => {
+                        Swal.fire({ icon: res.success ? "success" : "error", title: res.message })
+                            .then(() => res.success && location.reload());
+                    },
+                    error: () => {
+                        Swal.fire({ icon: "error", title: "Lỗi kết nối server" });
+                    }
+                });
+            });
+
+            // 4. Delete
+            $("#tableDoAn").on("click", ".btn-delete", function () {
+                const id = $(this).closest("tr").data("id");
+                const ten = $(this).closest("tr").find("td:nth-child(3)").text();
+
+                Swal.fire({
+                    title: `Xóa món "${ten}"?`,
+                    text: "Bạn sẽ không thể hoàn tác thao tác này!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Xóa",
+                    cancelButtonText: "Hủy"
+                }).then(r => {
+                    if (r.isConfirmed) {
+                        $.post("/Admin/ComBo/Delete/" + id, { "__RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() }, function (res) {
+                            Swal.fire({ icon: res.success ? "success" : "error", title: res.message })
+                                .then(() => res.success && location.reload());
+                        }).fail(() => {
+                            Swal.fire({ icon: "error", title: "Lỗi kết nối khi xóa" });
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        .food-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform .25s ease-in-out;
+        }
+
+            .food-img:hover {
+                transform: scale(1.08);
+                cursor: pointer;
+            }
+
+        .table-container {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .dataTables_wrapper .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .dataTables_wrapper .dataTables_filter input,
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #dee2e6;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem; /* 8px */
+            font-size: 0.9rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            max-width: 150px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            padding-right: 1.8rem !important;
+            background-position: right 0.75rem center; /* Mặc định của Bootstrap */
+            background-size: 16px 12px;
+            /* Tùy chọn: Đảm bảo văn bản không bị tràn */
+            text-overflow: ellipsis;
+        }
+
+            /* 2. HIỆU ỨNG FOCUS: Tương tự Bootstrap */
+            .dataTables_wrapper .dataTables_filter input:focus,
+            .dataTables_wrapper .dataTables_length select:focus {
+                border-color: #80bdff; /* Màu xanh khi focus */
+                box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+                outline: none; /* Bỏ outline mặc định */
+            }
+
+        .dataTables_wrapper .dataTables_filter label {
+            /* Đảm bảo chữ "Tìm kiếm" không bị dính vào input */
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+
+        /* 4. ĐIỀU CHỈNH CHUẨN BOOTSTRAP */
+        /* DataTables thường tạo ra các thẻ label, ta nên định dạng chúng */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin-bottom: 1rem;
+        }
+    </style>
+}
