@@ -27,6 +27,7 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
         [Route("DanhSach")]
         public async Task<IActionResult> Index()
         {
+            var today = DateOnly.FromDateTime(DateTime.Today);
             var lichChieux = await _context.LichChieus
                 .Include(l => l.MaPhimNavigation)
                 .Include(l => l.MaPhongNavigation)
@@ -34,7 +35,12 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
                 .ThenBy(l => l.GioBatDau)
                 .ToListAsync();
 
-            ViewBag.PhimList = await _context.Phims.ToListAsync();
+            ViewBag.PhimList = await _context.Phims
+                .Where(p =>
+                    p.NgayKetThuc == null ||     
+                    p.NgayKetThuc >= today      
+                )
+        .ToListAsync();
             ViewBag.PhongList = await _context.PhongChieus.ToListAsync();
 
             return View(lichChieux);
@@ -68,6 +74,30 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
                     GioBatDau = TimeOnly.Parse(model.GioBatDau),
                     GioKetThuc = TimeOnly.Parse(model.GioKetThuc)
                 };
+                var phim = await _context.Phims.FindAsync(lich.MaPhim);
+
+                if (phim == null)
+                {
+                    return Json(new { success = false, message = "Lỗi: Không tìm thấy thông tin phim!" });
+                }
+
+                if (lich.NgayChieu < phim.NgayKhoiChieu)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = $"⚠ Ngày chiếu ({lich.NgayChieu}) không được trước Ngày Khởi Chiếu ({phim.NgayKhoiChieu})!"
+                    });
+                }
+
+                if (phim.NgayKetThuc.HasValue && lich.NgayChieu > phim.NgayKetThuc.Value)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = $"⚠ Ngày chiếu ({lich.NgayChieu}) không được sau Ngày Kết Thúc ({phim.NgayKetThuc.Value})!"
+                    });
+                }
                 var newStart = lich.NgayChieu.ToDateTime(lich.GioBatDau);
                 var newEnd = (lich.GioKetThuc >= lich.GioBatDau)
                     ? lich.NgayChieu.ToDateTime(lich.GioKetThuc)

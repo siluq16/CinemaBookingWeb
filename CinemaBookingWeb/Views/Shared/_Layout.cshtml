@@ -53,7 +53,12 @@
                                     {
                                         <a href="@Url.Action("Profile", "Account")">Xin chào, @User.Identity.Name</a>
                                     }
-                                    <a href="@Url.Action("Logout", "Account")">Đăng Xuất</a>
+                                    <form asp-controller="Account" asp-action="Logout" method="post" class="w-100">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt me-2"></i> Đăng Xuất
+                                        </button>
+                                    </form>
                                 </div>
                             </li>
                         }

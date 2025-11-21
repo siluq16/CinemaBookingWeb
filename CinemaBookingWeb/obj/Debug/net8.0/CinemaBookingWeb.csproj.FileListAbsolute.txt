@@ -529,3 +529,6 @@ D:\nam3\ki1\BTLWEB\CinemaBookingWeb\CinemaBookingWeb\obj\Debug\net8.0\refint\Cin
 D:\nam3\ki1\BTLWEB\CinemaBookingWeb\CinemaBookingWeb\obj\Debug\net8.0\CinemaBookingWeb.pdb
 D:\nam3\ki1\BTLWEB\CinemaBookingWeb\CinemaBookingWeb\obj\Debug\net8.0\CinemaBookingWeb.genruntimeconfig.cache
 D:\nam3\ki1\BTLWEB\CinemaBookingWeb\CinemaBookingWeb\obj\Debug\net8.0\ref\CinemaBookingWeb.dll
+D:\nam3\ki1\BTLWEB\CinemaBookingWeb\CinemaBookingWeb\obj\Debug\net8.0\CinemaBookingWeb.sourcelink.json
+D:\nam3\ki1\BTLWEB\CinemaBookingWeb\CinemaBookingWeb\bin\Debug\net8.0\Castle.Core.dll
+D:\nam3\ki1\BTLWEB\CinemaBookingWeb\CinemaBookingWeb\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Proxies.dll

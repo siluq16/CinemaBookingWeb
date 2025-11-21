@@ -3,16 +3,40 @@
   "WorkspaceRootPath": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\views\\datve\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\views\\datve\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\wwwroot\\css\\home.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\wwwroot\\css\\home.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\controllers\\datvecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\controllers\\datvecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\areas\\admin\\views\\hoadons\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\areas\\admin\\views\\hoadons\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\areas\\admin\\views\\khuyenmais\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\areas\\admin\\views\\khuyenmais\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\areas\\admin\\views\\shared\\_adminheader.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\areas\\admin\\views\\shared\\_adminheader.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\areas\\admin\\controllers\\lichchieuxcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\areas\\admin\\controllers\\lichchieuxcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\models\\phim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\models\\phim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +46,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,40 +54,120 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "site.css",
-              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\wwwroot\\css\\site.css",
-              "RelativeDocumentMoniker": "CinemaBookingWeb\\wwwroot\\css\\site.css",
-              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\wwwroot\\css\\site.css",
-              "RelativeToolTip": "CinemaBookingWeb\\wwwroot\\css\\site.css",
-              "ViewState": "AgIAABUAAAAAAAAAAAAAADAAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-11-18T11:53:25.304Z",
+              "DocumentIndex": 1,
+              "Title": "DatVeController.cs",
+              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Controllers\\DatVeController.cs",
+              "RelativeDocumentMoniker": "CinemaBookingWeb\\Controllers\\DatVeController.cs",
+              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Controllers\\DatVeController.cs",
+              "RelativeToolTip": "CinemaBookingWeb\\Controllers\\DatVeController.cs",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAAwHUAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-21T11:06:55.963Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "home.css",
-              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\wwwroot\\css\\home.css",
-              "RelativeDocumentMoniker": "CinemaBookingWeb\\wwwroot\\css\\home.css",
-              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\wwwroot\\css\\home.css",
-              "RelativeToolTip": "CinemaBookingWeb\\wwwroot\\css\\home.css",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAAADMAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-11-18T11:52:26.837Z"
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Views\\DatVe\\Index.cshtml",
+              "RelativeDocumentMoniker": "CinemaBookingWeb\\Views\\DatVe\\Index.cshtml",
+              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Views\\DatVe\\Index.cshtml",
+              "RelativeToolTip": "CinemaBookingWeb\\Views\\DatVe\\Index.cshtml",
+              "ViewState": "AgIAAHsAAAAAAAAAAAAAAIcAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-21T11:06:54.43Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Areas\\Admin\\Views\\KhuyenMais\\Index.cshtml",
+              "RelativeDocumentMoniker": "CinemaBookingWeb\\Areas\\Admin\\Views\\KhuyenMais\\Index.cshtml",
+              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Areas\\Admin\\Views\\KhuyenMais\\Index.cshtml",
+              "RelativeToolTip": "CinemaBookingWeb\\Areas\\Admin\\Views\\KhuyenMais\\Index.cshtml",
+              "ViewState": "AgIAAHsAAAAAAAAAAAAAAJgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-21T10:20:40.675Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "CinemaBookingWeb\\Views\\Home\\Index.cshtml",
-              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "CinemaBookingWeb\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAH8AAAAgAAAAAAAAAA==",
+              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Areas\\Admin\\Views\\HoaDons\\Index.cshtml",
+              "RelativeDocumentMoniker": "CinemaBookingWeb\\Areas\\Admin\\Views\\HoaDons\\Index.cshtml",
+              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Areas\\Admin\\Views\\HoaDons\\Index.cshtml",
+              "RelativeToolTip": "CinemaBookingWeb\\Areas\\Admin\\Views\\HoaDons\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEcAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-18T11:50:54.718Z"
+              "WhenOpened": "2025-11-21T10:20:09.127Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "CinemaBookingWeb\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "CinemaBookingWeb\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAADkAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-21T10:10:48.98Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "CinemaBookingWeb\\Controllers\\AccountController.cs",
+              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "CinemaBookingWeb\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAHYAAAAAAAAAAAAmwJsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-21T10:08:10.099Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "_AdminHeader.cshtml",
+              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Areas\\Admin\\Views\\Shared\\_AdminHeader.cshtml",
+              "RelativeDocumentMoniker": "CinemaBookingWeb\\Areas\\Admin\\Views\\Shared\\_AdminHeader.cshtml",
+              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Areas\\Admin\\Views\\Shared\\_AdminHeader.cshtml",
+              "RelativeToolTip": "CinemaBookingWeb\\Areas\\Admin\\Views\\Shared\\_AdminHeader.cshtml",
+              "ViewState": "AgIAACAAAAAAAAAAAAAYwD8AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-21T10:06:50.977Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Phim.cs",
+              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Models\\Phim.cs",
+              "RelativeDocumentMoniker": "CinemaBookingWeb\\Models\\Phim.cs",
+              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Models\\Phim.cs",
+              "RelativeToolTip": "CinemaBookingWeb\\Models\\Phim.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAA9wCEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-21T10:01:22.071Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "LichChieuxController.cs",
+              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Areas\\Admin\\Controllers\\LichChieuxController.cs",
+              "RelativeDocumentMoniker": "CinemaBookingWeb\\Areas\\Admin\\Controllers\\LichChieuxController.cs",
+              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Areas\\Admin\\Controllers\\LichChieuxController.cs",
+              "RelativeToolTip": "CinemaBookingWeb\\Areas\\Admin\\Controllers\\LichChieuxController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-21T09:59:58.108Z",
+              "EditorCaption": ""
             }
           ]
         }

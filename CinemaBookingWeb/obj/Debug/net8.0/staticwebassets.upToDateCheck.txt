@@ -7,7 +7,10 @@ wwwroot\css\home.css
 wwwroot\css\lichchieu.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
-wwwroot\images\combo\4ed6d79a-9f23-4275-9c31-b8c9da567613.jpg
+wwwroot\images\combo\285a6b53-1d30-428a-a0e3-19ae250e4cd0.png
+wwwroot\images\combo\46aee2b4-f009-46e2-bfdf-56d83e17e7ed.png
+wwwroot\images\combo\7b675611-9980-4d7e-8e69-d04107920568.png
+wwwroot\images\combo\b8029f15-130f-40df-8d40-253b71bd14a9.png
 wwwroot\images\event\1.png
 wwwroot\images\event\2.png
 wwwroot\images\event\3.jpg

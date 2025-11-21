@@ -131,18 +131,16 @@
                                 }).then(() => {
                                     if (response.success) {
                                         const row = btn.closest('tr');
-                                        const statusCell = row.find('td').eq(3); // cột Ngày tạo là index 3, thêm cột trạng thái nếu có thể
-                                        const badgeCell = row.find('td').eq(2); // cột Vai trò
+                                        const statusCell = row.find('td').eq(3); 
+                                        const badgeCell = row.find('td').eq(2);
                                         if (action === 'Lock') {
                                             btn.data('action', 'Unlock');
                                             btn.removeClass('btn-outline-danger').addClass('btn-outline-success');
                                             btn.html('<i class="bi bi-unlock"></i> Mở khóa');
-                                            row.find('td').eq(2).text('Locked'); 
                                         } else {
                                             btn.data('action', 'Lock');
                                             btn.removeClass('btn-outline-success').addClass('btn-outline-danger');
                                             btn.html('<i class="bi bi-lock"></i> Khóa');
-                                            row.find('td').eq(2).text('Active'); 
                                         }
                                     }
                                 });
@@ -164,7 +162,7 @@
                 if ($(e.target).closest('.btn-manage-status').length > 0) {
                     return;
                 }
-                const username = $(this).data('id'); // ID = TenDangNhap
+                const username = $(this).data('id'); 
                 if (username) {
                     window.location.href = `/Admin/User/ChinhSua/${username}`;  
                 }

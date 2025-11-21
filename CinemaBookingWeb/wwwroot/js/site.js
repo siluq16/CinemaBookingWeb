@@ -49,15 +49,3 @@ window.onload = function () {
         }
     });
 };
-
-
-window.addEventListener("scroll", () => {
-    if (window.scrollY > 50) {
-        search.style.background = 'rgba(20, 20, 20, 0.7)';
-        search.style.backdropFilter = 'blur(10px)';
-    }
-    else {
-        search.style.backdropFilter = ''
-        search.style.background = '';
-    }
-})

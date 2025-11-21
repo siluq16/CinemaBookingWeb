@@ -68,10 +68,16 @@
 
         localStorage.setItem("totalPrice", finalTotal);
     }
+    window.stopPaymentCountdown = function() {
+        if (paymentCountdownInterval) {
+            clearInterval(paymentCountdownInterval);
+            console.log("Đã dừng bộ đếm ngược thanh toán thành công.");
+        }
+    }
 
     function initPaymentSection() {
         console.log("initPaymentSection chạy");
-        const maLichChieu = "@(ViewBag.MaLich ?? "")"; // Giả định MaLich được truyền hoặc lấy từ Index.cshtml scope
+        const maLichChieu = "@(ViewBag.MaLich ?? "")"; 
         const seats = JSON.parse(localStorage.getItem("selectedSeats") || "[]");
         const combos = JSON.parse(localStorage.getItem("selectedCombos") || "[]");
         const totalString = localStorage.getItem("totalPrice") || "0";

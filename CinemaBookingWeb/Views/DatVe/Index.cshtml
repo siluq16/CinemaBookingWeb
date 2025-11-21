@@ -127,15 +127,25 @@
                     data: { maLichChieu: maLich, maGhe: seatList },
                     success: function (result) {
                         if (typeof result === 'object' && result.success === false) {
-                        alert("❌ Lỗi đặt ghế: " + result.message);
-                        return;
-                     }
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi đặt vé',
+                                text: result.message,
+                                confirmButtonText: 'Đóng'
+                            });
+                            return;
+                        }
                         $("#contentContainer").html(result);
                         $("#btnQuayLaiGhe").show();
                         btn.text("Tiếp tục thanh toán →");
                     },
                     error: function () {
-                        alert("Không thể tải danh sách combo. Vui lòng thử lại.");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi hệ thống',
+                            text: 'Không thể tải danh sách combo. Vui lòng thử lại.',
+                            confirmButtonText: 'Đóng'
+                        });
                     }
                 });
             }
@@ -217,7 +227,7 @@
 
                                 btn.off('click');
                                 btn.prop('disabled', false); // Kích hoạt lại nút
-
+                                stopPaymentCountdown();
                                 btn.on('click', function() {
                                     window.location.href = "/Home/Index";
                                 });

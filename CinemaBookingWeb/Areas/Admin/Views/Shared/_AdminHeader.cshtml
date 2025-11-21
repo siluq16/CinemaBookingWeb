@@ -48,7 +48,26 @@
         </ol>
     </div>
 
-    <div class="admin-avatar">
-        <img src="~/images/admin-avatar.jpg" alt="Admin" class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
+    <div class="admin-avatar dropdown">
+        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="~/images/admin-avatar.jpg" alt="Admin" class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownUser1">
+            <li>
+                <a class="dropdown-item" href="#">
+                    <i class="fas fa-user-circle me-2"></i> Hồ sơ
+                </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+
+            <li>
+                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="dropdown-item text-danger">
+                        <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
+                    </button>
+                </form>
+            </li>
+        </ul>
     </div>
 </div>

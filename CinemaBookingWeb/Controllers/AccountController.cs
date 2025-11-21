@@ -147,12 +147,13 @@ namespace CinemaBookingWeb.Controllers
         }
 
         // -------------------- [ Logout ] --------------------
+        [HttpPost]
+        [ValidateAntiForgeryToken] 
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
         }
-
         [HttpGet]
         public async Task<IActionResult> Profile()
         {

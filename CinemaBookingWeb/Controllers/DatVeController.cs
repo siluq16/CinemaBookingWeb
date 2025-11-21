@@ -92,9 +92,38 @@ namespace CinemaBookingWeb.Controllers
                 return Json(new { success = false, message = $"Ghế {string.Join(", ", gheBiTrung)} vừa được người khác chọn hoặc đặt. Vui lòng chọn lại." });
             }
             var lichChieu = await _context.LichChieus
+                .Include(l => l.MaPhimNavigation)
                 .FirstOrDefaultAsync(l => l.MaLich == maLichChieu);
             if (lichChieu == null)
                 return Json(new { success = false, message = "Không tìm thấy lịch chiếu." });
+            var phim = lichChieu.MaPhimNavigation;
+            var khachHang = await _context.KhachHangs
+        .FirstOrDefaultAsync(kh => kh.MaKh == maKH);
+
+            if (khachHang == null || !khachHang.NgaySinh.HasValue)
+            {
+                if (phim.DoTuoi > 0)
+                {
+                    return Json(new { success = false, message = "⚠ Vui lòng cập nhật Ngày Sinh trong hồ sơ để xác minh độ tuổi." });
+                }
+            }
+            else if (phim.DoTuoi > 0)
+            {
+                var today = DateTime.Today;
+                int age = today.Year - khachHang.NgaySinh.Value.Year;
+                if (khachHang.NgaySinh.Value.ToDateTime(TimeOnly.MinValue).Date > today.AddYears(-age))
+                {
+                    age--;
+                }
+                if (age < phim.DoTuoi)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = $"🚫 Phim '{phim.TenPhim}' yêu cầu độ tuổi tối thiểu là **{phim.DoTuoi}** tuổi. Tuổi của bạn là {age}."
+                    });
+                }
+            }
 
             string loaiNgay = (lichChieu.NgayChieu.DayOfWeek == DayOfWeek.Saturday || lichChieu.NgayChieu.DayOfWeek == DayOfWeek.Sunday)
                 ? "CuoiTuan" : "Thuong";
