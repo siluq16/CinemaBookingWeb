@@ -37,17 +37,17 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
         [Route("DanhSach")]
         public async Task<IActionResult> Index()
         {
-            ViewBag.CurrentUsername = User.Identity.Name; // Giả định Tên đăng nhập được lưu trong ClaimTypes.Name
+            ViewBag.CurrentUsername = User.Identity.Name; 
 
             var allAccounts = await _context.Accounts
-                .Include(a => a.MaDoiTuongNavigation) // Bao gồm thông tin Khách hàng
+                .Include(a => a.MaDoiTuongNavigation) 
                 .Select(a => new AccountViewModel
                 {
                     TenDangNhap = a.TenDangNhap,
                     VaiTro = a.VaiTro,
                     TrangThai = a.TrangThai,
-                    NgayTao = a.MaDoiTuongNavigation != null ? a.MaDoiTuongNavigation.NgayTao : a.MaDoiTuongNavigation.NgayTao, // Giữ nguyên logic cũ
-                    HoTen = a.MaDoiTuongNavigation != null ? a.MaDoiTuongNavigation.HoTen : a.TenDangNhap, // Nếu không phải KH, dùng TenDangNhap làm Họ tên
+                    NgayTao = a.MaDoiTuongNavigation != null ? a.MaDoiTuongNavigation.NgayTao : a.MaDoiTuongNavigation.NgayTao, 
+                    HoTen = a.MaDoiTuongNavigation != null ? a.MaDoiTuongNavigation.HoTen : a.TenDangNhap,
                     Email = a.MaDoiTuongNavigation.Email,
                     SoDienThoai = a.MaDoiTuongNavigation.SoDienThoai,
                     Avatar = a.MaDoiTuongNavigation.Avatar,
@@ -85,8 +85,8 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
             {
                 try
                 {
-                    string maDoiTuong = null;
-                    string savedAvatar = null;
+                    string? maDoiTuong = null;
+                    string? savedAvatar = null;
                     if (model.VaiTro == "KhachHang")
                     {
                         maDoiTuong = $"KH{DateTime.Now.Ticks.ToString().Substring(0, 8)}";
@@ -138,7 +138,6 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            // 1. Tìm Account bằng TenDangNhap
             var account = await _context.Accounts
                 .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.TenDangNhap == id);
@@ -150,7 +149,6 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
 
             KhachHang khachHang = null;
 
-            // 2. Nếu có MaDoiTuong, tìm hồ sơ Khách hàng
             if (!string.IsNullOrEmpty(account.MaDoiTuong))
             {
                 khachHang = await _context.KhachHangs

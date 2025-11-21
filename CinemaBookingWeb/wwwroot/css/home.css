@@ -10,6 +10,11 @@
     --comment-date: #8A8A8A;
     --warning: #E50914;
     --yellow: #EEE62F;
+    --primary-red: #e50914; /* Màu đỏ thương hiệu */
+    --bg-dark: #141414; /* Màu nền web */
+    --card-bg: #1f1f1f; /* Màu nền card */
+    --text-gray: #b3b3b3; /* Màu chữ phụ */
+    --gold: #f5c518; /* Màu vàng (nếu muốn giữ điểm nhấn) */
 }
 
 ::-webkit-scrollbar {
@@ -53,137 +58,142 @@ img {
     position: absolute;
 }
 
-
-/* ----------------------------------- */
+/* --- CẤU TRÚC SWIPER --- */
 .swiper {
     width: 100%;
-    height: 100%;
+    height: 85vh; /* Giảm xuống một chút thay vì 100vh để thấy nội dung dưới */
     position: relative;
-    top: 0;
-    left: 0;
-    right: 0;
-}
-
-.swiper-button-next, .swiper-button-prev {
-    color: #fff;
-    padding: 10px;
-    border-radius: 50%;
-    font-size: 12px;
-}
-
-    .swiper-button-next:hover, .swiper-button-prev:hover {
-        color: var(--warning); /* Nền vàng khi hover */
-    }
-
-.swiper-slide {
-    background-image: url(../img/bg/ted-bg.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
 }
 
 .swiper-slide {
+    position: relative;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    overflow: hidden;
 }
 
-    .swiper-slide .swiper-container {
-        width: 80%;
+.slide-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(30px); /* Làm mờ ảnh background */
+    transform: scale(1.1); /* Phóng to nhẹ để che các cạnh bị mờ */
+    z-index: 0;
+}
+.slide-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Gradient từ đen đặc sang trong suốt để làm nổi bật chữ bên trái */
+    background: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.4) 100%);
+    z-index: 1;
+}
+
+.swiper-slide .swiper-container {
+    position: relative;
+    z-index: 2; /* Đảm bảo nội dung nằm trên background */
+    width: 100%;
+    max-width: 1200px; /* Giới hạn chiều rộng để nội dung không bị loãng */
+    padding: 0 15px;
+}
+
+/* --- 4. POSTER BÊN PHẢI (FRAME) --- */
+.poster-frame {
+    width: 300px; /* Kích thước cố định cho poster */
+    height: 450px;
+    margin: 0 auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.7); /* Đổ bóng sâu tạo hiệu ứng nổi */
+    transform: perspective(1000px) rotateY(-10deg); /* Xoay nhẹ tạo hiệu ứng 3D */
+    transition: transform 0.5s ease;
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+    .poster-frame:hover {
+        transform: perspective(1000px) rotateY(0deg) scale(1.05);
     }
 
-.swiper-container .type {
+    .poster-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+/* --- 5. STYLE CHO TEXT & NÚT --- */
+
+/* Thể loại phim */
+.type {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
 }
 
-    .swiper-container .type .line {
-        height: 30px;
-        width: 1px;
-        background-color: var(--gray);
-    }
-
-    .swiper-container .type p {
-        color: var(--gray);
-        font-size: 1.2rem;
-    }
-
-.swiper-container .movie-title {
-    width: 80%;
-    margin-top: 1rem;
+.genre-tag {
+    color: #ccc;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    background: rgba(0,0,0,0.3);
 }
 
-    .swiper-container .movie-title h2 {
-        font-family: 'Libre Baskerville',sans-serif;
-        color: #fff;
-        font-size: 3.5rem;
-        line-height: 1.2;
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); /* Thêm bóng chữ */
-    }
-
-    .swiper-container .movie-title p {
-        color: #ddd;
-        font-weight: 400;
-        margin-top: 1rem;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 4;
-        -webkit-box-orient: vertical;
-        width: 80%;
-        overflow: hidden;
-    }
-
-.swiper-container .movie-rating {
-    margin-top: 2rem;
-    width: auto; /* Tự động điều chỉnh chiều rộng */
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 2rem; /* Giảm khoảng cách giữa các mục */
-}
-
-    .swiper-container .movie-rating p {
-        color: #fff;
-        font-size: 1.1rem; /* Kích thước vừa phải */
-        font-weight: 500;
-        margin: 0;
-    }
-
-    /* Thiết kế lại khung độ tuổi (Rating Rect) */
-    .swiper-container .movie-rating .rect {
-        border-radius: 5px; /* Góc bo tròn nhẹ */
-        min-width: 45px;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-/* Áp dụng màu nền cho từng độ tuổi */
-.rect[data-age="3+"],
-.rect[data-age="7+"],
-.rect[data-age="13+"],
-.rect[data-age="16+"],
-.rect[data-age="18+"],
-.rect[data-age="P"] {
-    text-transform: uppercase;
-    padding: 5px 10px; /* Padding đồng nhất */
+/* Tiêu đề & Mô tả */
+.movie-title h2 {
+    font-family: 'Libre Baskerville', serif;
+    color: #fff;
+    font-size: 3.5rem;
     font-weight: 700;
-    color: #fff; /* Chữ trắng trên nền màu */
-    font-size: 0.9rem;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    text-shadow: 2px 4px 10px rgba(0,0,0,0.5);
 }
 
-.rect[data-age="3+"] {
+.movie-title p {
+    color: #e0e0e0;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 90%;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Giới hạn 3 dòng mô tả */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Rating & Thời lượng */
+.movie-rating {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 1.5rem 0;
+}
+
+    .movie-rating .duration {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .movie-rating .rect {
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: #fff;
+        text-transform: uppercase;
+    }
+.rect[data-age="3+"], .rect[data-age="P"] {
     background-color: #579b41;
-}
-
-.rect[data-age="7+"] {
-    background-color: #006ee6;
 }
 
 .rect[data-age="13+"] {
@@ -198,359 +208,348 @@ img {
     background-color: #9b2020;
 }
 
-.rect[data-age="P"] {
-    background-color: #579b41;
-}
-/* Xử lý trường hợp "P" */
-.swiper-container .movie-btn {
+.movie-btn {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1.5rem;
+    gap: 15px;
     margin-top: 2rem;
 }
 
-.movie-btn .btn-1 {
-    width: 175px;
-    height: 45px;
-    background-color: #fff;
-    color: var(--warning);
-    text-align: center;
-    align-content:center;
-    border-radius: 25px;
-    -webkit-border-radius: 25px;
-    -moz-border-radius: 25px;
-    -ms-border-radius: 25px;
-    -o-border-radius: 25px;
-    border: none;
-    outline: none;
-    font-size: 1rem;
+.btn-1, .btn-2 {
+    padding: 12px 30px;
+    border-radius: 30px;
     font-weight: 700;
-    font-family: 'Montserrat',sans-serif;
-    letter-spacing: 1.1px;
-    cursor: pointer;
-    transition: all 0.25s ease-in-out;
-    -webkit-transition: all 0.25s ease-in-out;
-    -moz-transition: all 0.25s ease-in-out;
-    -ms-transition: all 0.25s ease-in-out;
-    -o-transition: all 0.25s ease-in-out;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-    .movie-btn .btn-1:hover {
-        background-color: var(--warning);
-        color: #fff;
-    }
-
-.movie-btn .btn-2 {
-    width: 175px;
-    height: 45px;
-    background-color: var(--warning);
+.btn-1 {
+    background-color: #e50914; /* Đỏ Netflix */
     color: #fff;
-    text-align: center;
-    align-content: center;
-    border-radius: 25px;
-    -webkit-border-radius: 25px;
-    -moz-border-radius: 25px;
-    -ms-border-radius: 25px;
-    -o-border-radius: 25px;
-    border: none;
-    outline: none;
-    font-size: 1rem;
-    font-weight: 700;
-    font-family: 'Montserrat',sans-serif;
-    letter-spacing: 1.1px;
-    cursor: pointer;
-    transition: all 0.25s ease-in-out;
-    -webkit-transition: all 0.25s ease-in-out;
-    -moz-transition: all 0.25s ease-in-out;
-    -ms-transition: all 0.25s ease-in-out;
-    -o-transition: all 0.25s ease-in-out;
+    border: 2px solid #e50914;
 }
 
-    .movie-btn .btn-2:hover {
-        color: var(--warning);
+    .btn-1:hover {
+        background-color: transparent;
+        color: #e50914;
+    }
+
+.btn-2 {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+    .btn-2:hover {
         background-color: #fff;
+        color: #000;
     }
 
 
+.swiper-button-next, .swiper-button-prev {
+    color: #fff;
+    width: 50px; /* Chiều rộng nút */
+    height: 50px; /* Chiều cao nút */
+    transition: all 0.3s ease;
+}
+
+    .swiper-button-next::after, .swiper-button-prev::after {
+        display: none !important;
+        font-weight: bold;
+    }
+
+    .swiper-button-next:hover, .swiper-button-prev:hover {
+        color: #e50914; /* Đổi nền sang đỏ */
+        transform: scale(1.1); /* Phóng to nhẹ */
+    }
+
+.swiper-button-prev {
+    left: 20px;
+}
+
+.swiper-button-next {
+    right: 20px;
+}
+
+/* Trên mobile thì ẩn nút đi cho đỡ vướng (người dùng sẽ vuốt tay) */
+@media (max-width: 768px) {
+    .swiper-button-next, .swiper-button-prev {
+        display: none;
+    }
+}
+
+@media (max-width: 991px) {
+    .movie-title h2 {
+        font-size: 2.5rem;
+    }
+
+    .poster-frame {
+        display: none;
+    }
+    .swiper {
+        height: auto;
+        min-height: 600px;
+        padding: 50px 0;
+    }
+
+    .slide-bg {
+        filter: blur(20px) brightness(0.3);
+    }
+}
 
 
-/* ----------------- */
+/* --- --- */
+
 .slider-container {
     width: 100%;
-    margin: 5% auto 4rem; 
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+    margin: 4rem auto;
+    position: relative;
+    padding: 0 20px;
 }
 
     .slider-container .owl-container {
-        width: 90%;
-        margin: 2rem auto; /* Tăng margin cho đẹp hơn */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        overflow: hidden;
+        width: 100%;
+        max-width: 1400px; /* Giới hạn chiều rộng để không bị bè ra trên màn hình to */
+        margin: 0 auto;
+        position: relative;
     }
 
-    .slider-container .slider-content {
-        margin: 0 5%;
-    }
-
+/* --- TIÊU ĐỀ SECTION --- */
 .slider-content h1 {
-    color: var(--yellow); /* Sử dụng màu vàng nổi bật */
-    font-weight: 700;
-    font-size: 2.2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 2rem;
     text-transform: uppercase;
-    text-shadow: 0 0 5px rgba(255, 255, 0, 0.5), 0 0 10px rgba(255, 255, 0, 0.3); 
-    font-family: 'Lemon', cursive;
-    margin-bottom: 2rem; /* Thêm khoảng cách dưới tiêu đề */
+    font-family: 'Montserrat', sans-serif; /* Font hiện đại hơn Lemon */
+    margin-bottom: 2rem;
+    position: relative;
+    padding-left: 15px;
+    border-left: 5px solid var(--primary-red); /* Điểm nhấn gạch đỏ bên trái */
+    line-height: 1;
 }
 
-/* --- OWL CAROUSEL CƠ BẢN --- */
-.owl-theme {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+/* --- OWL CAROUSEL --- */
+.owl-stage-outer {
+    padding: 20px 0; /* Tạo khoảng trống để shadow không bị cắt */
+    overflow: visible !important; /* Cho phép shadow hiển thị ra ngoài */
 }
 
 /* --- THẺ PHIM (CARDS) --- */
 .cards {
-    /* Tối ưu hóa kích thước cho thiết kế cinema, tăng chiều cao */
-    width: 250px; /* Tăng chiều rộng từ 220px lên 250px */
-    height: 440px;
-    position: relative;
+    width: 100%;
+    background-color: var(--card-bg);
+    border-radius: 8px;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Bắt đầu từ trên xuống */
-    border-radius: 10px; /* Bo tròn góc nhiều hơn */
-    background-color: #2a2a2a; /* Nền tối nhẹ cho thẻ phim */
-    /* Box shadow tinh tế hơn */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    border: 1px solid #333;
 }
 
     .cards:hover {
-        /* Hiệu ứng 3D nhẹ khi hover */
-        transform: translateY(-5px) scale(1.03); 
-        box-shadow: 0 15px 30px rgba(255, 255, 0, 0.4); /* Shadow màu vàng khi hover */
+        transform: translateY(-10px); /* Nổi lên cao hơn */
+        box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+        border-color: #555;
+        z-index: 2; /* Đè lên các phần tử khác */
     }
 
-    .cards .card-img {
-        width: 100%;
-        /* Thay đổi chiều cao để ảnh poster chiếm phần lớn */
-        height: 350px; 
-        position: relative;
-        overflow: hidden;
-        border-radius: 10px 10px 0 0;
-    }
-
-        .cards .card-img a {
-            display: block;
-        }
-
-        .cards .card-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-        
-        /* Hiệu ứng zoom nhẹ cho ảnh khi hover thẻ */
-        .cards:hover .card-img img {
-            transform: scale(1.05); 
-        }
-
-        .cards .card-img .img-title {
-            position: absolute;
-            right: 15px; /* Cách lề phải 10px */
-            top: 15px; /* Cách lề trên 10px */
-            width: 60px; /* Kích thước lớn hơn */
-            height: 60px;
-            background-color: var(--yellow);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            border-radius: 50%; /* Hình tròn đẹp mắt */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            padding: 5px;
-            z-index: 10;
-        }
-
-.img-title h4 {
-    font-size: 1rem;
-    margin: 0;
-    color: #000;
-    font-weight: 700;
-}
-
-.img-title p {
-    display: none; /* Ẩn thể loại ở đây để tránh trùng lặp */
-}
-
-/* --- THÔNG TIN PHIM --- */
-.cards .card-title {
-    text-align: center;
-    padding: 0.8rem 0.5rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.card-title a {
-    text-decoration: none;
-}
-
-.card-title h3 {
-    color: #fff;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.2rem;
-    /* Giới hạn tên phim 2 dòng */
+/* --- ẢNH POSTER --- */
+.card-img {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2/3; /* Tỉ lệ chuẩn poster */
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    text-overflow: ellipsis;
 }
 
-.card-title h3:hover {
-    color: var(--yellow); /* Đổi màu vàng khi hover */
+    .card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+/* Hiệu ứng zoom ảnh khi hover */
+.cards:hover .card-img img {
+    transform: scale(1.1);
+    filter: brightness(0.7); /* Làm tối ảnh một chút để nổi bật chữ */
+}
+
+/* --- NHÃN ĐỘ TUỔI (IMG TITLE) --- */
+/* Sửa lại thành dạng Tag nhỏ gọn ở góc */
+.img-title {
+    position: absolute;
+    top: 10px;
+    left: 10px; /* Chuyển sang trái */
+    background-color: rgba(0,0,0,0.7);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.2);
+    z-index: 10;
+}
+
+    .img-title h4 {
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .img-title p {
+        display: none;
+    }
+
+/* --- PHẦN NỘI DUNG DƯỚI CARD --- */
+.card-title {
+    padding: 1rem;
+    text-align: left; /* Canh trái nhìn chuyên nghiệp hơn */
+}
+
+    .card-title h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+        color: #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: color 0.3s;
+    }
+
+.cards:hover .card-title h3 {
+    color: var(--primary-red);
 }
 
 .card-title p {
-    color: #b0b0b0; /* Màu xám nhạt dễ đọc */
-    font-weight: 400;
+    color: var(--text-gray);
     font-size: 0.85rem;
-    margin-top: 0;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* --- THANH ĐIỀU HƯỚNG OWL NAV --- */
+/* --- NÚT ĐIỀU HƯỚNG (ARROWS) --- */
 .owl-nav {
-    display: flex;
-    justify-content: space-between;
     position: absolute;
+    top: 45%;
     width: 100%;
-    top: 50%;
     transform: translateY(-50%);
-    z-index: 5;
-    /* Tăng khoảng cách ra lề */
-    padding: 0 5px; 
+    height: 0;
+    z-index: 0;
+    pointer-events: none; /* Để click xuyên qua vùng trống */
 }
 
-.owl-nav .owl-prev, .owl-nav .owl-next {
-    width: 40px;
-    height: 40px;
-    background-color: rgba(0, 0, 0, 0.6); /* Nền tối mờ */
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 0.3s, color 0.3s;
-    outline: none; /* Xóa viền focus mặc định */
+    .owl-nav button.owl-prev,
+    .owl-nav button.owl-next {
+        position: absolute;
+        width: 45px;
+        height: 45px;
+        background-color: rgba(0,0,0,0.5) !important;
+        border-radius: 50% !important;
+        color: #fff !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important; /* Viền mỏng sang trọng */
+        font-size: 2rem !important;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
+        pointer-events: auto; /* Bật lại click cho nút */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        backdrop-filter: blur(5px);
+    }
+
+    /* Đẩy nút ra ngoài một chút */
+    .owl-nav button.owl-prev {
+        left: -150px;
+    }
+
+    .owl-nav button.owl-next {
+        right: -150px;
+    }
+
+        .owl-nav button.owl-prev:hover,
+        .owl-nav button.owl-next:hover {
+            background-color: var(--primary-red) !important;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px var(--primary-red);
+            border-color: var(--primary-red) !important;
+        }
+
+/* Icon mũi tên */
+.owl-prev span, .owl-next span {
+    font-size: 2rem;
+    line-height: 1;
+    margin-top: -5px; /* Căn chỉnh lại icon cho giữa */
 }
 
-.owl-prev::before, .owl-next::before {
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    font-size: 1.2rem;
-    color: #fff; /* Mũi tên màu trắng */
-}
+/* Responsive: Trên mobile thì ẩn nút hoặc thu nhỏ lại */
+@media (max-width: 1200px) {
+    .owl-nav button.owl-prev {
+        left: -20px;
+    }
 
-.owl-prev::before {
-    content: '\f104'; 
+    .owl-nav button.owl-next {
+        right: -20px;
+    }
 }
-
-.owl-next::before {
-    content: '\f105'; 
-}
-
-.owl-nav .owl-prev:hover, .owl-nav .owl-next:hover {
-    background-color: var(--yellow); /* Màu vàng nổi bật khi hover */
-    color: #000; 
-}
-
-.owl-nav .owl-prev:hover::before, .owl-nav .owl-next:hover::before {
-    color: #000; 
-}
-
-/* DOTS - Vẫn giữ ẩn */
-.owl-dot {
-    display: none;
-}
-/* --- TIÊU ĐỀ (Đồng bộ với Movie Selection) --- */
-.slider-content h1 {
-    color: var(--yellow); /* Sử dụng màu vàng nổi bật */
-    font-weight: 700;
-    font-size: 2.2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-transform: uppercase;
-    /* Hiệu ứng phát sáng nhẹ */
-    text-shadow: 0 0 5px rgba(255, 255, 0, 0.5), 0 0 10px rgba(255, 255, 0, 0.3);
-    font-family: 'Lemon', cursive;
-    margin-bottom: 2rem;
-}
-
 
 /* ----------- SLIDER EVENT CONTAINER ----------- */
 .slider-event {
     width: 100%;
-    /* Giảm margin trên và dưới để không quá xa các phần khác */
-    margin: 5% auto 5%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+    margin: 4rem auto; /* Khoảng cách chuẩn */
+    position: relative;
+    padding: 0 20px;
 }
 
     .slider-event .owl-container {
-        width: 90%;
-        margin: 2rem auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        overflow: hidden;
-    }
-
-    .slider-event .slider-content {
-        margin: 0 5%;
-    }
-
-    /* --- THẺ SỰ KIỆN (CARDS) --- */
-    .slider-event .cards {
-        /* Kích thước banner sự kiện hợp lý hơn */
-        width: 100%; /* Đảm bảo nó chiếm đủ không gian item */
-        max-width: 320px; /* Giới hạn kích thước tối đa */
-        height: 200px; /* Chiều cao hình chữ nhật nằm ngang */
-        margin-top: 0; /* Xóa margin-top không cần thiết */
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
         position: relative;
-        overflow: hidden;
-        border-radius: 10px; /* Bo tròn góc */
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Thêm bóng */
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
     }
 
+    /* --- 1. TIÊU ĐỀ (Đồng bộ với Movie Selection) --- */
+    .slider-event .slider-content h1 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 2rem;
+        text-transform: uppercase;
+        color: #fff;
+        margin-bottom: 2rem;
+        padding-left: 15px;
+        border-left: 5px solid #e50914; /* Gạch đỏ thương hiệu */
+        line-height: 1;
+    }
+
+    /* --- 2. THẺ SỰ KIỆN (EVENT CARDS) --- */
+    .slider-event .cards {
+        width: 100%;
+        /* Chuyển sang tỉ lệ banner ngang (ví dụ 16:9) */
+        aspect-ratio: 16 / 9;
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+        background-color: #1f1f1f;
+        border: 1px solid #333;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s ease;
+    }
+
+        /* Hiệu ứng khi Hover vào banner sự kiện */
         .slider-event .cards:hover {
-            /* Hiệu ứng phóng to nhẹ khi hover */
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+            border-color: #e50914; /* Viền chuyển đỏ */
+            box-shadow: 0 8px 20px rgba(229, 9, 20, 0.3); /* Phát sáng đỏ nhẹ */
         }
 
         .slider-event .cards .card-img {
             width: 100%;
-            height: 100%; /* Đảm bảo ảnh chiếm hết thẻ */
-            position: relative;
+            height: 100%;
         }
 
             .slider-event .cards .card-img a {
@@ -562,60 +561,86 @@ img {
             .slider-event .cards .card-img img {
                 width: 100%;
                 height: 100%;
-                object-fit: cover; /* Đảm bảo ảnh được căn chỉnh và che phủ thẻ */
+                object-fit: cover; /* Đảm bảo ảnh lấp đầy khung */
                 transition: transform 0.5s ease;
             }
 
-        /* Hiệu ứng zoom ảnh nhẹ khi hover */
+        /* Zoom ảnh bên trong khi hover */
         .slider-event .cards:hover .card-img img {
-            transform: scale(1.1);
+            transform: scale(1.08);
+            filter: brightness(1.1); /* Làm ảnh sáng lên một chút */
         }
 
-    /* --- ĐIỀU CHỈNH CHUNG OWL CAROUSEL CHO EVENT (DOTS) --- */
-    /* Vì phần JS đã bật dots: true cho event carousel */
-    .slider-event .owl-theme .owl-dots {
-        text-align: center;
+    /* --- 3. NÚT ĐIỀU HƯỚNG (NAVIGATION) --- */
+    /* Copy style sang trọng từ phần Movie Selection */
+
+    .slider-event .owl-nav button.owl-prev,
+    .slider-event .owl-nav button.owl-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 45px;
+        height: 45px;
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        border-radius: 50% !important;
+        color: #fff !important;
+        font-size: 1.5rem !important;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255,255,255,0.2) !important;
+        backdrop-filter: blur(4px);
+        opacity: 0; /* Ẩn mặc định */
+    }
+
+    /* Chỉ hiện nút khi di chuột vào vùng slider */
+    .slider-event:hover .owl-nav button.owl-prev,
+    .slider-event:hover .owl-nav button.owl-next {
+        opacity: 1;
+    }
+
+    .slider-event .owl-nav button.owl-prev {
+        left: -20px;
+    }
+
+    .slider-event .owl-nav button.owl-next {
+        right: -20px;
+    }
+
+        .slider-event .owl-nav button.owl-prev:hover,
+        .slider-event .owl-nav button.owl-next:hover {
+            background-color: #e50914 !important;
+            border-color: #e50914 !important;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
+        }
+
+    /* Căn chỉnh icon mũi tên */
+    .slider-event .owl-nav button span {
+        margin-top: -3px;
+    }
+
+    /* --- 4. DOTS (DẤU CHẤM TRÒN) --- */
+    .slider-event .owl-dots {
         margin-top: 20px;
+        text-align: center;
     }
 
-        .slider-event .owl-theme .owl-dots .owl-dot span {
-            width: 10px;
-            height: 10px;
-            margin: 0 5px;
-            background: #555; /* Màu chấm tròn không hoạt động */
-            display: block;
-            -webkit-backface-visibility: visible;
-            transition: opacity 200ms ease;
-            border-radius: 30px;
-        }
-
-        .slider-event .owl-theme .owl-dots .owl-dot.active span,
-        .slider-event .owl-theme .owl-dots .owl-dot:hover span {
-            background: var(--yellow); /* Màu vàng khi hoạt động/hover */
-        }
-
-    /* --- ĐIỀU CHỈNH CHUNG OWL CAROUSEL CHO EVENT (NAV) --- */
-    .slider-event .owl-nav {
-        top: 40%; /* Căn giữa theo chiều dọc của slider */
+    .slider-event .owl-dot span {
+        width: 10px;
+        height: 10px;
+        background: #444 !important;
+        border-radius: 50%;
+        margin: 0 5px;
+        transition: all 0.3s ease;
     }
 
-        .slider-event .owl-nav .owl-prev, .slider-event .owl-nav .owl-next {
-            width: 35px;
-            height: 35px;
-            background-color: rgba(0, 0, 0, 0.7);
-        }
-
-            .slider-event .owl-nav .owl-prev:hover, .slider-event .owl-nav .owl-next:hover {
-                background-color: var(--yellow);
-            }
-
-    .slider-event .owl-prev::before, .slider-event .owl-next::before {
-        font-size: 1rem;
-        color: #fff;
-    }
-
-    .slider-event .owl-nav .owl-prev:hover::before, .slider-event .owl-nav .owl-next:hover::before {
-        color: #000;
+    .slider-event .owl-dot.active span,
+    .slider-event .owl-dot:hover span {
+        background: #e50914 !important; /* Chấm đỏ khi active */
+        transform: scale(1.2);
+        box-shadow: 0 0 5px #e50914;
     }
 @media(max-width:1200px) {
 

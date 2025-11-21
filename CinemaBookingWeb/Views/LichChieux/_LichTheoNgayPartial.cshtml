@@ -2,11 +2,15 @@
 
 @if (Model.Any())
 {
-    <div class="lich-item mb-2 pb-2">
-        <div class="d-flex flex-wrap gap-2">
+    <div class="animate__animated animate__fadeIn">
+        <div class="section-title mt-2">Giờ chiếu</div>
+
+        <div class="time-list">
             @foreach (var item in Model)
             {
-                <button class="btn btn-sm btn-outline-warning btn-giochieu" data-lichchieu="@item.MaLich" data-giochieu="@item.GioBatDau.ToString("HH:mm:ss")"
+                <button class="btn btn-time btn-giochieu"
+                        data-lichchieu="@item.MaLich"
+                        data-giochieu="@item.GioBatDau.ToString("HH:mm:ss")"
                         data-ngaychieu="@item.NgayChieu.ToString("yyyy/MM/dd")">
                     @item.GioBatDau.ToString("HH:mm")
                 </button>
@@ -16,5 +20,8 @@
 }
 else
 {
-    <p class="text-center text-secondary mt-3">Không có lịch chiếu trong ngày này.</p>
+    <div class="text-center py-4">
+        <i class="bi bi-calendar-x text-secondary fs-1"></i>
+        <p class="text-secondary mt-2">Chưa có lịch chiếu cho ngày này.</p>
+    </div>
 }

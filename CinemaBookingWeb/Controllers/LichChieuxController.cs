@@ -47,6 +47,7 @@ namespace CinemaBookingWeb.Controllers
             var lich = await _context.LichChieus
                 .Include(l => l.MaPhongNavigation)
                 .Where(l => l.MaPhim == maPhim && l.NgayChieu == ngay)
+                .OrderBy(l => l.GioBatDau) 
                 .ToListAsync();
 
             var lichItems = lich.Select(l => new LichChieuItem

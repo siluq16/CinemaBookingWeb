@@ -27,32 +27,38 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
         [Route("DanhSach")]
         public async Task<IActionResult> Index()
         {
-            var hoaDonDetails = await _context.HoaDons
-                .SelectMany(hd => _context.Ves
-                    .Where(v => v.MaHd == hd.MaHd)
-                    .Take(1), // Chỉ lấy 1 vé/suất chiếu đại diện cho mỗi hóa đơn
-                    (hd, v) => new { HoaDon = hd, Ve = v }
-                )
-                .GroupJoin(
-                    _context.LichChieus.Include(lc => lc.MaPhimNavigation).Include(lc => lc.MaPhongNavigation),
-                    combined => combined.Ve.MaLich,
-                    lc => lc.MaLich,
-                    (combined, lichChieuGroup) => new { combined, LichChieu = lichChieuGroup.FirstOrDefault() }
-                )
-                .Select(result => new HoaDonChiTietVM
+            var rawData = await _context.HoaDons
+                .OrderByDescending(hd => hd.NgayLap)
+                .Select(hd => new
                 {
-                    MaHD = result.combined.HoaDon.MaHd,
-                    TrangThai = result.combined.HoaDon.TrangThai,
-                    TongTien = result.combined.HoaDon.TongTien,
-                    NgayLap = result.combined.HoaDon.NgayLap,
-
-                    // Lấy thông tin từ LichChieu (có thể null nếu Vé không hợp lệ)
-                    TenPhim = result.LichChieu!.MaPhimNavigation!.TenPhim,
-                    PhongChieu = result.LichChieu.MaPhongNavigation!.TenPhong,
-                    SuatChieu = $"{result.LichChieu.GioBatDau.ToString(@"hh\:mm")} - {result.LichChieu.GioKetThuc.ToString(@"hh\:mm")}"
+                    hd.MaHd,
+                    hd.TrangThai,
+                    hd.TongTien,
+                    hd.NgayLap,
+                    ThongTinPhim = hd.Ves.Select(v => new
+                    {
+                        TenPhim = v.MaLichNavigation.MaPhimNavigation.TenPhim,
+                        TenPhong = v.MaLichNavigation.MaPhongNavigation.TenPhong,
+                        GioBatDau = v.MaLichNavigation.GioBatDau, 
+                        GioKetThuc = v.MaLichNavigation.GioKetThuc
+                    }).FirstOrDefault()
                 })
                 .ToListAsync();
 
+            var hoaDonDetails = rawData.Select(item => new HoaDonChiTietVM
+            {
+                MaHD = item.MaHd,
+                TrangThai = item.TrangThai,
+                TongTien = item.TongTien,
+                NgayLap = item.NgayLap,
+
+                TenPhim = item.ThongTinPhim?.TenPhim ?? "Chưa xác định",
+                PhongChieu = item.ThongTinPhim?.TenPhong ?? "",
+
+                SuatChieu = item.ThongTinPhim != null
+                    ? $"{item.ThongTinPhim.GioBatDau:HH:mm} - {item.ThongTinPhim.GioKetThuc:HH:mm}"
+                    : ""
+            }).ToList();
             return View(hoaDonDetails);
         }
 
@@ -96,8 +102,8 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
 
                 TenPhim = lichChieu?.MaPhimNavigation?.TenPhim ?? "Không xác định",
                 PhongChieu = lichChieu?.MaPhongNavigation?.TenPhong ?? "N/A",
-                GioBatDau = lichChieu?.GioBatDau.ToString(@"hh\:mm") ?? "N/A",
-                GioKetThuc = lichChieu?.GioKetThuc.ToString(@"hh\:mm") ?? "N/A",
+                GioBatDau = lichChieu?.GioBatDau.ToString(@"HH:mm") ?? "N/A",
+                GioKetThuc = lichChieu?.GioKetThuc.ToString(@"HH:mm") ?? "N/A",
                 NgayChieu = lichChieu?.NgayChieu ?? new DateOnly(),
 
                 DanhSachGhe = hoaDon.Ves.Select(v => new VeChiTiet
@@ -119,17 +125,12 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
                 GiamGia = hoaDon.MaKmNavigation?.PhanTramGiam ?? 0
             };
 
-            // Tính ThanhTienTruocGiam (Tổng tiền vé + đồ ăn)
             decimal tongTienHang = model.DanhSachGhe.Sum(g => g.GiaTien) + model.DanhSachDichVu.Sum(dv => dv.TongTien);
             model.ThanhTienTruocGiam = tongTienHang;
             model.GiamGia = tongTienHang - hoaDon.TongTien;
 
 
             return View(model);
-        }
-        private bool HoaDonExists(string id)
-        {
-            return _context.HoaDons.Any(e => e.MaHd == id);
         }
     }
 }

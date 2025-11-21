@@ -20,7 +20,7 @@
             {
                 <div class="col mb-4">
                     <div class="card card-movie">
-                        <a href="@Url.Action("Detail", "Film", new { id = film.MaPhim })" class="card card-movie">
+                        <a href="@Url.Action("Detail", "Film", new { id = film.MaPhim })" class="movie-link-wrapper">
                             @{
                                 var ageRating = film.DoTuoi > 0 ? $"{film.DoTuoi}+" : "P";
                             }
@@ -28,17 +28,19 @@
                                 @ageRating
                             </div>
                             <img src="~/images/poster/@film.Poster" alt="@film.TenPhim" class="card-img-top movie-list-item-img" />
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="border-0">
-                                        <h5 class="card-title mb-0">@film.TenPhim</h5>
-                                        <span class="movie_genre">@film.TheLoai</span>
-                                    </div>
-                                    <a class="btn btn-danger btn-buy btnMuaVe" data-phim="@film.MaPhim">Mua vé</a>
-                                </div>
-                            </div>
-
                         </a>
+
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center h-100">
+                                <div class="movie-info text-start">
+                                    <a href="@Url.Action("Detail", "Film", new { id = film.MaPhim })" class="text-decoration-none">
+                                        <h5 class="card-title">@film.TenPhim</h5>
+                                    </a>
+                                    <span class="movie_genre">@film.TheLoai</span>
+                                </div>
+                                <a class="btn btn-danger btn-buy btnMuaVe ms-2" data-phim="@film.MaPhim">Mua vé</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             }
@@ -91,7 +93,7 @@
 
                 $.get("/Account/CheckLoginStatus", function (isLoggedIn) {
                     if (!isLoggedIn) {
-                        window.location.href = "/Account/Login?returnUrl=/DatVe/ChonGhe?maLichChieu=" + maLichChieu;
+                        window.location.href = "/Account/Login?returnUrl=/DatVe/Index?maLichChieu=" + maLichChieu;
                     } else {
                         window.location.href = "/DatVe/Index?maLichChieu=" + maLichChieu;
                     }

@@ -23,19 +23,37 @@
                     data.forEach(film => {
                         const ngay = new Date(film.ngayKhoiChieu);
                         const ngayFormat = ngay.toLocaleDateString('vi-VN');
+                        let ageRatingText = "P";
+                        let ageDataAttr = "p";
+
+                        if (film.doTuoi && film.doTuoi > 0) {
+                            ageRatingText = film.doTuoi + "+";
+                            ageDataAttr = ageRatingText.toLowerCase(); 
+                        }
                         html += `
                         <div class="col mb-4">
                             <div class="card card-movie">
-                                <a href="/Film/Detail/${film.maPhim}" class="card card-movie">
-                                    <img src="/images/poster/${film.poster}" alt="${film.tenPhim}" class="card-img-top movie-list-item-img" />
-                                    <div class="card-body">
-                                        <h5 class="card-title">${film.tenPhim}</h5>
-                                        <span class="movie_genre">${film.theLoai ?? ''}</span>
-                                        <h5 class="card-title">Ngày khởi chiếu: ${ngayFormat}</h5>
-
-                                        <!-- Bỏ hoàn toàn nút Mua vé và phần đánh giá -->
+                                <a href="/Film/Detail/${film.maPhim}" class="movie-link-wrapper">
+                                    <div class="movie-age" data-age="${ageDataAttr}">
+                                        ${ageRatingText}
                                     </div>
+                                    <img src="/images/poster/${film.poster}" alt="${film.tenPhim}" class="card-img-top movie-list-item-img" />
                                 </a>
+
+                                <div class="card-body">
+                                    <div class="movie-info">
+                                        <a href="/Film/Detail/${film.maPhim}" class="text-decoration-none">
+                                            <h5 class="card-title">${film.tenPhim}</h5>
+                                        </a>
+                    
+                                        <span class="movie_genre">${film.theLoai ?? ''}</span>
+                    
+                                        <div class="release-date mt-2">
+                                            <i class="fas fa-calendar-alt me-1"></i> Khởi chiếu: 
+                                            <span class="text-white fw-bold">${ngayFormat}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>`;
                     });

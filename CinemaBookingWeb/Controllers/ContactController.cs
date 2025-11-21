@@ -1,33 +1,46 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CinemaBookingWeb.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;   
+using CinemaBookingWeb.Models;
 
 namespace CinemaBookingWeb.Controllers
 {
     public class ContactController : Controller
     {
+        private readonly CinemaBookingWebContext _context;
+        public ContactController(CinemaBookingWebContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
             return View();
         }
 
-        // Xử lý phản hồi người dùng (POST)
         [HttpPost]
-        public IActionResult SendFeedback([FromBody] FeedbackModel feedback)
+        public async Task<IActionResult> SendFeedback(FeedbackViewModel model)
         {
-            if (feedback == null || string.IsNullOrEmpty(feedback.Name))
-                return BadRequest("Thông tin không hợp lệ.");
+            if (ModelState.IsValid)
+            {
+                var lienHeMoi = new LienHe
+                {
+                    TenNguoiGui = model.Name,
+                    Email = model.Email,
+                    SoDienThoai = model.Phone,
+                    NoiDung = model.Message,
+                    NgayGui = DateTime.Now,
+                    TrangThai = false
+                };
+                _context.Add(lienHeMoi);
+                await _context.SaveChangesAsync();
 
-            // 👉 Lưu hoặc xử lý ở đây
-            Console.WriteLine($"Feedback: {feedback.Name} - {feedback.Email} - {feedback.Message}");
+                TempData["Success"] = "Cảm ơn bạn đã phản hồi. Chúng tôi sẽ liên hệ lại sớm nhất!";
 
-            return Ok("Success");
-        }
+                return LocalRedirect("/Contact/Index#lienhe");
+            }
 
-        public class FeedbackModel
-        {
-            public string? Name { get; set; }
-            public string? Email { get; set; }
-            public string? Phone { get; set; }
-            public string? Message { get; set; }
+            TempData["Error"] = "Vui lòng kiểm tra lại thông tin.";
+            return LocalRedirect("/Contact/Index#lienhe");
         }
 
     }

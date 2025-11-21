@@ -33,11 +33,14 @@ public partial class CinemaBookingWebContext : DbContext
 
     public virtual DbSet<LichChieu> LichChieus { get; set; }
 
+    public virtual DbSet<LienHe> LienHes { get; set; }
+
     public virtual DbSet<Phim> Phims { get; set; }
 
     public virtual DbSet<PhongChieu> PhongChieus { get; set; }
 
     public virtual DbSet<Ve> Ves { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
@@ -218,6 +221,25 @@ public partial class CinemaBookingWebContext : DbContext
                 .HasForeignKey(d => d.MaPhong)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__LichChieu__MaPho__5070F446");
+        });
+
+        modelBuilder.Entity<LienHe>(entity =>
+        {
+            entity.HasKey(e => e.MaLienHe).HasName("PK__LienHe__0E73388A182592C6");
+
+            entity.ToTable("LienHe");
+
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.NgayGui)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.SoDienThoai)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.TenNguoiGui).HasMaxLength(100);
+            entity.Property(e => e.TrangThai).HasDefaultValue(false);
         });
 
         modelBuilder.Entity<Phim>(entity =>

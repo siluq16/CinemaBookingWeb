@@ -1,72 +1,65 @@
 ﻿@model CinemaBookingWeb.ViewModels.LichChieuViewModel
+<link href="~/css/lichchieu.css" rel="stylesheet" asp-append-version="true" />
 
-<link href="~/css/lichchieu.css" rel="stylesheet" />
 <div class="popup-overlay" id="lichChieuPopup">
-    <div class="popup-content bg-dark text-light p-4 rounded-4 shadow-lg">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="text-warning fw-bold">@Model.TenPhim</h4>
-            <button class="btn btn-sm btn-outline-light close-popup">&times;</button>
+    <div class="popup-content">
+        <div class="popup-header">
+            <h4 class="movie-title">@Model.TenPhim</h4>
+            <button class="close-popup" title="Đóng">&times;</button>
         </div>
 
-        <div class="text-center mb-3">
-            <h5 class="text-danger">Chọn ngày chiếu</h5>
-            <div class="d-flex flex-wrap justify-content-center gap-2 mt-2">
-                @foreach (var ngay in Model.NgayChieuKhac)
-                {
-                    <button class="btn btn-outline-warning btn-chon-ngay"
-                            data-ngay="@ngay.ToString("yyyy-MM-dd")"
-                            data-phim="@Model.MaPhim">
-                        @ngay.ToString("dd/MM")
-                    </button>
-                }
+        <div class="popup-body">
+            <div class="text-center">
+                <div class="section-title">Chọn ngày chiếu</div>
+                <div class="date-list">
+                    @foreach (var ngay in Model.NgayChieuKhac)
+                    {
+                        <button class="btn btn-date btn-chon-ngay"
+                                data-ngay="@ngay.ToString("yyyy-MM-dd")"
+                                data-phim="@Model.MaPhim">
+                            @ngay.ToString("dd/MM")
+                        </button>
+                    }
+                </div>
             </div>
-        </div>
 
-        <div id="lichChieuContainer">
-            
+            <div id="lichChieuContainer">
+                <p class="text-center text-secondary fst-italic mt-3">
+                    Vui lòng chọn ngày để xem suất chiếu.
+                </p>
+            </div>
         </div>
     </div>
 </div>
 
-<style>
-    .popup-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.7);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-    }
-
-    .popup-content {
-        width: 90%;
-        max-width: 600px;
-        animation: fadeIn 0.3s ease-in-out;
-    }
-    
-</style>
-
 <script>
     $(document).ready(function () {
-        // chọn ngày → load lịch chiếu của ngày đó
+        // Xử lý chọn ngày
         $(document).on("click", ".btn-chon-ngay", function () {
-            var ngay = $(this).data("ngay");
-            var maPhim = $(this).data("phim");
+            var btn = $(this);
+            var ngay = btn.data("ngay");
+            var maPhim = btn.data("phim");
 
+            // Hiệu ứng Active
             $(".btn-chon-ngay").removeClass("active");
-            $(this).addClass("active");
+            btn.addClass("active");
 
+            // Hiệu ứng loading nhẹ
+            $("#lichChieuContainer").html('<div class="text-center py-3 text-warning"><div class="spinner-border spinner-border-sm"></div> Đang tải suất chiếu...</div>');
+
+            // Gọi Ajax
             $.get("/LichChieux/LichTheoNgay", { maPhim: maPhim, ngay: ngay }, function (data) {
-                $("#lichChieuContainer").html(data);
+                $("#lichChieuContainer").hide().html(data).fadeIn(300);
             }).fail(function () {
-                $("#lichChieuContainer").html("<p class='text-center text-danger mt-3'>Lỗi tải lịch chiếu.</p>");
+                $("#lichChieuContainer").html("<p class='text-center text-danger mt-3'>Không thể tải lịch chiếu.</p>");
             });
         });
 
         // Đóng popup
-        $(document).on("click", ".close-popup", function () {
-            $("#lichChieuPopup").fadeOut(200, function () { $(this).remove(); });
+        $(document).on("click", ".close-popup, .popup-overlay", function (e) {
+            if (e.target === this) { // Chỉ đóng khi click vào nền đen hoặc nút đóng
+                $("#lichChieuPopup").fadeOut(200, function () { $(this).remove(); });
+            }
         });
     });
 </script>

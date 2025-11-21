@@ -124,38 +124,28 @@
             <h2>LIÊN HỆ VỚI CHÚNG TÔI</h2>
             <br>
             <div class="container">
-                <div class="city-selection">
-                    <h3>Tỉnh/Thành phố</h3>
-                    <select id="city" name="city">
-                        <option value="">Tỉnh/Thành phố</option>
-                        <option value="Thái Nguyên">Thái Nguyên</option>
-                        <option value="Đồng Nai">Đồng Nai</option>
-                        <option value="Hà Nội">Hà Nội</option>
-                        <option value="Thanh Hóa">Thanh Hóa</option>
-                        <option value="Bắc Giang">Bắc Giang</option>
-                        <option value="Khánh Hòa">Khánh Hòa</option>
-                        <option value="TP Hồ Chí Minh">TP Hồ Chí Minh</option>
-                    </select>
-                </div>
-
                 <h3>Thông tin phản hồi</h3>
-
-                <form id="feedbackForm" onsubmit="event.preventDefault(); feedbackInfo();">
+                @model CinemaBookingWeb.ViewModels.FeedbackViewModel
+                <form asp-action="SendFeedback" asp-controller="Contact" method="post">
                     <label for="name">Tên</label>
-                    <input type="text" id="name" name="name" placeholder="Tên">
+                    <input type="text" asp-for="Name" placeholder="Tên" class="form-control mb-2">
+                    <span asp-validation-for="Name" class="text-danger"></span>
 
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Email">
+                    <input type="email" asp-for="Email" placeholder="Email" class="form-control mb-2">
+                    <span asp-validation-for="Email" class="text-danger"></span>
 
                     <label for="phone">Số điện thoại</label>
-                    <input type="text" id="phone" name="phone" placeholder="Số điện thoại">
+                    <input type="text" asp-for="Phone" placeholder="Số điện thoại" class="form-control mb-2">
+                    <span asp-validation-for="Phone" class="text-danger"></span>
 
                     <label for="message">Nội dung</label>
-                    <textarea id="message" name="message" placeholder="Nội dung"></textarea>
+                    <textarea asp-for="Message" placeholder="Nội dung" class="form-control mb-2"></textarea>
+                    <span asp-validation-for="Message" class="text-danger"></span>
 
-                    <div class="button-container">
+                    <div class="button-container mt-3">
                         <input class="button" type="submit" value="Gửi phản hồi">
-                        <input type="reset" class="button" value="Làm mới">
+                        <button type="button" class="button" onclick="this.form.reset()">Làm mới</button>
                     </div>
                 </form>
 

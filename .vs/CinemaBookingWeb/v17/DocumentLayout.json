@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\areas\\admin\\controllers\\lichchieuxcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\areas\\admin\\controllers\\lichchieuxcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\models\\phim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\models\\phim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|d:\\nam3\\ki1\\btlweb\\cinemabookingweb\\cinemabookingweb\\views\\datve\\_combopartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1221BFC6-0CE9-4DD6-BC2F-367872FC3F6B}|CinemaBookingWeb\\CinemaBookingWeb.csproj|solutionrelative:cinemabookingweb\\views\\datve\\_combopartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,28 +22,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Phim.cs",
-              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Models\\Phim.cs",
-              "RelativeDocumentMoniker": "CinemaBookingWeb\\Models\\Phim.cs",
-              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Models\\Phim.cs",
-              "RelativeToolTip": "CinemaBookingWeb\\Models\\Phim.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAA9wCEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-21T10:01:22.071Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "LichChieuxController.cs",
-              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Areas\\Admin\\Controllers\\LichChieuxController.cs",
-              "RelativeDocumentMoniker": "CinemaBookingWeb\\Areas\\Admin\\Controllers\\LichChieuxController.cs",
-              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Areas\\Admin\\Controllers\\LichChieuxController.cs",
-              "RelativeToolTip": "CinemaBookingWeb\\Areas\\Admin\\Controllers\\LichChieuxController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-21T09:59:58.108Z",
+              "Title": "_ComboPartial.cshtml",
+              "DocumentMoniker": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Views\\DatVe\\_ComboPartial.cshtml",
+              "RelativeDocumentMoniker": "CinemaBookingWeb\\Views\\DatVe\\_ComboPartial.cshtml",
+              "ToolTip": "D:\\nam3\\ki1\\BTLWEB\\CinemaBookingWeb\\CinemaBookingWeb\\Views\\DatVe\\_ComboPartial.cshtml",
+              "RelativeToolTip": "CinemaBookingWeb\\Views\\DatVe\\_ComboPartial.cshtml",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABYAAABdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-21T16:16:15.706Z",
               "EditorCaption": ""
             }
           ]

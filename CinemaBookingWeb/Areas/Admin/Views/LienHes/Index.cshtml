@@ -1,0 +1,77 @@
+﻿@model IEnumerable<CinemaBookingWeb.Models.LienHe>
+
+@{
+    ViewData["Title"] = "Quản lý Liên hệ & Phản hồi";
+}
+
+<div class="container-fluid px-4">
+    <h2 class="mt-4">Danh sách Phản hồi từ Khách hàng</h2>
+
+    <div class="card mb-4 mt-3 shadow-sm">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Dữ liệu phản hồi
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Người gửi</th>
+                        <th>Thông tin liên lạc</th>
+                        <th style="width: 40%;">Nội dung</th>
+                        <th>Ngày gửi</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.TenNguoiGui</td>
+                                <td>
+                                    <div><i class="fas fa-envelope"></i> @item.Email</div>
+                                    <div><i class="fas fa-phone"></i> @item.SoDienThoai</div>
+                                </td>
+                                <td>@item.NoiDung</td>
+                                <td>@(item.NgayGui.HasValue? item.NgayGui.Value.ToString("dd/MM/yyyy HH:mm") : "")</td>
+                                <td class="text-center">
+                                    @if (item.TrangThai == true)
+                                    {
+                                        <span class="badge bg-success">Đã xử lý</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">Chưa xem</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="DoiTrangThai" asp-route-id="@item.MaLienHe"
+                                       class="btn btn-sm @(item.TrangThai == true ? "btn-secondary" : "btn-primary")"
+                                       title="Đổi trạng thái">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </a>
+
+                                    <a asp-action="Xoa" asp-route-id="@item.MaLienHe"
+                                       class="btn btn-sm btn-danger"
+                                       onclick="return confirm('Bạn có chắc muốn xóa phản hồi này?');"
+                                       title="Xóa">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">Chưa có phản hồi nào.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

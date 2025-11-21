@@ -19,7 +19,8 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
         public IActionResult Index()
         {
             // === Các chỉ số tổng quan ===
-            var today = DateTime.Now.Date;
+            var now = DateTime.Now;
+            var today = now.Date;
             int thisday = DateTime.Now.Day;
             var thisMonth = DateTime.Now.Month;
             var thisYear = DateTime.Now.Year;
@@ -31,42 +32,45 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
                 .Include(v => v.MaHdNavigation)
                 .Where(v => v.MaHdNavigation != null
                          && v.MaHdNavigation.TongTien > 0
-                         && v.MaHdNavigation.NgayLap.Month == thisMonth
-                         && v.MaHdNavigation.NgayLap.Year == thisYear)
+                         && v.MaHdNavigation.NgayLap >= firstDayOfMonth
+                         && v.MaHdNavigation.NgayLap <= firstDayOfNextMonth)
                 .GroupBy(v => v.MaLichNavigation!.MaPhimNavigation!.TenPhim)
                 .Select(g => new DoanhThuPhimVM
                 {
                     TenPhim = g.Key ?? "Không xác định",
-                    TongDoanhThu = g.Sum(v => v.MaHdNavigation!.TongTien)
+                    TongDoanhThu = g.Sum(v => (decimal?)v.GiaVe) ?? 0
                 })
                 .OrderByDescending(x => x.TongDoanhThu)
                 .ToList();
 
-            var doanhThuTheoThang = _context.Ves
-                .Include(v => v.MaHdNavigation)
-                .Where(v => v.MaHdNavigation != null
-                         && v.MaHdNavigation.TongTien > 0
-                         && v.MaHdNavigation.NgayLap.Year == thisYear)
-                .GroupBy(v => v.MaHdNavigation!.NgayLap.Month)
-                .Select(g => new DoanhThuThangVM
+            var doanhThuTheoThang = _context.HoaDons
+                .Where(h => h.TongTien > 0 && h.NgayLap.Year == now.Year)
+                .GroupBy(h => h.NgayLap.Month)
+                .Select(g => new
                 {
-                    Thang = "Tháng " + g.Key,
-                    TongDoanhThu = g.Sum(v => v.MaHdNavigation!.TongTien)
+                    ThangSo = g.Key,
+                    TongTien = g.Sum(h => (decimal?)h.TongTien) ?? 0
                 })
-                .OrderBy(g => g.Thang)
+                .OrderBy(g => g.ThangSo) // Sắp xếp theo số (1, 2... 10) trước khi đổi thành chữ
+                .ToList() // Tải về RAM rồi mới map sang ViewModel
+                .Select(x => new DoanhThuThangVM
+                {
+                    Thang = "Tháng " + x.ThangSo,
+                    TongDoanhThu = x.TongTien
+                })
                 .ToList();
 
             // === Doanh thu trong ngày ===
-            var startOfDay = DateTime.Today;
-            var endOfDay = startOfDay.AddDays(1);
+            var endOfDay = today.AddDays(1);
 
             var doanhThuNgay = _context.HoaDons
-                .Where(hd => hd.NgayLap >= startOfDay && hd.NgayLap < endOfDay)
+                .Where(hd => hd.NgayLap >= today && hd.NgayLap < endOfDay)
                 .Sum(hd => (decimal?)hd.TongTien) ?? 0;
 
 
             // === Tổng doanh thu toàn thời gian ===
             var tongDoanhThu = _context.HoaDons
+                .Where(hd => hd.NgayLap >= firstDayOfMonth && hd.NgayLap < firstDayOfNextMonth) 
                 .Sum(hd => (decimal?)hd.TongTien) ?? 0;
 
             // === Tổng khách hàng mới trong tháng ===
@@ -105,6 +109,8 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
 
             var start = startDate ?? firstDayOfMonth;
             var end = endDate ?? firstDayOfNextMonth;
+            ViewBag.StartDate = start.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = end.ToString("yyyy-MM-dd");
 
             var doanhThuPhim = _context.Ves
                 .Include(v => v.MaLichNavigation)
@@ -118,7 +124,7 @@ namespace CinemaBookingWeb.Areas.Admin.Controllers
                 .Select(g => new DoanhThuChiTietPhim
                 {
                     TenPhim = g.Key ?? "Không xác định",
-                    TongDoanhThu = g.Sum(v => v.MaHdNavigation!.TongTien),
+                    TongDoanhThu = g.Sum(v => (decimal?)v.GiaVe) ?? 0,
                     TongVeBanRa = g.Count()
                 })
                 .OrderByDescending(x => x.TongDoanhThu)

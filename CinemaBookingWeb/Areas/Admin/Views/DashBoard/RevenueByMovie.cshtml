@@ -9,9 +9,9 @@
         <h4 class="fw-semibold mb-3">Doanh thu theo phim</h4>
 
         <div class="d-flex align-items-center gap-2">
-            <input type="date" class="form-control form-control-sm" id="startDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" style="width: 180px;" />
+            <input type="date" class="form-control form-control-sm" id="startDate" value="@(ViewBag.StartDate != null ? ViewBag.StartDate : DateTime.Now.ToString("yyyy-MM-dd"))" style="width: 180px;" />
             <span>-</span>
-            <input type="date" class="form-control form-control-sm" id="endDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" style="width: 180px;" />
+            <input type="date" class="form-control form-control-sm" id="endDate" value="@(ViewBag.EndDate != null ? ViewBag.EndDate : DateTime.Now.ToString("yyyy-MM-dd"))" style="width: 180px;" />
 
             <button class="btn btn-sm btn-primary" id="btnLoad">
                 <i class="bi bi-arrow-repeat"></i> Load dữ liệu

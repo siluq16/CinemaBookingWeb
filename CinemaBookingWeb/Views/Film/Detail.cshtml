@@ -94,7 +94,7 @@
 
                 $.get("/Account/CheckLoginStatus", function (isLoggedIn) {
                     if (!isLoggedIn) {
-                        window.location.href = "/Account/Login?returnUrl=/DatVe/ChonGhe?maLichChieu=" + maLichChieu;
+                        window.location.href = "/Account/Login?returnUrl=/DatVe/Index?maLichChieu=" + maLichChieu;
                     } else {
                         window.location.href = "/DatVe/Index?maLichChieu=" + maLichChieu;
                     }

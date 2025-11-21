@@ -1,63 +1,165 @@
-﻿/* --- Popup tổng thể --- */
-.modal-content {
-    border-radius: 12px;
-    border: 1px solid #ffc107;
-    background-color: #1b1b1b !important;
-    color: #fff;
+﻿/* --- Biến màu sắc --- */
+:root {
+    --cinema-gold: #ffc107;
+    --cinema-dark: #151515;
+    --cinema-dark-overlay: rgba(0, 0, 0, 0.85);
+    --cinema-gray: #2b2b2b;
+    --cinema-text: #e0e0e0;
 }
 
-/* --- Tiêu đề phim --- */
-.modal-title {
-    font-weight: 700;
-    font-size: 1.3rem;
-    color: #ffc107;
-}
-
-/* --- Hàng ngày chiếu --- */
-.date-container {
+/* --- Popup Container --- */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--cinema-dark-overlay);
+    backdrop-filter: blur(5px);
     display: flex;
+    align-items: center;
     justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+}
+
+.popup-content {
+    width: 90%;
+    max-width: 650px;
+    background-color: var(--cinema-dark);
+    border: 1px solid #333;
+    border-top: 4px solid var(--cinema-gold);
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    color: var(--cinema-text);
+    padding: 0;
+    overflow: hidden;
+    transform: scale(0.9);
+    animation: scaleUp 0.3s forwards;
+}
+
+/* --- Header --- */
+.popup-header {
+    padding: 20px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, #1a1a1a, var(--cinema-dark));
+}
+
+.movie-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--cinema-gold);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.close-popup {
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 1.5rem;
+    line-height: 1;
+    transition: 0.3s;
+}
+
+    .close-popup:hover {
+        color: #fff;
+        transform: rotate(90deg);
+    }
+
+/* --- Body --- */
+.popup-body {
+    padding: 25px;
+}
+
+.section-title {
+    font-size: 0.9rem;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    font-weight: 600;
+    border-left: 3px solid var(--cinema-gold);
+    padding-left: 10px;
+}
+
+/* --- Button Ngày --- */
+.date-list {
+    display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin: 15px 0;
+    justify-content: center;
+    margin-bottom: 25px;
 }
 
 .btn-date {
-    border: 1px solid #ffc107;
-    background-color: transparent;
-    color: #ffc107;
+    background: var(--cinema-gray);
+    color: #aaa;
+    border: 1px solid transparent;
+    padding: 8px 20px;
     border-radius: 6px;
-    min-width: 60px;
+    font-weight: 500;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-    .btn-date.active,
     .btn-date:hover {
-        background-color: #ffc107;
-        color: #000;
+        color: #fff;
+        border-color: var(--cinema-gold);
+        background: #333;
     }
 
-/* --- Suất chiếu --- */
-.gio-chieu {
-    margin-top: 10px;
+    .btn-date.active {
+        background: var(--cinema-gold);
+        color: #000;
+        font-weight: bold;
+        box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
+    }
+
+/* --- List Giờ Chiếu --- */
+.time-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-start;
 }
 
 .btn-time {
-    border: 1px solid #ffc107;
-    background-color: transparent;
-    color: #ffc107;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    min-width: 65px;
+    min-width: 80px;
+    padding: 8px 0;
+    border: 1px solid #444;
+    background: transparent;
+    color: #fff;
+    border-radius: 4px;
+    transition: all 0.2s;
 }
 
     .btn-time:hover {
-        background-color: #ffc107;
-        color: #000;
-        transform: scale(1.05);
+        border-color: var(--cinema-gold);
+        color: var(--cinema-gold);
+        background: rgba(255, 193, 7, 0.05);
+        transform: translateY(-2px);
     }
 
-.ten-rap {
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
+/* --- Animations --- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleUp {
+    from {
+        transform: scale(0.9);
+    }
+
+    to {
+        transform: scale(1);
+    }
 }
