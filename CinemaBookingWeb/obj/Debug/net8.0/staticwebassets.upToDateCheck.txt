@@ -35,6 +35,7 @@ wwwroot\images\poster\93ce6e94-b4ed-4d77-9a2d-492193900dde.jpg
 wwwroot\images\poster\a036336e-13d4-47bd-b60f-e0f19c0bd436.jpg
 wwwroot\images\poster\a036c69d-980d-42b0-b7a1-077fcf5582ba.jpg
 wwwroot\images\poster\b13b6335-8a38-4c17-91f0-9f41c8418c4a.jpg
+wwwroot\images\poster\b27367a7-6428-4596-b743-dd22cf64feb2.jpg
 wwwroot\images\poster\d49a8b27-dbb6-4741-8f36-56c60e9a97f0.jpg
 wwwroot\images\poster\d93089b3-7fc0-4f79-a61b-ee3516d298e9.jpg
 wwwroot\images\poster\df42a626-fb0e-428b-9f84-2202ace1e378.jpg

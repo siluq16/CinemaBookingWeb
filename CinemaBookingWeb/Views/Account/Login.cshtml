@@ -71,6 +71,21 @@
             </form>
         </div>
     </div>
+    <div class="admin-hint-banner shadow-sm">
+        <div class="hint-title text-center mb-2">
+            <span class="text-warning"><i class="fas fa-info-circle"></i> Gợi ý tài khoản Admin</span>
+        </div>
+        <div class="hint-box">
+            <div class="d-flex justify-content-between border-bottom border-secondary pb-2 mb-2">
+                <span class="text-muted">Tài khoản:</span>
+                <span class="text-white fw-bold user-select-all">admin</span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span class="text-muted">Mật khẩu:</span>
+                <span class="text-white fw-bold user-select-all">123456</span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -181,4 +196,36 @@
             background-color: #2a2a2a;
             color: var(--bs-primary);
         }
+    /* --- ADMIN HINT BANNER --- */
+    .admin-hint-banner {
+        max-width: 420px;
+        margin: 20px auto 60px auto;
+        padding: 15px;
+        background-color: #1a1a1a; /* Nền xám đen */
+        border: 1px solid #333333;
+        border-left: 4px solid var(--bs-primary); /* Điểm nhấn viền đỏ bên trái */
+        border-radius: 6px;
+    }
+
+    .hint-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .hint-box {
+        background-color: var(--bs-secondary); /* Nền tối giống ô input */
+        padding: 10px 15px;
+        border-radius: 6px;
+        font-family: monospace; /* Dùng font monospace để hiển thị tài khoản/mật khẩu rõ ràng hơn */
+        font-size: 1rem;
+    }
+
+    /* Thêm class này để người dùng có thể bôi đen/copy nhanh (click đúp là bôi đen toàn bộ) */
+    .user-select-all {
+        -webkit-user-select: all;
+        -moz-user-select: all;
+        -ms-user-select: all;
+        user-select: all;
+        cursor: text;
+    }
 </style>
